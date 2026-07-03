@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Constraints removed, KPIs moved</title>
+  <style>
+    /* === Calm Lagoon === */
+    :root{
+      --bg:#071512;--bg2:#0e1817;--primary:#0B7D74;--bright:#5FC7BA;--light:#C6EEE8;
+      --deep:#094843;--mid:#2BA89A;--ink:#CFEFE9;--muted:#7fa79f;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);color:var(--ink);line-height:1.6;min-height:100vh;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+    .wrap{max-width:1080px;margin:0 auto;padding:0 1.5rem}
+    section{padding:5.5rem 0;border-top:1px solid rgba(9,72,67,.5)}
+    .eyebrow{
+      font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);
+      font-weight:600;margin-bottom:1.1rem;display:flex;align-items:center;gap:.6rem
+    }
+    .eyebrow::before{content:"";width:26px;height:1px;background:var(--mid);display:inline-block}
+    h2{font-size:clamp(1.7rem,3.6vw,2.5rem);line-height:1.15;color:var(--light);letter-spacing:-.02em;font-weight:700}
+    .lead{color:var(--muted);font-size:1.08rem;max-width:60ch;margin-top:1rem}
+
+    /* HERO */
+    .hero{
+      position:relative;overflow:hidden;border-top:none;
+      padding:7.5rem 0 6rem;
+      background:
+        radial-gradient(1100px 520px at 78% -12%, rgba(11,125,116,.42), transparent 60%),
+        radial-gradient(760px 420px at 8% 8%, rgba(43,168,154,.16), transparent 55%),
+        linear-gradient(180deg,#08201c 0%, var(--bg) 72%);
+    }
+    .hero::after{
+      content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+      background:linear-gradient(90deg,transparent,var(--deep),transparent)
+    }
+    .hero .eyebrow{color:var(--bright)}
+    .hero .eyebrow::before{background:var(--bright)}
+    h1{
+      font-size:clamp(2.7rem,8vw,5.3rem);line-height:1.02;letter-spacing:-.035em;font-weight:800;
+      background:linear-gradient(120deg,var(--light) 20%,var(--bright) 65%,var(--mid) 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .hero-sub{font-size:clamp(1.1rem,2.3vw,1.45rem);color:var(--ink);max-width:44ch;margin-top:1.6rem;font-weight:500}
+    .hero-punch{margin-top:1.1rem;color:var(--muted);max-width:52ch;font-size:1.02rem}
+    .tagpills{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2.2rem}
+    .pill{
+      font-size:.78rem;letter-spacing:.03em;color:var(--light);
+      border:1px solid var(--deep);background:rgba(14,24,23,.6);
+      padding:.42rem .85rem;border-radius:999px
+    }
+
+    /* QUOTE */
+    .quote{
+      border-left:3px solid var(--primary);padding:.4rem 0 .4rem 1.6rem;margin-top:2rem;
+      font-size:clamp(1.15rem,2.4vw,1.5rem);color:var(--light);font-weight:500;max-width:40ch;line-height:1.35
+    }
+    .quote small{display:block;margin-top:.7rem;color:var(--muted);font-size:.85rem;font-weight:400;letter-spacing:.04em}
+
+    /* METHOD */
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:2.6rem}
+    .step{
+      background:var(--bg2);border:1px solid var(--deep);border-radius:14px;padding:1.6rem 1.4rem;position:relative;
+      transition:border-color .25s,transform .25s
+    }
+    .step:hover{border-color:var(--mid);transform:translateY(-3px)}
+    .step .n{font-size:2.4rem;font-weight:800;color:var(--mid);letter-spacing:-.03em;line-height:1;opacity:.85}
+    .step h3{color:var(--bright);font-size:1.15rem;margin:.7rem 0 .5rem;letter-spacing:-.01em}
+    .step p{color:var(--muted);font-size:.95rem}
+    .method-tag{margin-top:2.2rem;color:var(--ink);font-size:1.05rem;max-width:62ch}
+    .method-tag b{color:var(--bright);font-weight:600}
+
+    /* KPI GRID */
+    .kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.1rem;margin-top:2.6rem}
+    .kpi{
+      background:linear-gradient(180deg,var(--bg2),#0b1514);
+      border:1px solid var(--deep);border-radius:14px;padding:1.5rem 1.4rem;position:relative;overflow:hidden;
+      transition:border-color .25s,transform .25s,box-shadow .25s
+    }
+    .kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--primary),var(--bright));opacity:.55;transition:opacity .25s}
+    .kpi:hover{border-color:var(--mid);transform:translateY(-4px);box-shadow:0 16px 40px -22px rgba(11,125,116,.7)}
+    .kpi:hover::before{opacity:1}
+    .kpi h3{color:var(--light);font-size:1.18rem;letter-spacing:-.01em}
+    .kpi .why{color:var(--bright);font-size:.82rem;letter-spacing:.02em;margin:.35rem 0 .95rem;font-weight:500}
+    .kpi .lever{color:var(--muted);font-size:.92rem}
+    .kpi .lever b{color:var(--ink);font-weight:600}
+
+    /* PROOF */
+    .proof{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:2.6rem}
+    .card{background:var(--bg2);border:1px solid var(--deep);border-radius:14px;padding:1.6rem 1.4rem;transition:border-color .25s,transform .25s}
+    .card:hover{border-color:var(--mid);transform:translateY(-3px)}
+    .card h3{color:var(--bright);font-size:1.1rem;margin-bottom:.5rem}
+    .card p{color:var(--muted);font-size:.94rem}
+
+    /* AGENCY */
+    .agency{background:
+      radial-gradient(700px 300px at 90% 0%, rgba(11,125,116,.16), transparent 60%);}
+    .agency-list{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:2.4rem}
+    .agency-list .card h3{color:var(--light)}
+
+    /* CTA */
+    .cta{
+      text-align:center;
+      background:
+        radial-gradient(700px 360px at 50% 120%, rgba(11,125,116,.4), transparent 60%),
+        linear-gradient(180deg,var(--bg),#08211d);
+    }
+    .cta h2{max-width:20ch;margin:0 auto}
+    .cta p{color:var(--muted);margin:1rem auto 2rem;max-width:48ch}
+    .btn{
+      display:inline-block;background:var(--primary);color:#03110f;font-weight:700;letter-spacing:.01em;
+      padding:.95rem 1.9rem;border-radius:10px;text-decoration:none;font-size:1.02rem;
+      transition:background .2s,transform .2s,box-shadow .2s;box-shadow:0 10px 30px -12px rgba(11,125,116,.9)
+    }
+    .btn:hover{background:var(--bright);transform:translateY(-2px)}
+
+    footer{
+      text-align:center;padding:2.6rem 1.5rem;color:var(--muted);font-size:.78rem;
+      letter-spacing:.12em;text-transform:uppercase;border-top:1px solid var(--deep)
+    }
+    footer a{color:var(--bright);text-decoration:none}
+
+    @media(max-width:760px){
+      .steps,.proof,.agency-list{grid-template-columns:1fr}
+      section{padding:4rem 0}
+      .hero{padding:5.5rem 0 4.5rem}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">AI-operatör &middot; Malm&ouml;-Lund</div>
+      <h1>Constraints removed,<br>KPIs moved.</h1>
+      <p class="hero-sub">AI kan bygga det mesta nu. Det sv&aring;ra &auml;r att veta vad som &auml;r v&auml;rt att bygga.</p>
+      <p class="hero-punch">Jag har 20 &aring;r som produkt&auml;gare bakom mig och bygger idag l&ouml;sningarna sj&auml;lv. Jag hittar flaskhalsen, kopplar den till en siffra, och flyttar den.</p>
+      <div class="tagpills">
+        <span class="pill">Constraint &rarr; KPI &rarr; Build</span>
+        <span class="pill">Diagnos, inte bara verktyg</span>
+        <span class="pill">Bygger + driver adoption</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- THE SHIFT -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">Skiftet</div>
+      <h2>Att bygga &auml;r billigt nu.<br>Att veta vad som &auml;r v&auml;rt att bygga &auml;r det inte.</h2>
+      <p class="lead">Verktygen byts ut varje &aring;r. Det som inte g&aring;r ut i tiden &auml;r omd&ouml;met: att namnge det verkliga problemet, flytta r&auml;tt siffra, och f&aring; organisationen att faktiskt anv&auml;nda det. Det &auml;r hela jobbet.</p>
+      <blockquote class="quote">
+        &ldquo;De flesta AI-hj&auml;lpmedel &auml;r apotekare. De ger dig det du ber om. Jag &auml;r l&auml;karen: jag hittar vad som faktiskt &auml;r fel, och fixar det.&rdquo;
+        <small>Diagnos &rarr; ordination &rarr; bygg &rarr; bevis</small>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- METHOD -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">Metoden</div>
+      <h2>Constraint &rarr; KPI &rarr; Build</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="n">01</div>
+          <h3>Constraint</h3>
+          <p>Hitta den enda flaskhalsen som, om den l&ouml;ses, g&ouml;r bolaget snabbare, tj&auml;nar mer, eller stoppar en bl&ouml;dning. Inte &ldquo;n&aring;got repetitivt&rdquo;.</p>
+        </div>
+        <div class="step">
+          <div class="n">02</div>
+          <h3>KPI</h3>
+          <p>Namnge siffran vi ska flytta innan vi bygger. Den blir projektets nordstj&auml;rna, och m&aring;ttet p&aring; om det funkade.</p>
+        </div>
+        <div class="step">
+          <div class="n">03</div>
+          <h3>Build</h3>
+          <p>Bygg l&ouml;sningen. Jag bygger den sj&auml;lv, s&aring; det inte stannar vid en snygg deck. Sen driver jag adoptionen.</p>
+        </div>
+      </div>
+      <p class="method-tag">Vem som helst kan s&auml;ga <i>&ldquo;jag byggde en AI-agent&rdquo;</i>. N&auml;stan ingen kan s&auml;ga <b>&ldquo;jag flyttade DEN H&Auml;R siffran med S&Aring; H&Auml;R mycket, f&ouml;r DET H&Auml;R bolaget&rdquo;</b>. Den meningen &auml;r hela pitchen.</p>
+    </div>
+  </section>
+
+  <!-- KPI MENU -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">V&auml;rdemenyn</div>
+      <h2>V&auml;lj siffran som g&ouml;r ont.</h2>
+      <p class="lead">Ett genomarbetat exempel fr&aring;n energisektorn, min hemmaplan. Samma metod k&ouml;rs p&aring; vilket konto som helst. Presentera inte alla sju. Fr&aring;ga vilken som sv&aring;rar, och k&ouml;r Constraint &rarr; KPI &rarr; Build p&aring; just den.</p>
+      <div class="kpi-grid">
+
+        <article class="kpi">
+          <h3>SAIDI</h3>
+          <div class="why">Drifts&auml;kerhet och kundupplevelse</div>
+          <p class="lever">Prediktivt underh&aring;ll p&aring; n&auml;tet, avbrottsprognos fr&aring;n v&auml;der- och sensordata, snabbare fellokalisering. <b>F&auml;rre och kortare avbrott.</b></p>
+        </article>
+
+        <article class="kpi">
+          <h3>N&auml;tf&ouml;rluster</h3>
+          <div class="why">Direkt ekonomisk effekt</div>
+          <p class="lever">ML som uppt&auml;cker tekniska och icke-tekniska f&ouml;rluster, lastfl&ouml;desoptimering, transformator&ouml;vervakning. <b>Pengar tillbaka p&aring; sista raden.</b></p>
+        </article>
+
+        <article class="kpi">
+          <h3>Kund-NPS</h3>
+          <div class="why">B&auml;ttre kundrelation och l&auml;gre friktion</div>
+          <p class="lever">AI-kundtj&auml;nst med snabb f&ouml;rstasvarstid och sj&auml;lvservice, proaktiv avbrottskommunikation, personliga f&ouml;rbrukningsinsikter.</p>
+        </article>
+
+        <article class="kpi">
+          <h3>Fossilfri andel</h3>
+          <div class="why">Klimatm&aring;l och strategisk omst&auml;llning</div>
+          <p class="lever">Produktions- och f&ouml;rbrukningsprognos f&ouml;r f&ouml;rnybart, dispatch- och lageroptimering, deltagande i flexmarknader.</p>
+        </article>
+
+        <article class="kpi">
+          <h3>EBITDA-marginal</h3>
+          <div class="why">Bolagets &ouml;vergripande l&ouml;nsamhet</div>
+          <p class="lever">Samlings-KPI. Back office-automation, pris- och handelsoptimering, l&auml;gre OPEX i f&auml;ltoperationerna.</p>
+        </article>
+
+        <article class="kpi">
+          <h3>NIS2-svarstid</h3>
+          <div class="why">Regulatorisk och operativ riskminskning</div>
+          <p class="lever">AI-st&ouml;dd incidentuppt&auml;ckt och triage, automatisk logganalys, rapportutkast inom 24h- och 72h-deadlines.</p>
+        </article>
+
+        <article class="kpi">
+          <h3>Time-to-close</h3>
+          <div class="why">Snabbare styrning och compliance</div>
+          <p class="lever">Automatiska datapipelines och konsolidering, AI-utkast till lednings- och myndighetsrapportering. <b>Snabbare m&aring;nadsbokslut.</b></p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">Bevis, inte CV</div>
+      <h2>Fr&aring;gan &auml;r inte hur l&auml;nge. Fr&aring;gan &auml;r vad du byggt.</h2>
+      <div class="proof">
+        <div class="card">
+          <h3>AIOS</h3>
+          <p>Jag byggde mitt eget AI-operativsystem: mejl, kalender, CRM, kontakt- och jobbfl&ouml;den, allt agentdrivet. Levande bevis p&aring; att jag shippar, inte bara r&aring;dger.</p>
+        </div>
+        <div class="card">
+          <h3>Qvantum</h3>
+          <p>Automatiserade manuell rapportering med Claude Code. Flaskhals bort, rapporteringstid ner. Ett exempel p&aring; Constraint &rarr; KPI &rarr; Build i skarpt l&auml;ge.</p>
+        </div>
+        <div class="card">
+          <h3>Telling Technology</h3>
+          <p>Bygger i det offentliga. Inneh&aring;ll och demos som g&ouml;r AI begripligt f&ouml;r icke-tekniska. Ett publikt sp&aring;r de flesta konsulter saknar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENCY MODEL -->
+  <section class="agency">
+    <div class="wrap">
+      <div class="eyebrow">F&ouml;r en byr&aring;</div>
+      <h2>Ni beh&aring;ller kunden. Jag &auml;r operat&ouml;ren bakom kontot.</h2>
+      <p class="lead">En konkret AI-leverans blir en ny, l&ouml;nsam tj&auml;nst ni kan ta med till konton ni redan har. Ingen relationsrisk, byr&aring;n &auml;ger kunden.</p>
+      <div class="agency-list">
+        <div class="card">
+          <h3>AI-readiness</h3>
+          <p>En genomg&aring;ng av var AI faktiskt flyttar n&aring;lterna f&ouml;r just den kunden. Skala ner till de 2-3 id&eacute;er som &auml;r v&auml;rda att bygga.</p>
+        </div>
+        <div class="card">
+          <h3>Co-delivery</h3>
+          <p>Jag bygger och driver adoption, white-label eller sida vid sida med er. Ni s&auml;ljer, jag levererar.</p>
+        </div>
+        <div class="card">
+          <h3>Gemensamt seminarium</h3>
+          <p>Ett &ldquo;AI f&ouml;r varum&auml;rken&rdquo;-pass f&ouml;r era kunder. Operat&ouml;rsinneh&aring;ll och live-demos som fyller pipen och positionerar er som den AI-framtunga byr&aring;n.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="wrap">
+      <h2>Vilken siffra vill ni flytta?</h2>
+      <p>Ett samtal. Vi tar ett konto d&auml;r AI &auml;r n&auml;sta logiska steg och ser om ett pilotuppdrag &auml;r v&auml;rt det. Inget s&auml;ljsnack.</p>
+      <a class="btn" href="mailto:hello@skogstrom.se?subject=Constraints%20removed%2C%20KPIs%20moved">Ta ett samtal</a>
+    </div>
+  </section>
+
+  <footer>
+    Jacob Skogstr&ouml;m &middot; <a href="https://tellingtechnology.skogstrom.se">Telling Technology</a> &middot; Malm&ouml;, Sweden
+  </footer>
+
+</body>
+</html>
