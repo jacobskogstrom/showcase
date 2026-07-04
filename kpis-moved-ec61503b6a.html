@@ -184,6 +184,15 @@
 </head>
 <body>
 
+  <script>
+    (function(){var K='spw_kpi_ec61503b6a',P='jacobsecret';
+      if(localStorage.getItem(K)===P)return;
+      var t=prompt('Lösenord krävs:');
+      if(t===P){localStorage.setItem(K,P);}
+      else{document.documentElement.innerHTML='<body style="margin:0;background:#071512;color:#CFEFE9;font-family:-apple-system,BlinkMacSystemFont,sans-serif;height:100vh;display:grid;place-items:center"><p>&Aring;tkomst nekad.</p></body>';}
+    })();
+  </script>
+
   <!-- SVG SPRITE -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>

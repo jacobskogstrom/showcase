@@ -113,6 +113,15 @@
 </head>
 <body>
 
+  <script>
+    (function(){var K='spw_kpi_ec61503b6a',P='jacobsecret';
+      if(localStorage.getItem(K)===P)return;
+      var t=prompt('Password required:');
+      if(t===P){localStorage.setItem(K,P);}
+      else{document.documentElement.innerHTML='<body style="margin:0;background:#071512;color:#CFEFE9;font-family:-apple-system,BlinkMacSystemFont,sans-serif;height:100vh;display:grid;place-items:center"><p>Access denied.</p></body>';}
+    })();
+  </script>
+
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
       <symbol id="ic-bolt" viewBox="0 0 24 24"><path class="ic" d="M13 2 4 14h6l-1 8 9-12h-6z"/></symbol>
