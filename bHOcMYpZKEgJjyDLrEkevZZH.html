@@ -283,6 +283,74 @@
     .callout .label .sub { font-size: 9px; }
   }
 
+  .ladder {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ladder-row {
+    display: grid;
+    grid-template-columns: 130px 1fr auto;
+    gap: 18px;
+    align-items: start;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+  }
+  .ladder-row.highlight { border-color: var(--brass); }
+  @media (max-width: 700px) {
+    .ladder-row { grid-template-columns: 1fr; }
+    .ladder-row .ltag { justify-self: start; }
+  }
+  .ladder-row .lcost {
+    font-family: 'IBM Plex Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    padding-top: 2px;
+  }
+  .ladder-row .ltitle {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    font-size: 15.5px;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+  .ladder-row .ldesc {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .ladder-row .ltag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+    background: var(--bg-sunk);
+    color: var(--ink-faint);
+    border: 1px solid var(--line);
+    height: fit-content;
+  }
+  .ladder-row.highlight .ltag {
+    background: var(--brass);
+    color: #241804;
+    border-color: var(--brass);
+  }
+  .ladder-note {
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--bg-sunk);
+    border-left: 3px solid var(--teal);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 4px 0 0;
+  }
+
   /* ---- equipment cards ---- */
   .cards {
     display: grid;
@@ -593,6 +661,47 @@
     </div>
   </div>
 
+  <hr class="div" />
+
+  <div class="section-label">04 — Going deeper</div>
+  <h2>Can Martin buy his way past VesselView?</h2>
+  <p class="subtitle" style="margin-bottom:20px;">Short version: the dealer tool is a dead end for an individual — but there's a real DIY middle tier.</p>
+  <div class="ladder">
+    <div class="ladder-row">
+      <div class="lcost">~&euro;249</div>
+      <div>
+        <div class="ltitle">SmartCraft Connect + NMEA2000 logger</div>
+        <p class="ldesc">e.g. Yacht Devices YDEG-04. Same data as VesselView (RPM, temps, fuel, alarms) on a chartplotter or PC, logged over time. Not deeper fault codes — SmartCraft is proprietary, generic loggers can't pull ECU trouble codes.</p>
+      </div>
+      <div class="ltag">More logging, same depth</div>
+    </div>
+    <div class="ladder-row highlight">
+      <div class="lcost">~$600&ndash;750</div>
+      <div>
+        <div class="ltitle">Rinda Diacom + laptop + CAN adapter</div>
+        <p class="ldesc">Real active/stored fault codes, live sensor data, engine hours, base timing, runtime logging. Confirmed coverage for 2018+ V8 Verado/FourStroke — matches Martin's engine. What most DIY owners on forums actually bought.</p>
+      </div>
+      <div class="ltag">DIY sweet spot</div>
+    </div>
+    <div class="ladder-row">
+      <div class="lcost">~$2,800&ndash;2,900</div>
+      <div>
+        <div class="ltitle">CDI Electronics M.E.D.S. (Mercury + G3)</div>
+        <p class="ldesc">Full dealer-grade reads: ECU data, complete fault/trouble codes, freeze-frame, run-time history. Sold openly on retail marine-parts sites, no dealer account needed — but pricey.</p>
+      </div>
+      <div class="ltag">If money's no object</div>
+    </div>
+    <div class="ladder-row">
+      <div class="lcost">~$1,500 + subscription</div>
+      <div>
+        <div class="ltitle">Mercury CDS G3 (official)</div>
+        <p class="ldesc">Officially dealer-accounts-only: license tied to a dealer ID + phone number, re-validates online every ~45 days (5-day grace, then it locks). Right-to-repair pressure is loosening this slowly, but there's no clean consumer checkout today. Grey-market license sellers exist — treat as unreliable.</p>
+      </div>
+      <div class="ltag">Not realistically available</div>
+    </div>
+  </div>
+  <p class="ladder-note"><b>Warranty:</b> passive, read-only tools (Diacom, M.E.D.S., NMEA2000 loggers) are very unlikely to void Mercury's warranty — the real risk is writing/reflashing the ECU, or a non-Mercury part causing a failure. Ask a dealer directly if Martin wants certainty.</p>
+
   <footer>
     <div class="section-label" style="margin-top:0">Sources</div>
     <div class="sources">
@@ -600,6 +709,12 @@
       <a href="https://www.mercurymarine.com/us/en/smartcraft/vessel-intelligence/smartcraft-connect" target="_blank" rel="noopener">mercurymarine.com — SmartCraft Connect</a>
       <a href="https://www.mercruiserparts.com/smartcraft-connect" target="_blank" rel="noopener">mercruiserparts.com — SmartCraft Connect MFD kits</a>
       <a href="https://support.garmin.com/en-US/?faq=8JFTtJielR8Yny4BXb83z9" target="_blank" rel="noopener">support.garmin.com — SmartCraft Connect Gateway</a>
+      <a href="https://service.mercurymarine.com/g3/support/system-requirements" target="_blank" rel="noopener">service.mercurymarine.com — CDS G3 licensing/system requirements</a>
+      <a href="https://forums.iboats.com/threads/diagnostic-software-for-mercury.682776/" target="_blank" rel="noopener">iboats forums — Diacom diagnostic software thread</a>
+      <a href="https://www.rinda.com/acro/DiacomMarine.pdf" target="_blank" rel="noopener">rinda.com — Diacom Marine product PDF</a>
+      <a href="https://engineroommarine.com/product/m-e-d-s-mercury-with-g3-diagnostic-software-531-0118m2/" target="_blank" rel="noopener">engineroommarine.com — CDI Electronics M.E.D.S. (Mercury + G3)</a>
+      <a href="https://www.yachtd.com/downloads/ydeg04.pdf" target="_blank" rel="noopener">yachtd.com — YDEG-04 Engine Gateway manual</a>
+      <a href="https://www.mercurymarine.com/us/en/service-and-support/warranty-coverage-and-product-protection/mercury-limited-warranty" target="_blank" rel="noopener">mercurymarine.com — Mercury Limited Warranty</a>
     </div>
     <p style="margin-top:14px">Compiled 2026-07-04 for Jacob &amp; Martin. Port location is typical for SmartCraft-equipped Mercury installs — confirm the exact spot on this boat, and re-check prices with a dealer before buying.</p>
   </footer>
