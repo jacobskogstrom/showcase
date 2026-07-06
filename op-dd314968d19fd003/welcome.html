@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Welcome — Operator</title>
+<link rel="stylesheet" href="operator.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">operator<span class="dot">.</span></a>
+    <span class="spacer"></span>
+    <a class="item" href="features.html">Use cases</a>
+    <a class="item" href="pricing.html">Pricing</a>
+  </div>
+</nav>
+
+<section class="center" style="min-height:70vh">
+  <div class="container">
+    <div class="eyebrow" id="eyebrow">Provisioning</div>
+    <h1 class="display" style="font-size:clamp(2rem,5vw,3.2rem)" id="headline">Building your operator…</h1>
+    <p class="subhead measure" style="margin-top:14px" id="subline">
+      This takes about a minute in the real product. Watch it come alive.
+    </p>
+
+    <div class="prov" id="prov">
+      <div class="p-step" data-t="Creating your private, isolated space"><span class="st">✓</span><span class="tx">Creating your private, isolated space</span></div>
+      <div class="p-step"><span class="st">✓</span><span class="tx">Encrypting your keys and credentials</span></div>
+      <div class="p-step"><span class="st">✓</span><span class="tx">Installing your chosen abilities</span></div>
+      <div class="p-step"><span class="st">✓</span><span class="tx">Connecting your chat channel</span></div>
+      <div class="p-step"><span class="st">✓</span><span class="tx">Waking your operator up</span></div>
+    </div>
+
+    <div id="doneBlock" style="display:none">
+      <div class="btn-row">
+        <a class="btn big" href="#" onclick="return false">Open chat with your operator</a>
+        <a class="btn big secondary" href="index.html">Back to start</a>
+      </div>
+      <p style="margin-top:20px;font-size:0.85em;color:var(--ink-2)" id="greeting"></p>
+      <p style="margin-top:8px;font-size:0.75em;color:var(--ink-3)">First task: your operator interviews you for 10 minutes to learn names, routines and boundaries. After that — just talk to it.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="container">
+    <div class="cols">
+      <div><b>operator.</b><br>Your first AI employee.</div>
+      <div>
+        <a href="features.html">Use cases</a> · <a href="pricing.html">Pricing</a> ·
+        <a href="configure.html">Build yours</a> · <a href="terms.html">Terms</a>
+      </div>
+    </div>
+    <div class="concept">Concept site · the provisioning shown mirrors the real flow: isolated space → encrypted keys → abilities → channel → hello.</div>
+  </div>
+</footer>
+
+<script src="operator.js"></script>
+<script>
+  const steps = [...document.querySelectorAll('.p-step')];
+  let i = 0;
+  function next() {
+    if (i > 0) { steps[i - 1].classList.remove('doing'); steps[i - 1].classList.add('done'); }
+    if (i < steps.length) { steps[i].classList.add('doing'); i++; setTimeout(next, 850); }
+    else {
+      document.getElementById('eyebrow').textContent = 'Ready';
+      document.getElementById('headline').textContent = 'Your operator is awake.';
+      document.getElementById('subline').style.display = 'none';
+      document.getElementById('doneBlock').style.display = 'block';
+      let name = '';
+      try { name = (JSON.parse(localStorage.getItem('operatorAccount')) || {}).name || ''; } catch (e) {}
+      document.getElementById('greeting').textContent =
+        '"Hi' + (name ? ' ' + name.split(' ')[0] : '') + ' — I\'m your operator. I\'ve read nothing yet and remember nothing yet. Shall we fix that? Tell me about your week."';
+    }
+  }
+  setTimeout(next, 500);
+</script>
+</body>
+</html>

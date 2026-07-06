@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Payment — Operator</title>
+<link rel="stylesheet" href="operator.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">operator<span class="dot">.</span></a>
+    <span class="spacer"></span>
+    <a class="item" href="features.html">Use cases</a>
+    <a class="item" href="pricing.html">Pricing</a>
+    <a class="item hide-m" href="configure.html">Build yours</a>
+  </div>
+</nav>
+
+<section class="tight" style="min-height:70vh">
+  <div class="container wide">
+
+    <div class="steps">
+      <div class="step-dot done"><span class="n">✓</span> Account</div>
+      <div class="step-sep"></div>
+      <div class="step-dot done"><span class="n">✓</span> Verify email</div>
+      <div class="step-sep"></div>
+      <div class="step-dot active"><span class="n">3</span> Payment</div>
+    </div>
+
+    <div class="checkout-layout">
+
+      <div class="pay-card">
+        <div class="center" style="text-align:left"><span class="concept-pill">Concept — no payment is taken</span></div>
+        <h2 class="headline" style="font-size:1.5rem;margin-bottom:22px">Payment details.</h2>
+        <div class="field">
+          <label for="card">Card number</label>
+          <input type="text" id="card" placeholder="1234 5678 9012 3456" inputmode="numeric">
+        </div>
+        <div class="card-row">
+          <div class="field">
+            <label for="exp">Expiry</label>
+            <input type="text" id="exp" placeholder="MM / YY" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="cvc">CVC</label>
+            <input type="text" id="cvc" placeholder="123" inputmode="numeric">
+          </div>
+        </div>
+        <div class="field">
+          <label for="holder">Name on card</label>
+          <input type="text" id="holder" placeholder="Anna Andersson">
+        </div>
+        <div class="checkline">
+          <input type="checkbox" id="recur" checked>
+          <label for="recur">Renew monthly until I cancel. Cancel any time by telling your operator "cancel my subscription" — it will handle its own offboarding.</label>
+        </div>
+        <button class="btn" style="width:100%" id="payBtn">Complete order</button>
+        <div class="form-note">In the real flow this is Stripe/Klarna. Here it simply provisions your concept operator.</div>
+      </div>
+
+      <aside class="order">
+        <h3>Order summary</h3>
+        <div class="sub" id="orderMode"></div>
+        <ul id="sumList"></ul>
+        <div class="total-row"><span>Per month</span><span id="sumTotal"></span></div>
+        <div class="hint">First month includes guided onboarding — your operator interviews <i>you</i> to learn names, preferences and boundaries.</div>
+        <div class="form-note"><a href="configure.html">← Change your mix</a></div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="container">
+    <div class="cols">
+      <div><b>operator.</b><br>Your first AI employee.</div>
+      <div>
+        <a href="features.html">Use cases</a> · <a href="pricing.html">Pricing</a> ·
+        <a href="configure.html">Build yours</a> · <a href="terms.html">Terms</a>
+      </div>
+    </div>
+    <div class="concept">Concept site · card fields are decorative — nothing is stored or charged.</div>
+  </div>
+</footer>
+
+<script src="operator.js"></script>
+<script>
+  const order = OP.getOrder() || { mode: 'plan', plan: 'starter' };
+  const modeEl = document.getElementById('orderMode');
+  const listEl = document.getElementById('sumList');
+  const totalEl = document.getElementById('sumTotal');
+
+  if (order.mode === 'plan') {
+    const plan = OP.PLANS[order.plan];
+    modeEl.textContent = plan.name + ' plan · monthly';
+    let rows = `<li><span class="nm">💬 Chat, memory, todos</span><span>included</span></li>`;
+    rows += plan.includes.map(id => {
+      const s = OP.scoop(id);
+      return `<li><span class="nm">${s.icon} ${s.name}</span><span>included</span></li>`;
+    }).join('');
+    if (order.plan === 'starter') rows += `<li><span class="nm">Add scoops later, any time</span><span></span></li>`;
+    listEl.innerHTML = rows;
+    totalEl.textContent = OP.kr(plan.price);
+  } else {
+    modeEl.textContent = 'Your custom mix · monthly';
+    let rows = `<li><span class="nm">💬 Chat, memory, todos</span><span>${OP.BASE_PRICE} kr</span></li>`;
+    rows += (order.scoops || []).map(id => {
+      const s = OP.scoop(id);
+      return `<li><span class="nm">${s.icon} ${s.name}</span><span>${s.price} kr</span></li>`;
+    }).join('');
+    listEl.innerHTML = rows;
+    totalEl.textContent = OP.kr(OP.customTotal(order.scoops || []));
+  }
+
+  document.getElementById('payBtn').addEventListener('click', () => { location.href = 'welcome.html'; });
+</script>
+</body>
+</html>

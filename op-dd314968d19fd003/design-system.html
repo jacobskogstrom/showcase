@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design system — Operator</title>
+<link rel="stylesheet" href="operator.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">operator<span class="dot">.</span></a>
+    <span class="spacer"></span>
+    <a class="item" href="features.html">Use cases</a>
+    <a class="item" href="pricing.html">Pricing</a>
+    <a class="item hide-m" href="configure.html">Build yours</a>
+    <a class="cta" href="configure.html">Get started</a>
+  </div>
+</nav>
+
+<section class="tight">
+  <div class="container">
+    <div class="eyebrow">Design system</div>
+    <h1 class="headline">One system, seven pages.</h1>
+    <p class="subhead" style="margin-top:10px;max-width:640px">Tokens and components behind the Operator concept site. Everything below is live CSS from <code>operator.css</code> — feed this page to Claude Design as the visual contract.</p>
+
+    <div class="ds-block" style="margin-top:44px">
+      <h3>Principles</h3>
+      <p style="color:var(--ink-2);font-size:0.92em;line-height:1.7">
+        Apple-grade restraint: one accent color, generous whitespace, hairline dividers, big confident type.
+        Cards carry depth with soft double shadows, never borders. Dark bands are reserved for the two moments of drama
+        (the assistant-vs-employee duel, the final CTA). Motion is one pattern only: fade-up on scroll.
+        Price is always honest — the configurator tells you when a plan beats your mix.
+      </p>
+    </div>
+
+    <div class="ds-block">
+      <h3>Color tokens</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:#1d1d1f"></div><div class="nm">--ink</div><div class="hex">#1d1d1f</div></div>
+        <div class="swatch"><div class="chip" style="background:#6e6e73"></div><div class="nm">--ink-2</div><div class="hex">#6e6e73</div></div>
+        <div class="swatch"><div class="chip" style="background:#86868b"></div><div class="nm">--ink-3</div><div class="hex">#86868b</div></div>
+        <div class="swatch"><div class="chip" style="background:#fbfbfd"></div><div class="nm">--bg-page</div><div class="hex">#fbfbfd</div></div>
+        <div class="swatch"><div class="chip" style="background:#f5f5f7"></div><div class="nm">--bg-soft</div><div class="hex">#f5f5f7</div></div>
+        <div class="swatch"><div class="chip" style="background:#d2d2d7"></div><div class="nm">--hairline</div><div class="hex">#d2d2d7</div></div>
+        <div class="swatch"><div class="chip" style="background:#0071e3"></div><div class="nm">--blue</div><div class="hex">#0071e3</div></div>
+        <div class="swatch"><div class="chip" style="background:#1d9d5f"></div><div class="nm">--green</div><div class="hex">#1d9d5f</div></div>
+        <div class="swatch"><div class="chip" style="background:#000"></div><div class="nm">--dark-bg</div><div class="hex">#000000</div></div>
+      </div>
+    </div>
+
+    <div class="ds-block">
+      <h3>Type scale</h3>
+      <div class="display" style="font-size:2.6rem">Display — hero statements</div>
+      <div class="headline" style="font-size:1.9rem;margin-top:10px">Headline — section titles</div>
+      <p class="subhead" style="margin-top:10px">Subhead — supporting voice, always --ink-2</p>
+      <div class="eyebrow" style="margin-top:14px">Eyebrow — section labels</div>
+      <p style="font-size:0.92em;color:var(--ink-2);margin-top:8px">Body — 17px base, 1.47 line height, system SF/Segoe stack.</p>
+    </div>
+
+    <div class="ds-block">
+      <h3>Buttons</h3>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+        <a class="btn" href="#" onclick="return false">Primary</a>
+        <a class="btn secondary" href="#" onclick="return false">Secondary</a>
+        <a class="btn small" href="#" onclick="return false">Small</a>
+        <a class="btn big" href="#" onclick="return false">Big CTA</a>
+        <button class="btn" disabled>Disabled</button>
+      </div>
+      <p style="font-size:0.8em;color:var(--ink-3);margin-top:14px">Pill radius (980px), single blue, hover darkens. Secondary = outline, never gray.</p>
+    </div>
+
+    <div class="ds-block">
+      <h3>Cards</h3>
+      <div class="tile-grid">
+        <div class="tile"><span class="icon">💬</span><h3>Feature tile</h3><p>Soft double shadow, 18px radius, icon–title–body–tag rhythm.</p><span class="tag">tag chip</span></div>
+        <div class="scoop on" style="cursor:default"><span class="tick">✓</span><span class="icon">🌅</span><h4>Scoop (selected)</h4><p>2px blue border when on, tick fills.</p><div class="price">+ 49 kr/mo</div></div>
+        <div class="scoop" style="cursor:default"><span class="tick">✓</span><span class="icon">📡</span><h4>Scoop (off)</h4><p>Transparent border reserves layout space.</p><div class="price">+ 69 kr/mo</div></div>
+      </div>
+    </div>
+
+    <div class="ds-block">
+      <h3>Form elements</h3>
+      <div style="max-width:380px">
+        <div class="field"><label>Text field</label><input type="text" placeholder="Placeholder"></div>
+        <div class="checkline"><input type="checkbox" checked id="dsc"><label for="dsc">Checkline — terms, confirmations</label></div>
+        <div class="code-row" style="justify-content:flex-start"><input maxlength="1" value="1"><input maxlength="1" value="2"><input maxlength="1"></div>
+      </div>
+    </div>
+
+    <div class="ds-block">
+      <h3>Badges & steps</h3>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px">
+        <span class="concept-pill">Concept pill</span>
+        <span class="tag">tag chip</span>
+      </div>
+      <div class="steps" style="justify-content:flex-start">
+        <div class="step-dot done"><span class="n">✓</span> Done</div>
+        <div class="step-sep"></div>
+        <div class="step-dot active"><span class="n">2</span> Active</div>
+        <div class="step-sep"></div>
+        <div class="step-dot"><span class="n">3</span> Waiting</div>
+      </div>
+    </div>
+
+    <div class="ds-block">
+      <h3>Page map — how the offering fits together</h3>
+      <p style="color:var(--ink-2);font-size:0.9em;line-height:1.8">
+        <b>index</b> (promise → proof → privacy → CTA) →
+        <b>features</b> (2 included + 10 scoops + real conversations) →
+        <b>pricing</b> (3 tiers + Dropbox-style comparison) →
+        <b>configure</b> (scoop picker, live total, best-deal hint) →
+        <b>signup</b> (account → email code → terms accepted) →
+        <b>checkout</b> (order summary + mock payment) →
+        <b>welcome</b> (provisioning theater → first hello).<br>
+        Every page shares the same nav, footer, tokens — and the order object travels via <code>localStorage</code>.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<footer class="site">
+  <div class="container">
+    <div class="cols">
+      <div><b>operator.</b><br>Your first AI employee.</div>
+      <div>
+        <a href="features.html">Use cases</a> · <a href="pricing.html">Pricing</a> ·
+        <a href="configure.html">Build yours</a> · <a href="terms.html">Terms</a>
+      </div>
+    </div>
+    <div class="concept">Concept site · design system page doubles as the Claude Design visual contract.</div>
+  </div>
+</footer>
+
+</body>
+</html>

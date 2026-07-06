@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pricing — Operator</title>
+<link rel="stylesheet" href="operator.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">operator<span class="dot">.</span></a>
+    <span class="spacer"></span>
+    <a class="item" href="features.html">Use cases</a>
+    <a class="item" href="pricing.html">Pricing</a>
+    <a class="item hide-m" href="configure.html">Build yours</a>
+    <a class="item hide-m" href="design-system.html">Design</a>
+    <a class="cta" href="configure.html">Get started</a>
+  </div>
+</nav>
+
+<section class="center tight">
+  <div class="container">
+    <div class="eyebrow">Pricing</div>
+    <h1 class="display" style="font-size:clamp(2.2rem,5.5vw,3.6rem)">Three plans.<br>Or build your own.</h1>
+    <p class="subhead measure" style="margin-top:18px">
+      Every plan includes chat, permanent memory and todos.
+      Monthly, no binding — your operator's memory is yours to export any day.
+    </p>
+  </div>
+</section>
+
+<!-- TIER CARDS -->
+<section class="tight">
+  <div class="container wide">
+    <div class="tiers">
+      <div class="tier reveal">
+        <h3>Starter</h3>
+        <div class="for">A second brain in your pocket</div>
+        <div class="price">195 <span class="per">kr/mo</span></div>
+        <ul>
+          <li><span class="check">✓</span>Chat & permanent memory</li>
+          <li><span class="check">✓</span>Todos & notes</li>
+          <li><span class="check">✓</span>Web answers with your context</li>
+          <li><span class="check">✓</span>Add any scoop à la carte</li>
+        </ul>
+        <a class="btn secondary" href="signup.html" onclick="OP.setOrder({mode:'plan',plan:'starter'})">Choose Starter</a>
+      </div>
+      <div class="tier popular reveal">
+        <div class="pop-badge">Most popular</div>
+        <h3>Assistant</h3>
+        <div class="for">Your day, handled</div>
+        <div class="price">395 <span class="per">kr/mo</span></div>
+        <ul>
+          <li><span class="check">✓</span>Everything in Starter</li>
+          <li><span class="check">✓</span>Morning brief</li>
+          <li><span class="check">✓</span>Mail digest, twice daily</li>
+          <li><span class="check">✓</span>Calendar concierge</li>
+          <li><span class="check">✓</span>Contact memory</li>
+        </ul>
+        <a class="btn" href="signup.html" onclick="OP.setOrder({mode:'plan',plan:'assistant'})">Choose Assistant</a>
+      </div>
+      <div class="tier reveal">
+        <h3>Operator</h3>
+        <div class="for">The full employee</div>
+        <div class="price">695 <span class="per">kr/mo</span></div>
+        <ul>
+          <li><span class="check">✓</span>Everything in Assistant</li>
+          <li><span class="check">✓</span>Email that sends</li>
+          <li><span class="check">✓</span>Market scanner & content factory</li>
+          <li><span class="check">✓</span>Visuals, voice, family</li>
+          <li><span class="check">✓</span>Priority setup & support</li>
+        </ul>
+        <a class="btn secondary" href="signup.html" onclick="OP.setOrder({mode:'plan',plan:'operator'})">Choose Operator</a>
+      </div>
+    </div>
+    <p class="center" style="margin-top:26px;font-size:0.85em;color:var(--ink-2)">
+      Want just Starter plus one or two abilities? <a href="configure.html">Build your own mix</a> — we'll flag when a plan is cheaper.
+    </p>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section style="background:var(--bg-soft)">
+  <div class="container wide">
+    <h2 class="headline center" style="margin-bottom:44px">Compare plans in detail.</h2>
+    <div class="cmp-wrap">
+      <table class="cmp">
+        <thead>
+          <tr>
+            <th></th>
+            <th><span class="plan-name">Starter</span><span class="plan-price">195 kr/mo</span><a class="btn small secondary" href="signup.html" onclick="OP.setOrder({mode:'plan',plan:'starter'})">Choose</a></th>
+            <th class="popular-col"><span class="plan-name">Assistant</span><span class="plan-price">395 kr/mo</span><a class="btn small" href="signup.html" onclick="OP.setOrder({mode:'plan',plan:'assistant'})">Choose</a></th>
+            <th><span class="plan-name">Operator</span><span class="plan-price">695 kr/mo</span><a class="btn small secondary" href="signup.html" onclick="OP.setOrder({mode:'plan',plan:'operator'})">Choose</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="group"><td colspan="4">Core</td></tr>
+          <tr><td>Chat with permanent memory</td><td class="yes">✓</td><td class="popular-col yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Todos & notes by chat</td><td class="yes">✓</td><td class="popular-col yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Readable, exportable memory</td><td class="yes">✓</td><td class="popular-col yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Languages</td><td class="lim">SV + EN</td><td class="popular-col lim">SV + EN</td><td class="lim">SV + EN</td></tr>
+
+          <tr class="group"><td colspan="4">Your day</td></tr>
+          <tr><td>Morning brief before you wake</td><td class="no">—</td><td class="popular-col yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Mail digest (12:00 & 19:00)</td><td class="no">—</td><td class="popular-col yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Calendar: book, move, invite</td><td class="no">—</td><td class="popular-col yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Contact memory & follow-ups</td><td class="no">—</td><td class="popular-col yes">✓</td><td class="yes">✓</td></tr>
+
+          <tr class="group"><td colspan="4">Real hands</td></tr>
+          <tr><td>Email drafted <i>and sent</i> for you</td><td class="no">—</td><td class="popular-col no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Market & listing scanner</td><td class="no">—</td><td class="popular-col no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Overnight content factory</td><td class="no">—</td><td class="popular-col no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Visuals on demand</td><td class="no">—</td><td class="popular-col no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Voice conversations</td><td class="no">—</td><td class="popular-col no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Family & household pack</td><td class="no">—</td><td class="popular-col no">—</td><td class="yes">✓</td></tr>
+          <tr><td>À-la-carte scoops available</td><td class="yes">✓</td><td class="popular-col yes">✓</td><td class="lim">all included</td></tr>
+
+          <tr class="group"><td colspan="4">Privacy & service</td></tr>
+          <tr><td>Isolated private space</td><td class="yes">✓</td><td class="popular-col yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Keys encrypted at rest</td><td class="yes">✓</td><td class="popular-col yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Outbound actions previewed first</td><td class="yes">✓</td><td class="popular-col yes">✓</td><td class="lim">until you loosen it</td></tr>
+          <tr><td>Setup & onboarding</td><td class="lim">self-serve</td><td class="popular-col lim">guided</td><td class="lim">priority, personal</td></tr>
+          <tr><td>Cancel / export memory</td><td class="yes">✓</td><td class="popular-col yes">✓</td><td class="yes">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="center" style="margin-top:22px;font-size:0.78em;color:var(--ink-3)">Concept pricing for iteration — not a live offer.</p>
+  </div>
+</section>
+
+<!-- FAQ-ish CTA -->
+<section class="center">
+  <div class="container">
+    <h2 class="headline">Not sure which one?</h2>
+    <p class="subhead measure" style="margin-top:14px">Start scooping — pick the abilities you want and we'll point at the cheapest way to get them.</p>
+    <div class="btn-row"><a class="btn big" href="configure.html">Build your operator</a></div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="container">
+    <div class="cols">
+      <div><b>operator.</b><br>Your first AI employee.</div>
+      <div>
+        <a href="features.html">Use cases</a> · <a href="pricing.html">Pricing</a> ·
+        <a href="configure.html">Build yours</a> · <a href="terms.html">Terms</a> ·
+        <a href="design-system.html">Design system</a>
+      </div>
+    </div>
+    <div class="concept">Concept site · prices and copy are placeholders for iteration.</div>
+  </div>
+</footer>
+
+<script src="operator.js"></script>
+</body>
+</html>

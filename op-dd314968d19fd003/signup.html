@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create account — Operator</title>
+<link rel="stylesheet" href="operator.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">operator<span class="dot">.</span></a>
+    <span class="spacer"></span>
+    <a class="item" href="features.html">Use cases</a>
+    <a class="item" href="pricing.html">Pricing</a>
+    <a class="item hide-m" href="configure.html">Build yours</a>
+    <a class="cta" href="configure.html">Get started</a>
+  </div>
+</nav>
+
+<section class="tight" style="min-height:70vh">
+  <div class="container">
+
+    <div class="steps">
+      <div class="step-dot active" id="dot1"><span class="n">1</span> Account</div>
+      <div class="step-sep"></div>
+      <div class="step-dot" id="dot2"><span class="n">2</span> Verify email</div>
+      <div class="step-sep"></div>
+      <div class="step-dot"><span class="n">3</span> Payment</div>
+    </div>
+
+    <!-- STEP 1: ACCOUNT -->
+    <div class="flow-card" id="stepAccount">
+      <div class="center"><span class="concept-pill">Concept — no real account is created</span></div>
+      <h2 class="headline" style="font-size:1.6rem;margin-bottom:6px">Create your account.</h2>
+      <p style="color:var(--ink-2);font-size:0.9em;margin-bottom:26px">Your operator will introduce itself here once it's provisioned.</p>
+
+      <div class="field">
+        <label for="name">Your name</label>
+        <input type="text" id="name" placeholder="Anna Andersson" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="anna@example.se" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="pw">Password</label>
+        <input type="password" id="pw" placeholder="At least 8 characters" autocomplete="new-password">
+      </div>
+
+      <div class="checkline">
+        <input type="checkbox" id="terms">
+        <label for="terms">I accept the <a href="terms.html" target="_blank">Terms of Service</a> and the <a href="terms.html#privacy" target="_blank">Privacy Commitment</a> — including that my operator acts on my behalf only within the abilities I enable.</label>
+      </div>
+
+      <button class="btn" style="width:100%" id="toVerify">Continue</button>
+      <div class="form-note" id="accountErr" style="color:#c0392b;display:none"></div>
+      <div class="form-note">Already have an operator? <a href="#">Sign in</a></div>
+    </div>
+
+    <!-- STEP 2: VERIFY -->
+    <div class="flow-card" id="stepVerify" style="display:none">
+      <h2 class="headline" style="font-size:1.6rem;margin-bottom:6px">Check your inbox.</h2>
+      <p style="color:var(--ink-2);font-size:0.9em">We sent a 6-digit code to <b id="emailEcho"></b>.</p>
+
+      <div class="code-row" id="codeRow">
+        <input maxlength="1" inputmode="numeric" aria-label="digit 1">
+        <input maxlength="1" inputmode="numeric" aria-label="digit 2">
+        <input maxlength="1" inputmode="numeric" aria-label="digit 3">
+        <input maxlength="1" inputmode="numeric" aria-label="digit 4">
+        <input maxlength="1" inputmode="numeric" aria-label="digit 5">
+        <input maxlength="1" inputmode="numeric" aria-label="digit 6">
+      </div>
+
+      <button class="btn" style="width:100%" id="verifyBtn">Verify</button>
+      <div class="form-note" id="verifyErr" style="color:#c0392b;display:none">Enter all six digits.</div>
+      <div class="form-note">No code? <a href="#" id="resend">Resend</a> · Concept mode: any 6 digits work.</div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="site">
+  <div class="container">
+    <div class="cols">
+      <div><b>operator.</b><br>Your first AI employee.</div>
+      <div>
+        <a href="features.html">Use cases</a> · <a href="pricing.html">Pricing</a> ·
+        <a href="configure.html">Build yours</a> · <a href="terms.html">Terms</a>
+      </div>
+    </div>
+    <div class="concept">Concept site · no data leaves this page — the "account" lives in your browser only.</div>
+  </div>
+</footer>
+
+<script src="operator.js"></script>
+<script>
+  // ensure an order exists; default to Starter if user landed here directly
+  if (!OP.getOrder()) OP.setOrder({ mode: 'plan', plan: 'starter' });
+
+  const stepAccount = document.getElementById('stepAccount');
+  const stepVerify = document.getElementById('stepVerify');
+  const err = document.getElementById('accountErr');
+
+  document.getElementById('toVerify').addEventListener('click', () => {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const pw = document.getElementById('pw').value;
+    const terms = document.getElementById('terms').checked;
+    let msg = '';
+    if (!name) msg = 'Please enter your name.';
+    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) msg = 'That email doesn\'t look right.';
+    else if (pw.length < 8) msg = 'Password needs at least 8 characters.';
+    else if (!terms) msg = 'You need to accept the terms to continue.';
+    if (msg) { err.textContent = msg; err.style.display = 'block'; return; }
+
+    localStorage.setItem('operatorAccount', JSON.stringify({ name, email, accepted: new Date().toISOString() }));
+    document.getElementById('emailEcho').textContent = email;
+    stepAccount.style.display = 'none';
+    stepVerify.style.display = 'block';
+    document.getElementById('dot1').classList.replace('active', 'done');
+    document.getElementById('dot2').classList.add('active');
+    document.querySelector('#codeRow input').focus();
+  });
+
+  // code inputs: auto-advance + backspace
+  const inputs = [...document.querySelectorAll('#codeRow input')];
+  inputs.forEach((inp, i) => {
+    inp.addEventListener('input', () => {
+      inp.value = inp.value.replace(/\D/g, '');
+      if (inp.value && i < 5) inputs[i + 1].focus();
+    });
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Backspace' && !inp.value && i > 0) inputs[i - 1].focus();
+    });
+    inp.addEventListener('paste', e => {
+      const digits = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6);
+      if (digits.length) {
+        e.preventDefault();
+        digits.split('').forEach((d, j) => { if (inputs[j]) inputs[j].value = d; });
+        inputs[Math.min(digits.length, 5)].focus();
+      }
+    });
+  });
+
+  document.getElementById('verifyBtn').addEventListener('click', () => {
+    const code = inputs.map(i => i.value).join('');
+    if (code.length < 6) { document.getElementById('verifyErr').style.display = 'block'; return; }
+    location.href = 'checkout.html';
+  });
+  document.getElementById('resend').addEventListener('click', e => { e.preventDefault(); alert('Concept mode — pretend a new code just arrived.'); });
+</script>
+</body>
+</html>

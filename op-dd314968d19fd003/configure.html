@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build your operator — Operator</title>
+<link rel="stylesheet" href="operator.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">operator<span class="dot">.</span></a>
+    <span class="spacer"></span>
+    <a class="item" href="features.html">Use cases</a>
+    <a class="item" href="pricing.html">Pricing</a>
+    <a class="item hide-m" href="configure.html">Build yours</a>
+    <a class="item hide-m" href="design-system.html">Design</a>
+    <a class="cta" href="signup.html">Get started</a>
+  </div>
+</nav>
+
+<section class="center tight" style="padding-bottom:40px">
+  <div class="container">
+    <div class="eyebrow">Build your operator</div>
+    <h1 class="display" style="font-size:clamp(2rem,5vw,3.2rem)">Pick your scoops.</h1>
+    <p class="subhead measure" style="margin-top:14px">
+      Chat, memory and todos are always in the cone.
+      Tap the abilities you want — your price updates live, and we'll tell you if a plan beats your mix.
+    </p>
+  </div>
+</section>
+
+<section class="tight" style="padding-top:0">
+  <div class="container wide">
+    <div class="config-layout">
+
+      <div>
+        <div class="scoop-grid" id="baseGrid" style="margin-bottom:14px">
+          <div class="scoop locked on" title="Included in every operator">
+            <span class="tick">✓</span>
+            <span class="icon">💬</span>
+            <h4>Chat & memory</h4>
+            <p>Message it like a person. It remembers everything, permanently.</p>
+            <div class="price"><span class="incl">Always included</span></div>
+          </div>
+          <div class="scoop locked on" title="Included in every operator">
+            <span class="tick">✓</span>
+            <span class="icon">✅</span>
+            <h4>Todos & notes</h4>
+            <p>Capture and organize from your pocket, zero apps.</p>
+            <div class="price"><span class="incl">Always included</span></div>
+          </div>
+        </div>
+        <div class="scoop-grid" id="scoopGrid"><!-- filled by JS --></div>
+      </div>
+
+      <aside class="order" id="orderBox">
+        <h3>Your operator</h3>
+        <div class="sub">Monthly, cancel any time</div>
+        <ul id="orderList"></ul>
+        <div class="total-row"><span>Total</span><span id="orderTotal"></span></div>
+        <div class="hint" id="dealHint" style="display:none"></div>
+        <a class="btn" id="continueBtn" href="signup.html">Continue</a>
+        <div class="form-note">Next: create your account · nothing is charged in this concept</div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="container">
+    <div class="cols">
+      <div><b>operator.</b><br>Your first AI employee.</div>
+      <div>
+        <a href="features.html">Use cases</a> · <a href="pricing.html">Pricing</a> ·
+        <a href="configure.html">Build yours</a> · <a href="terms.html">Terms</a> ·
+        <a href="design-system.html">Design system</a>
+      </div>
+    </div>
+    <div class="concept">Concept site · prices and copy are placeholders for iteration.</div>
+  </div>
+</footer>
+
+<script src="operator.js"></script>
+<script>
+  const grid = document.getElementById('scoopGrid');
+  const list = document.getElementById('orderList');
+  const totalEl = document.getElementById('orderTotal');
+  const hint = document.getElementById('dealHint');
+  const continueBtn = document.getElementById('continueBtn');
+
+  // restore previous custom selection if any
+  const prev = OP.getOrder();
+  let selected = new Set(prev && prev.mode === 'custom' ? prev.scoops : []);
+
+  grid.innerHTML = OP.SCOOPS.map(s => `
+    <div class="scoop" data-id="${s.id}" role="button" tabindex="0" aria-pressed="false">
+      <span class="tick">✓</span>
+      <span class="icon">${s.icon}</span>
+      <h4>${s.name}</h4>
+      <p>${s.desc}</p>
+      <div class="price">+ ${s.price} kr/mo</div>
+    </div>`).join('');
+
+  function toggle(el) {
+    const id = el.dataset.id;
+    if (selected.has(id)) selected.delete(id); else selected.add(id);
+    el.classList.toggle('on', selected.has(id));
+    el.setAttribute('aria-pressed', selected.has(id));
+    render();
+  }
+  grid.querySelectorAll('.scoop').forEach(el => {
+    el.addEventListener('click', () => toggle(el));
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(el); } });
+    if (selected.has(el.dataset.id)) { el.classList.add('on'); el.setAttribute('aria-pressed', 'true'); }
+  });
+
+  function render() {
+    const ids = [...selected];
+    let rows = `<li><span class="nm">💬 Chat, memory, todos</span><span>${OP.BASE_PRICE} kr</span></li>`;
+    rows += ids.map(id => {
+      const s = OP.scoop(id);
+      return `<li><span class="nm">${s.icon} ${s.name}</span><span>${s.price} kr</span></li>`;
+    }).join('');
+    list.innerHTML = rows;
+
+    const { alc, best } = OP.bestDeal(ids);
+    totalEl.textContent = OP.kr(alc);
+
+    if (best.kind !== 'custom' && best.price < alc) {
+      hint.style.display = 'block';
+      hint.innerHTML = `<b>Better deal:</b> the <b>${best.label}</b> covers everything you picked` +
+        (best.kind === 'operator' ? ' — and every other scoop —' : '') +
+        ` for <b>${OP.kr(best.price)}</b>. You save ${alc - best.price} kr/mo. ` +
+        `<a href="#" id="takeDeal">Switch to ${best.label}</a>`;
+      document.getElementById('takeDeal').onclick = (e) => {
+        e.preventDefault();
+        OP.setOrder({ mode: 'plan', plan: best.kind });
+        location.href = 'signup.html';
+      };
+    } else {
+      hint.style.display = 'none';
+    }
+
+    OP.setOrder({ mode: 'custom', scoops: ids });
+  }
+
+  continueBtn.addEventListener('click', () => OP.setOrder({ mode: 'custom', scoops: [...selected] }));
+  render();
+</script>
+</body>
+</html>

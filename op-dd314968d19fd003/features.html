@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Use cases — Operator</title>
+<link rel="stylesheet" href="operator.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">operator<span class="dot">.</span></a>
+    <span class="spacer"></span>
+    <a class="item" href="features.html">Use cases</a>
+    <a class="item" href="pricing.html">Pricing</a>
+    <a class="item hide-m" href="configure.html">Build yours</a>
+    <a class="item hide-m" href="design-system.html">Design</a>
+    <a class="cta" href="configure.html">Get started</a>
+  </div>
+</nav>
+
+<section class="center tight">
+  <div class="container">
+    <div class="eyebrow">Use cases</div>
+    <h1 class="display" style="font-size:clamp(2.2rem,5.5vw,3.6rem)">Ten abilities.<br>One operator.</h1>
+    <p class="subhead measure" style="margin-top:18px">
+      Every ability below is a scoop you can add to your operator.
+      Two are always included — the rest are yours to pick.
+    </p>
+  </div>
+</section>
+
+<!-- ALWAYS INCLUDED -->
+<section class="tight" style="background:var(--bg-soft)">
+  <div class="container wide">
+    <div class="eyebrow center">Always included</div>
+    <div class="tile-grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
+      <div class="tile reveal">
+        <span class="icon">💬</span>
+        <h3>Chat & memory</h3>
+        <p>Message your operator like a person. It remembers every conversation, every preference, every promise — permanently, in plain files you can read. Ask "what did we decide about the summer house?" six months later and get the answer.</p>
+        <span class="tag">Included in every plan</span>
+      </div>
+      <div class="tile reveal">
+        <span class="icon">✅</span>
+        <h3>Todos & notes</h3>
+        <p>"Add todo: renew passport." "What's on my list?" "Take a note about the boat engine." Captured in seconds from your pocket, organized without you ever opening an app.</p>
+        <span class="tag">Included in every plan</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE TEN SCOOPS -->
+<section>
+  <div class="container wide">
+    <div class="eyebrow center">The scoops</div>
+    <h2 class="headline center" style="margin-bottom:54px">Add what you'll actually use.</h2>
+    <div class="tile-grid" id="scoopTiles"><!-- filled by JS --></div>
+    <div class="btn-row"><a class="btn big" href="configure.html">Build your mix</a></div>
+  </div>
+</section>
+
+<!-- HOW IT FEELS (dark) -->
+<section class="dark">
+  <div class="container">
+    <div class="center">
+      <div class="eyebrow">Real conversations</div>
+      <h2 class="headline">You just… ask.</h2>
+    </div>
+    <div class="duel" style="margin-top:44px">
+      <div class="side them reveal">
+        <h3>You say</h3>
+        <div class="who">any time, from anywhere</div>
+        <ul>
+          <li><span class="mark">→</span>"Lunch with Anna Tuesday, book something near Triangeln"</li>
+          <li><span class="mark">→</span>"Did any invoices come in this week?"</li>
+          <li><span class="mark">→</span>"Draft a thank-you to the Volvo team, warm but short"</li>
+          <li><span class="mark">→</span>"Watch for 4-room apartments in Lomma under 4.5"</li>
+          <li><span class="mark">→</span>"Where's the family right now?"</li>
+        </ul>
+      </div>
+      <div class="side us reveal">
+        <h3>Your operator does</h3>
+        <div class="who">and reports back in seconds</div>
+        <ul>
+          <li><span class="mark">✓</span>Checks both calendars, books 12:00 at a spot you liked before, sends the invite</li>
+          <li><span class="mark">✓</span>Two invoices found — amounts, due dates, and which account they usually go from</li>
+          <li><span class="mark">✓</span>Draft ready in your voice — one tap to send, signed by your assistant</li>
+          <li><span class="mark">✓</span>Scans daily, pings you only when a real match appears</li>
+          <li><span class="mark">✓</span>One line per person, live locations on your private map</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<section class="tight center">
+  <div class="container">
+    <p class="subhead measure">Every action is logged and readable. Anything that leaves your world — an email, an invite, a post — is shown to you first until you say otherwise.</p>
+    <div class="btn-row">
+      <a class="btn" href="configure.html">Build your operator</a>
+      <a class="btn secondary" href="pricing.html">Compare plans</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="container">
+    <div class="cols">
+      <div><b>operator.</b><br>Your first AI employee.</div>
+      <div>
+        <a href="features.html">Use cases</a> · <a href="pricing.html">Pricing</a> ·
+        <a href="configure.html">Build yours</a> · <a href="terms.html">Terms</a> ·
+        <a href="design-system.html">Design system</a>
+      </div>
+    </div>
+    <div class="concept">Concept site · prices and copy are placeholders for iteration.</div>
+  </div>
+</footer>
+
+<script src="operator.js"></script>
+<script>
+  const grid = document.getElementById('scoopTiles');
+  grid.innerHTML = OP.SCOOPS.map(s => `
+    <div class="tile reveal">
+      <span class="icon">${s.icon}</span>
+      <h3>${s.name}</h3>
+      <p>${s.desc}</p>
+      <span class="tag">+ ${s.price} kr/mo</span>
+    </div>`).join('');
+  document.querySelectorAll('#scoopTiles .reveal').forEach(el => el.classList.add('in'));
+</script>
+</body>
+</html>
