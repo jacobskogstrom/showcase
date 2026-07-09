@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chat with your operator</title>
+<link rel="stylesheet" href="operator.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">operator<span class="dot">.</span></a>
+    <span class="spacer"></span>
+    <a class="item" href="features.html">Use cases</a>
+    <a class="item" href="pricing.html">Pricing</a>
+  </div>
+</nav>
+
+<section class="tight center">
+  <div class="container">
+    <div class="eyebrow">Your operator</div>
+    <h1 class="headline" style="font-size:clamp(1.6rem,4vw,2.2rem)" id="pageTitle">Live in the browser</h1>
+
+    <div class="chat-shell">
+      <div class="chat-head">
+        <div class="chat-avatar">O</div>
+        <div>
+          <div class="nm" id="opName">Your operator</div>
+          <div class="status"><span class="dot2"></span>Online</div>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-input-row">
+        <input type="text" id="chatInput" placeholder="Message your operator…" autocomplete="off">
+        <button class="btn small" id="sendBtn">Send</button>
+      </div>
+    </div>
+
+    <div class="tg-banner">
+      <span class="ic">💬</span>
+      <p><b>Prefer Telegram?</b> Same operator, same memory — just message it from the app you already have open all day.</p>
+      <a class="btn small secondary" href="connect-telegram.html">Get the Telegram app</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="container">
+    <div class="cols">
+      <div><b>operator.</b><br>Your first AI employee.</div>
+      <div>
+        <a href="features.html">Use cases</a> · <a href="pricing.html">Pricing</a> ·
+        <a href="configure.html">Build yours</a> · <a href="terms.html">Terms</a>
+      </div>
+    </div>
+    <div class="concept">Concept site · this chat is a scripted demo — the real operator runs on your actual mail, calendar and memory.</div>
+  </div>
+</footer>
+
+<script src="operator.js"></script>
+<script>
+  let name = '';
+  try { name = (JSON.parse(localStorage.getItem('operatorAccount')) || {}).name || ''; } catch (e) {}
+  const first = name ? name.split(' ')[0] : '';
+  if (first) document.getElementById('opName').textContent = first + '’s operator';
+
+  const body = document.getElementById('chatBody');
+  function addMsg(who, text) {
+    const d = document.createElement('div');
+    d.className = 'msg ' + who;
+    d.textContent = text;
+    body.appendChild(d);
+    body.scrollTop = body.scrollHeight;
+    return d;
+  }
+  function addTyping() {
+    const d = document.createElement('div');
+    d.className = 'msg typing';
+    d.innerHTML = '<span></span><span></span><span></span>';
+    body.appendChild(d);
+    body.scrollTop = body.scrollHeight;
+    return d;
+  }
+
+  const opener = 'Hi' + (first ? ' ' + first : '') + ' — I’m your operator. I’ve read nothing yet and remember nothing yet. Shall we fix that? Tell me about your week.';
+  setTimeout(function () { addMsg('op', opener); }, 400);
+
+  const canned = [
+    'Got it — logged. I’ll remember that from now on.',
+    'Noted. Want me to set a reminder for that too?',
+    'Done. I’ll bring this up again if it becomes relevant.',
+    'Understood — filed under things you care about.'
+  ];
+  let i = 0;
+  const input = document.getElementById('chatInput');
+  const sendBtn = document.getElementById('sendBtn');
+  function send() {
+    const v = input.value.trim();
+    if (!v) return;
+    addMsg('me', v);
+    input.value = '';
+    const t = addTyping();
+    setTimeout(function () {
+      t.remove();
+      addMsg('op', canned[i % canned.length]);
+      i++;
+    }, 900 + Math.random() * 500);
+  }
+  sendBtn.addEventListener('click', send);
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') send(); });
+</script>
+</body>
+</html>

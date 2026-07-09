@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Operator — Data &amp; Storage Architecture</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #07071a;
+    --card: #0e0e24;
+    --card2: #12122c;
+    --border: #1a1a35;
+    --text: #e8e8f0;
+    --dim: #888;
+    --dim2: #555;
+    --blue: #4d8dff;
+    --purple: #a56dff;
+    --green: #3ddc97;
+    --amber: #ffb648;
+    --pink: #ff6ba8;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    padding: 32px 16px 64px;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 40px; }
+  h1 {
+    font-size: clamp(1.8em, 6vw, 2.6em);
+    font-weight: 800;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #fff 40%, #666);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .subtitle { color: var(--dim); font-size: 0.85em; letter-spacing: 2px; text-transform: uppercase; }
+  .updated { color: var(--dim2); font-size: 0.75em; margin-top: 6px; }
+
+  h2.section {
+    font-size: 0.72em; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    margin: 44px 0 16px; display: flex; align-items: center; gap: 12px;
+  }
+  h2.section::after { content: ''; flex: 1; height: 1px; background: currentColor; opacity: 0.25; }
+  h2.section.c-blue { color: var(--blue); }
+  h2.section.c-purple { color: var(--purple); }
+  h2.section.c-green { color: var(--green); }
+  h2.section.c-amber { color: var(--amber); }
+  h2.section.c-pink { color: var(--pink); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 18px; position: relative; overflow: hidden;
+  }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent, var(--blue)); }
+  .card h3 { font-size: 1em; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .card .icon { font-size: 1.15em; }
+  .card p { color: #bbb; font-size: 0.86em; line-height: 1.5; }
+  .card .tag {
+    display: inline-block; margin-top: 10px; font-size: 0.68em; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 20px;
+    background: var(--card2); color: var(--dim); border: 1px solid var(--border);
+  }
+  .card code, .note code, .flow code, td code {
+    background: #050512; border: 1px solid var(--border); border-radius: 6px;
+    padding: 1px 6px; font-size: 0.85em; color: #ccd;
+  }
+  .card.blue { --accent: var(--blue); } .card.purple { --accent: var(--purple); }
+  .card.green { --accent: var(--green); } .card.amber { --accent: var(--amber); }
+  .card.pink { --accent: var(--pink); }
+
+  /* folder tree */
+  .tree {
+    background: #050512; border: 1px solid var(--border); border-radius: 14px;
+    padding: 20px 22px; font-family: ui-monospace, Consolas, monospace;
+    font-size: 0.82em; line-height: 1.75; color: #ccd; overflow-x: auto; white-space: pre;
+  }
+  .tree .c { color: var(--dim2); }
+  .tree .b { color: var(--blue); } .tree .g { color: var(--green); }
+  .tree .a { color: var(--amber); } .tree .p { color: var(--purple); } .tree .k { color: var(--pink); }
+
+  /* message flow strip */
+  .flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
+  .flow .step {
+    flex: 1 1 150px; background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 12px 14px; font-size: 0.78em; color: #bbb; line-height: 1.5; position: relative;
+  }
+  .flow .step b { color: var(--text); display: block; margin-bottom: 4px; font-size: 1.05em; }
+  .flow .arrow { align-self: center; color: var(--dim2); font-size: 1.1em; }
+
+  .note {
+    background: var(--card2); border: 1px dashed var(--border); border-radius: 12px;
+    padding: 14px 16px; font-size: 0.82em; color: #aaa; margin-top: 16px; line-height: 1.65;
+  }
+  .note b { color: #ddd; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.82em; }
+  .tbl { overflow-x: auto; background: var(--card); border: 1px solid var(--border); border-radius: 14px; }
+  th { text-align: left; color: var(--dim); font-size: 0.85em; letter-spacing: 1px; text-transform: uppercase; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: #bbb; line-height: 1.5; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  footer {
+    margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+    color: var(--dim2); font-size: 0.75em; text-align: center; line-height: 1.8;
+  }
+  footer code { color: #778; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Operator — Data &amp; Storage</h1>
+    <div class="subtitle">Where a customer's life lives, and what Claude reads when</div>
+    <div class="updated">Generated 2026-07-09 · lives at <code>AI dashboard/public/operator-data-architecture.html</code> · grounded in the running silo implementation</div>
+  </div>
+
+  <!-- THE PRIVATE SPACE -->
+  <h2 class="section c-blue">The private space — one folder per customer</h2>
+  <div class="grid">
+    <div class="card blue">
+      <h3><span class="icon">🗂️</span> Your space = a folder</h3>
+      <p>Every customer gets one isolated directory on the operator host. Claude runs with its working directory <b>locked to that folder</b> (<code>claude -p</code>, cwd-pinned) — it physically starts inside your space and reads nothing outside it. No shared database, no commingled tables.</p>
+      <span class="tag">isolation by filesystem</span>
+    </div>
+    <div class="card blue">
+      <h3><span class="icon">📝</span> Memory = plain markdown</h3>
+      <p>Everything the operator remembers is written as human-readable markdown files — todos, notes, decisions, people. No vector store, no opaque blob. The customer can open, edit, or delete any memory with a text editor.</p>
+      <span class="tag">no black box</span>
+    </div>
+    <div class="card blue">
+      <h3><span class="icon">📖</span> The employee handbook</h3>
+      <p>A per-customer <code>CLAUDE.md</code> holds the operator's persona, standing instructions, language, boundaries, and shortcuts ("add todo" → edit <code>todos.md</code>). It is loaded automatically at the start of every single conversation — this is why the operator never forgets who it works for.</p>
+      <span class="tag">always in context</span>
+    </div>
+    <div class="card blue">
+      <h3><span class="icon">👤</span> Profile</h3>
+      <p><code>context/about-me.md</code> — filled by the guided onboarding interview (/onboard): who you are, family, goals, preferences. Read on demand when a task needs personal context.</p>
+      <span class="tag">from onboarding</span>
+    </div>
+  </div>
+
+  <div class="tree" style="margin-top:14px">
+<span class="c">customers/</span>
+<span class="c">└─</span> <span class="b">anna/</span>                          <span class="c">← one isolated space per customer</span>
+   <span class="c">├─</span> <span class="b">CLAUDE.md</span>                   <span class="c">← employee handbook: persona, rules, shortcuts (auto-loaded)</span>
+   <span class="c">├─</span> <span class="b">context/</span>
+   <span class="c">│  └─</span> about-me.md              <span class="c">← profile from onboarding</span>
+   <span class="c">├─</span> <span class="a">inbox/</span>
+   <span class="c">│  ├─</span> todos.md                 <span class="c">← the todo list (checkbox lines)</span>
+   <span class="c">│  └─</span> notes, drafts, plans     <span class="c">← everything captured by chat</span>
+   <span class="c">├─</span> <span class="a">decisions/log.md</span>            <span class="c">← "log decision: …" appends here, dated</span>
+   <span class="c">├─</span> <span class="a">files/</span>                      <span class="c">← photos + documents sent in chat, files it makes for you</span>
+   <span class="c">├─</span> <span class="p">logs/</span>
+   <span class="c">│  ├─</span> audit-2026-07-09.jsonl   <span class="c">← append-only audit: one line per turn</span>
+   <span class="c">│  └─</span> telegram-mirror.md       <span class="c">← readable chat mirror (rotated)</span>
+   <span class="c">├─</span> <span class="k">.env.local.enc</span>              <span class="c">← secrets, encrypted at rest (SOPS + age)</span>
+   <span class="c">├─</span> <span class="k">.config/gws/</span>                <span class="c">← this customer's OWN Google credentials (isolated)</span>
+   <span class="c">└─</span> <span class="g">.session-state.json</span>         <span class="c">← 60-min conversation window + rate limits</span>
+  </div>
+
+  <!-- WHAT'S STORED WHERE -->
+  <h2 class="section c-amber">What each scoop stores</h2>
+  <div class="tbl">
+    <table>
+      <tr><th>Ability</th><th>Data it creates</th><th>Where it lives</th></tr>
+      <tr><td>💬 Chat &amp; memory (base)</td><td>Conversation audit, chat mirror, remembered facts</td><td><code>logs/*.jsonl</code>, <code>telegram-mirror.md</code>, markdown memory files</td></tr>
+      <tr><td>✅ Todos &amp; notes (base)</td><td>Todo checkboxes, freeform notes</td><td><code>inbox/todos.md</code>, <code>inbox/*.md</code></td></tr>
+      <tr><td>🤝 Contact memory</td><td>People, context, follow-up threads</td><td><code>contacts.md</code> in the space (+ customer's own Google Contacts if connected)</td></tr>
+      <tr><td>🌅 Morning brief / 📬 Mail digest</td><td>Nothing new — reads calendar/mail, writes only the message to you</td><td>transient; source data stays in the customer's Google account</td></tr>
+      <tr><td>📅 Calendar concierge / ✉️ Email</td><td>Events and mail live in the customer's own Google account</td><td>customer's Google — reached via their own isolated credentials, never copied wholesale</td></tr>
+      <tr><td>📡 Market scanner</td><td>Watchlist + seen-items list (dedupe)</td><td><code>inbox/watchlists.md</code> + seen-log in the space</td></tr>
+      <tr><td>🌙 Content factory</td><td>Drafts produced overnight</td><td><code>drafts/</code> in the space</td></tr>
+      <tr><td>🎨 Visuals / 📎 files in chat</td><td>Generated images, received photos and documents</td><td><code>files/</code> in the space</td></tr>
+      <tr><td>🏡 Family &amp; household</td><td>Shared lists, home baseline values</td><td>markdown in the space (family members' locations are read live, never logged)</td></tr>
+    </table>
+  </div>
+  <div class="note"><b>Design rule:</b> the operator's copy of your life is markdown in your space; <b>systems of record stay where they already live</b> (your Google Calendar stays your calendar, your inbox stays your inbox). The operator holds credentials to act on them — not a mirror of their contents.</div>
+
+  <!-- CONTEXT ASSEMBLY -->
+  <h2 class="section c-purple">How context reaches Claude — per message</h2>
+  <div class="flow">
+    <div class="step"><b>1 · Message arrives</b>Your chat message hits the listener bound to your bot. Unknown senders are dropped before Claude ever runs.</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>2 · Session check</b>Within 60 min of the last message? The running conversation continues. Longer? A fresh session cold-starts — memory files, not chat scrollback, carry the context.</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>3 · Claude starts in your space</b><code>claude -p</code> launches with cwd locked to your folder. Handbook (<code>CLAUDE.md</code>) loads automatically. Tools are gated to your tier.</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>4 · Reads on demand</b>It opens only the files the task needs — todos for "what's on my list", contacts for "who is Tom". Nothing is bulk-embedded or pre-indexed.</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>5 · Acts &amp; records</b>Files edited in place, outbound actions previewed, one audit line appended, reply sent. Process exits — nothing lingers in RAM.</div>
+  </div>
+  <div class="note">
+    <b>Model boundary:</b> the message plus whatever files Claude opened travel to the model API for that turn, then fall out of context when the session ends. The model provider processes them transiently under its commercial no-training terms — <b>the durable copy of your data only ever lives in your space</b>.
+    <b>Tier gates</b> decide reach: base tier can only touch files in the space · read tier adds read-only calendar/mail via your own credentials · full tier adds send/write, with previews on by default.
+  </div>
+
+  <!-- SECRETS -->
+  <h2 class="section c-green">Secrets &amp; credentials</h2>
+  <div class="grid">
+    <div class="card green">
+      <h3><span class="icon">🔑</span> Encrypted at rest</h3>
+      <p>Bot tokens and API keys live in <code>.env.local.enc</code> — encrypted with SOPS + age. Decrypted into process memory only for the seconds a task runs. Never plaintext on disk, never in git, never in logs (provisioning scrubs tokens from output by design).</p>
+      <span class="tag">sops + age</span>
+    </div>
+    <div class="card green">
+      <h3><span class="icon">🧍</span> Your Google, your credentials</h3>
+      <p>Calendar/mail abilities use a per-customer credential directory (<code>.config/gws/</code>) — the customer signs into <b>their own</b> Google account. No shared service account, no operator-wide Google access. Revoke in your Google settings and the ability dies instantly.</p>
+      <span class="tag">isolated oauth</span>
+    </div>
+    <div class="card green">
+      <h3><span class="icon">🔄</span> Rotation &amp; kill switch</h3>
+      <p>Any token can be rotated at runtime without touching history. An emergency stop disables the listener, logs the bot out, and renames the secrets file so nothing can auto-restart until a human turns it back on.</p>
+      <span class="tag">rotate / kill</span>
+    </div>
+  </div>
+
+  <!-- GUARANTEES -->
+  <h2 class="section c-pink">The customer guarantees (and what backs them)</h2>
+  <div class="grid">
+    <div class="card pink">
+      <h3><span class="icon">📤</span> Export = zip of your folder</h3>
+      <p>Because everything is files, "export my data" is literally an archive of your space — readable the moment it lands. No proprietary format to escape from.</p>
+      <span class="tag">portability</span>
+    </div>
+    <div class="card pink">
+      <h3><span class="icon">🗑️</span> Delete = destroy the folder</h3>
+      <p>Cancellation keeps your export link alive 30 days, then the space is destroyed. One folder to delete means deletion is verifiable, not a promise scattered across databases.</p>
+      <span class="tag">right to be forgotten</span>
+    </div>
+    <div class="card pink">
+      <h3><span class="icon">🚫</span> Never trained on</h3>
+      <p>Data is processed under commercial API terms — not used to train models. There is also no cross-customer anything: no shared index, no "insights from users like you".</p>
+      <span class="tag">no training</span>
+    </div>
+    <div class="card pink">
+      <h3><span class="icon">🧾</span> Auditable by the owner</h3>
+      <p>The append-only JSONL audit plus the readable chat mirror mean a customer (or their admin) can always answer "what did my operator do, and when" — line by line.</p>
+      <span class="tag">accountability</span>
+    </div>
+  </div>
+
+  <!-- HOSTING TODAY / ROADMAP -->
+  <h2 class="section c-blue">Where the space physically lives</h2>
+  <div class="grid">
+    <div class="card blue">
+      <h3><span class="icon">🏠</span> Today — managed private host</h3>
+      <p>Spaces live on the operator-managed host in Sweden (EU rules), one directory per customer, chat/creds/logs excluded from any code repository by ignore rules. Tailscale-style private networking for any admin surfaces — nothing customer-facing is publicly exposed.</p>
+      <span class="tag">current implementation</span>
+    </div>
+    <div class="card blue">
+      <h3><span class="icon">☁️</span> Roadmap — encrypted volumes</h3>
+      <p>Per-customer encrypted volumes on EU cloud, so a host failure or move never touches plaintext. Same folder model, same export/delete story — just replicated and rebootable.</p>
+      <span class="tag">planned</span>
+    </div>
+    <div class="card blue">
+      <h3><span class="icon">🔌</span> Roadmap — bring your own storage</h3>
+      <p>For customers who want physical custody: the space syncs to <b>their</b> Drive/NAS as the canonical copy. Pairs with "Bring your own AI" (sign in with your own model provider) for a fully customer-owned stack.</p>
+      <span class="tag">planned · pairs with BYO-AI</span>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>One-line answer to "where is my stuff?":</b> in one folder that is yours — handbook, memory, files, logs — plus encrypted keys that let your operator act on accounts you already own. Claude visits the folder to work; it never takes the folder with it.
+  </div>
+
+  <footer>
+    Operator — data &amp; storage reference · companion to the <a href="index.html" style="color:#778">product concept site</a><br>
+    Concept architecture reference · grounded in the running implementation.
+  </footer>
+
+</div>
+</body>
+</html>

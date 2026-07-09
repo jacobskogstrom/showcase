@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAQ — Operator</title>
+<link rel="stylesheet" href="operator.css">
+<style>
+  /* FAQ accordions (page-local) */
+  .faq-group { max-width: 720px; margin: 0 auto; }
+  .faq-group h2 { font-size: 0.78em; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin: 46px 0 10px; }
+  details.faq { background: var(--bg); border-radius: 14px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 6px 18px rgba(0,0,0,0.05); overflow: hidden; }
+  details.faq summary { cursor: pointer; list-style: none; padding: 18px 22px; font-weight: 600; font-size: 0.95em; display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq summary::after { content: '+'; font-size: 1.3em; font-weight: 400; color: var(--ink-3); flex: 0 0 auto; transition: transform .15s; }
+  details.faq[open] summary::after { transform: rotate(45deg); }
+  details.faq .a { padding: 0 22px 20px; color: var(--ink-2); font-size: 0.9em; line-height: 1.6; }
+  details.faq .a a { color: var(--link); }
+  .trust-band { background: var(--bg-soft); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">operator<span class="dot">.</span></a>
+    <span class="spacer"></span>
+    <a class="item" href="features.html">Use cases</a>
+    <a class="item" href="pricing.html">Pricing</a>
+    <a class="item hide-m" href="configure.html">Build yours</a>
+    <a class="item" href="faq.html">FAQ</a>
+    <a class="cta" href="configure.html">Get started</a>
+  </div>
+</nav>
+
+<section class="center tight">
+  <div class="container">
+    <div class="eyebrow">Questions &amp; answers</div>
+    <h1 class="display" style="font-size:clamp(2.2rem,5.5vw,3.6rem)">Fair questions.<br>Straight answers.</h1>
+    <p class="subhead measure" style="margin-top:18px">
+      You're about to give an AI real access to your life. You should be asking hard questions — here are ours, answered honestly.
+    </p>
+  </div>
+</section>
+
+<!-- TRUST BAND -->
+<section class="tight trust-band">
+  <div class="container wide">
+    <div class="eyebrow center">Your secrets, handled like secrets</div>
+    <h2 class="headline center" style="margin-bottom:44px;font-size:clamp(1.6rem,3.5vw,2.3rem)">Safe by architecture, not by promise.</h2>
+    <div class="tile-grid cols-4">
+      <div class="tile reveal">
+        <span class="icon">🗂️</span>
+        <h3>One private space each</h3>
+        <p>Your operator lives in its own isolated space with your data and no one else's. There is no shared database to leak from — isolation is physical, not a policy line.</p>
+      </div>
+      <div class="tile reveal">
+        <span class="icon">🔑</span>
+        <h3>Keys encrypted at rest</h3>
+        <p>Tokens and credentials are stored encrypted and only decrypted in memory for the seconds a task runs. They never appear in logs — and never in plain text on disk.</p>
+      </div>
+      <div class="tile reveal">
+        <span class="icon">🧍</span>
+        <h3>Your own sign-ins</h3>
+        <p>Calendar and mail run through <b>your</b> Google account, connected by you. Revoke access in your Google settings and that ability stops instantly — you hold the master switch.</p>
+      </div>
+      <div class="tile reveal">
+        <span class="icon">🧾</span>
+        <h3>Everything on the record</h3>
+        <p>Every action is written to an append-only log you can read. "What did my operator do while I slept?" always has an exact, line-by-line answer.</p>
+      </div>
+    </div>
+    <p class="center" style="margin-top:26px;font-size:0.85em"><a href="data-architecture.html">Read the full data &amp; storage architecture →</a></p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="tight">
+  <div class="container">
+    <div class="faq-group">
+
+      <h2>The basics</h2>
+      <details class="faq" open>
+        <summary>How is this different from ChatGPT or the Claude app?</summary>
+        <div class="a">Chat apps answer questions and forget you between sessions. An operator is set up around <i>you</i>: it keeps permanent memory, holds real access to the accounts you choose, reaches out first (briefs, digests, alerts), and completes tasks — sends the email, books the meeting — instead of drafting suggestions. You keep using a chat app to talk to it; the difference is everything behind the chat.</div>
+      </details>
+      <details class="faq">
+        <summary>Do I need to install anything?</summary>
+        <div class="a">No. Your operator lives in the messenger you already use. Setup is about 10 minutes, and the first thing your operator does is interview you for 10 minutes to learn names, routines and boundaries.</div>
+      </details>
+      <details class="faq">
+        <summary>What languages does it speak?</summary>
+        <div class="a">Swedish and English from day one. It mirrors whichever you use, and you can mix freely.</div>
+      </details>
+      <details class="faq">
+        <summary>Can I change my abilities (scoops) later?</summary>
+        <div class="a">Yes, any time. Add or remove scoops or switch plans; price changes apply from the next month. The configurator always tells you when a plan is cheaper than your mix.</div>
+      </details>
+
+      <h2>Privacy &amp; your data</h2>
+      <details class="faq">
+        <summary>Where is my data actually stored?</summary>
+        <div class="a">In one private space that belongs to you: your operator's handbook, memory, files and logs, all as plain readable files. Your calendar stays your calendar and your inbox stays your inbox — the operator holds credentials to act on them, not copies of their contents. Operated from Sweden under EU rules. Full detail: <a href="data-architecture.html">data &amp; storage architecture</a>.</div>
+      </details>
+      <details class="faq">
+        <summary>Is my data used to train AI models?</summary>
+        <div class="a">No. Conversations are processed under commercial API terms that exclude training. There is also no cross-customer anything — no shared index, no "users like you".</div>
+      </details>
+      <details class="faq">
+        <summary>What does the AI provider see?</summary>
+        <div class="a">Each message plus whatever files your operator opened for that task travel to the model for that turn, transiently, then fall out of context. The durable copy of your data only ever lives in your space.</div>
+      </details>
+      <details class="faq">
+        <summary>Can other customers' operators see my data?</summary>
+        <div class="a">No. Every operator runs in its own isolated space and physically starts inside your folder — it cannot read outside it. Isolation is enforced by the architecture, not by a promise.</div>
+      </details>
+      <details class="faq">
+        <summary>Can I take my data and leave?</summary>
+        <div class="a">Always. Because everything is plain files, export is literally an archive of your space — readable the moment you open it. After cancellation your export link stays live for 30 days, then the space is destroyed.</div>
+      </details>
+      <details class="faq">
+        <summary>Can the humans who run the service read my conversations?</summary>
+        <div class="a">The audit log and chat mirror exist in your space so that <i>you</i> can hold your operator accountable. Operationally we only look inside a space with your explicit permission, for support you've asked for — and we take nothing out of it. If that trust boundary matters to you (it should), ask us about it before you buy.</div>
+      </details>
+
+      <h2>Control &amp; safety</h2>
+      <details class="faq">
+        <summary>Can it send emails or book things without asking me?</summary>
+        <div class="a">Not by default. Everything outbound — emails, invites, posts — is previewed to you first. Once you trust a specific ability, you can loosen the preview per ability ("just send my lunch confirmations"). Tightening it back takes one message.</div>
+      </details>
+      <details class="faq">
+        <summary>What if it makes a mistake?</summary>
+        <div class="a">It will, occasionally — it's capable, not infallible. That's why previews are on by default, why every action is logged, and why it insists you review anything high-stakes. Design principle: mistakes should be small, visible and reversible.</div>
+      </details>
+      <details class="faq">
+        <summary>Can I pause or stop it instantly?</summary>
+        <div class="a">Yes. "Pause my operator" stops everything on the spot; resume the same way. There is also a hard kill switch on our side that disables the whole operator and locks its credentials until a human turns it back on.</div>
+      </details>
+      <details class="faq">
+        <summary>What can't it do?</summary>
+        <div class="a">It won't impersonate you deceptively, break laws or platform rules, or give financial, legal or medical advice (it will tell you to see a professional). It also won't touch abilities you haven't enabled — an operator without the mail scoop cannot read mail, structurally.</div>
+      </details>
+
+      <h2>Billing</h2>
+      <details class="faq">
+        <summary>Is there a binding period?</summary>
+        <div class="a">No. Monthly subscription, cancel any month by chat or from your account page. Your operator handles its own offboarding, including your data export.</div>
+      </details>
+      <details class="faq">
+        <summary>What happens to my operator's memory if I cancel?</summary>
+        <div class="a">You get the full export (plain files). The export link lives for 30 days after cancellation; then your space is destroyed. If you come back later, you can restore from your export and your operator picks up where it left off.</div>
+      </details>
+      <details class="faq">
+        <summary>Why is it more expensive than a chatbot subscription?</summary>
+        <div class="a">Because it's a different product: a private always-on service provisioned for you alone — isolated space, real integrations, scheduled work at night, previews and audit logging. You're not buying answers; you're staffing a role.</div>
+      </details>
+
+    </div>
+    <div class="btn-row" style="margin-top:44px">
+      <a class="btn big" href="configure.html">Build your operator</a>
+      <a class="btn big secondary" href="pricing.html">See pricing</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="container">
+    <div class="cols">
+      <div><b>operator.</b><br>Your first AI employee.</div>
+      <div>
+        <a href="features.html">Use cases</a> · <a href="pricing.html">Pricing</a> ·
+        <a href="configure.html">Build yours</a> · <a href="faq.html">FAQ</a> · <a href="terms.html">Terms</a> ·
+        <a href="design-system.html">Design system</a>
+      </div>
+    </div>
+    <div class="concept">Concept site · prices and copy are placeholders for iteration.</div>
+  </div>
+</footer>
+
+<script src="operator.js"></script>
+</body>
+</html>
