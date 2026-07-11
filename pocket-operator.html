@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>The Pocket Operator — Beta</title>
+<style>
+:root{
+  --bg:#071512;--bg2:#0e1817;--primary:#0B7D74;--bright:#5FC7BA;--light:#C6EEE8;
+  --deep:#094843;--mid:#2BA89A;--ink:#CFEFE9;--muted:#7fa79f;
+  --card-grad:linear-gradient(180deg,var(--bg2),#0b1514);
+  --hero-1:rgba(11,125,116,.42);--hero-2:rgba(43,168,154,.16);--hero-3:#08201c;
+  --h1-grad:linear-gradient(120deg,var(--light) 20%,var(--bright) 65%,var(--mid) 100%);
+  --shadow:0 16px 40px -22px rgba(11,125,116,.7);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);line-height:1.6;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 1.5rem}
+section{padding:3.6rem 0;border-top:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.eyebrow{font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);font-weight:600;margin-bottom:1.1rem;display:flex;align-items:center;gap:.6rem}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--mid);display:inline-block}
+h2{font-size:clamp(1.5rem,3.2vw,2.1rem);line-height:1.15;color:var(--light);letter-spacing:-.02em;font-weight:700;margin-bottom:.9rem}
+.lead{color:var(--muted);font-size:1.02rem}
+.hero{position:relative;overflow:hidden;border-top:none;padding:5.5rem 0 3.5rem;background:radial-gradient(1100px 520px at 78% -12%, var(--hero-1), transparent 60%),radial-gradient(760px 420px at 8% 8%, var(--hero-2), transparent 55%),linear-gradient(180deg,var(--hero-3) 0%, var(--bg) 72%)}
+.hero .eyebrow{color:var(--bright)}
+.hero .eyebrow::before{background:var(--bright)}
+h1{font-size:clamp(2.4rem,7vw,4.2rem);line-height:1.02;letter-spacing:-.035em;font-weight:800;background:var(--h1-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-sub{font-size:clamp(1.05rem,2.2vw,1.3rem);color:var(--ink);max-width:44ch;margin-top:1.3rem;font-weight:500}
+.hero-punch{margin-top:.9rem;color:var(--muted);max-width:54ch;font-size:1.0rem}
+.badge{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.8rem;font-size:.85rem;font-weight:700;letter-spacing:.02em;color:#03110f;background:var(--bright);padding:.55rem 1.05rem;border-radius:999px;box-shadow:var(--shadow)}
+.badge::before{content:"";width:8px;height:8px;border-radius:50%;background:#03110f;display:inline-block}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.6rem}
+.card{background:var(--card-grad);border:1px solid var(--deep);border-radius:14px;padding:1.3rem 1.2rem}
+.card h3{font-size:.98rem;color:var(--light);margin-bottom:.4rem}
+.card p{font-size:.88rem;color:var(--muted)}
+.cta{background:var(--card-grad);border:1px solid var(--deep);border-radius:16px;padding:2rem;text-align:center}
+.cta h2{margin-bottom:.6rem}
+.cta p{color:var(--muted);margin-bottom:1.4rem}
+.btnrow{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;text-decoration:none;font-weight:700;font-size:.92rem;padding:.75rem 1.4rem;border-radius:999px;transition:transform .2s}
+.btn.primary{background:var(--primary);color:#eafaf7;box-shadow:var(--shadow)}
+.btn.ghost{border:1px solid var(--deep);color:var(--light)}
+.btn:hover{transform:translateY(-2px)}
+.fine{color:var(--muted);font-size:.8rem;margin-top:1.6rem;text-align:center}
+footer{padding:2.5rem 0;text-align:center;color:var(--muted);font-size:.82rem}
+@media(max-width:640px){.grid3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">the pocket operator</div>
+    <h1>Your own AI operator,<br>in your pocket.</h1>
+    <p class="hero-sub">A personal AI assistant that lives in Telegram — reads and writes your notes, todos, and (if you connect it) your own calendar and email.</p>
+    <p class="hero-punch">Runs privately, not on someone else's cloud. Built by Jacob Skogström, the same operator behind Bitesize AI.</p>
+    <div class="badge">Accepting beta testers now</div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">What it is</div>
+    <h2>An assistant you actually own</h2>
+    <p class="lead">One Telegram bot, one private workspace. No shared chat history, no big-tech data harvesting — it runs on hardware Jacob controls, with your data stored as plain files only you and he can see.</p>
+    <div class="grid3">
+      <div class="card"><h3>Notes &amp; todos</h3><p>Capture and recall anything, just by messaging it.</p></div>
+      <div class="card"><h3>Calendar &amp; email</h3><p>Optional, higher-tier access to your own Google account.</p></div>
+      <div class="card"><h3>Private by design</h3><p>Your silo, your data. Delete it any time — just ask.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta">
+      <h2>Join the beta</h2>
+      <p>Free during beta. Any pricing shown later is indicative — you won't be charged without asking first.</p>
+      <div class="btnrow">
+        <a class="btn primary" href="mailto:jacob@skogstrom.se?subject=Pocket%20Operator%20beta">Email jacob@skogstrom.se</a>
+      </div>
+      <p class="fine">Say hi and mention where you found this (e.g. "AIS Live") — spots are limited while the beta is hand-onboarded.</p>
+    </div>
+  </div>
+</section>
+
+<footer>thepocketoperator.com — early private beta, built in the open.</footer>
+</body>
+</html>
