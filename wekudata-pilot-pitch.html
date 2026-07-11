@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Wekudata × The Pocket Operator — Pilot Proposal</title>
+<style>
+:root{
+  --bg:#071512;--bg2:#0e1817;--primary:#0B7D74;--bright:#5FC7BA;--light:#C6EEE8;
+  --deep:#094843;--mid:#2BA89A;--ink:#CFEFE9;--muted:#7fa79f;
+  --card-grad:linear-gradient(180deg,var(--bg2),#0b1514);
+  --hero-1:rgba(11,125,116,.42);--hero-2:rgba(43,168,154,.16);--hero-3:#08201c;
+  --h1-grad:linear-gradient(120deg,var(--light) 20%,var(--bright) 65%,var(--mid) 100%);
+  --shadow:0 16px 40px -22px rgba(11,125,116,.7);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);line-height:1.65;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:0 1.5rem}
+section{padding:3.8rem 0;border-top:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.eyebrow{font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--mid);display:inline-block}
+h2{font-size:clamp(1.5rem,3.2vw,2.1rem);line-height:1.15;color:var(--light);letter-spacing:-.02em;font-weight:700;margin-bottom:1rem}
+.lead{color:var(--ink);font-size:1.02rem;max-width:66ch}
+.muted{color:var(--muted)}
+.hero{position:relative;overflow:hidden;border-top:none;padding:5rem 0 3.2rem;background:radial-gradient(1100px 520px at 78% -12%, var(--hero-1), transparent 60%),radial-gradient(760px 420px at 8% 8%, var(--hero-2), transparent 55%),linear-gradient(180deg,var(--hero-3) 0%, var(--bg) 72%)}
+.hero .eyebrow{color:var(--bright)}
+.hero .eyebrow::before{background:var(--bright)}
+h1{font-size:clamp(2rem,5.6vw,3.3rem);line-height:1.08;letter-spacing:-.03em;font-weight:800;background:var(--h1-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-sub{font-size:clamp(1.02rem,2.1vw,1.22rem);color:var(--ink);max-width:56ch;margin-top:1.2rem;font-weight:500}
+.hero-punch{margin-top:.9rem;color:var(--muted);max-width:60ch;font-size:.98rem}
+.opener{margin-top:1.8rem;border-left:3px solid var(--primary);padding:.3rem 0 .3rem 1.3rem;color:var(--light);font-size:1rem;max-width:56ch}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.6rem}
+.card{background:var(--card-grad);border:1px solid var(--deep);border-radius:14px;padding:1.4rem 1.3rem}
+.card h3{font-size:1rem;color:var(--light);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.card p{font-size:.9rem;color:var(--muted)}
+.steps{display:flex;flex-direction:column;gap:.85rem;margin-top:1.8rem}
+.step{display:flex;gap:1rem;background:var(--card-grad);border:1px solid var(--deep);border-radius:14px;padding:1.15rem 1.3rem;align-items:flex-start}
+.stepnum{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--primary);color:#eafaf7;font-weight:700;font-size:.85rem;display:grid;place-items:center}
+.step h3{font-size:.98rem;color:var(--light);margin-bottom:.25rem}
+.step p{font-size:.88rem;color:var(--muted)}
+.split{background:var(--card-grad);border:1px solid var(--deep);border-radius:14px;padding:1.6rem}
+.split h3{color:var(--light);font-size:1.02rem;margin-bottom:.6rem}
+.split p{color:var(--muted);font-size:.92rem}
+.tagpills{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.2rem}
+.pill{font-size:.76rem;letter-spacing:.02em;color:var(--light);border:1px solid var(--deep);background:var(--bg2);padding:.4rem .8rem;border-radius:999px}
+.cta{background:var(--card-grad);border:1px solid var(--deep);border-radius:16px;padding:2.2rem;text-align:center}
+.cta h2{margin-bottom:.6rem}
+.cta p{color:var(--muted);margin-bottom:1.5rem}
+.btnrow{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;text-decoration:none;font-weight:700;font-size:.92rem;padding:.75rem 1.4rem;border-radius:999px;transition:transform .2s}
+.btn.primary{background:var(--primary);color:#eafaf7;box-shadow:var(--shadow)}
+.btn.ghost{border:1px solid var(--deep);color:var(--light)}
+.btn:hover{transform:translateY(-2px)}
+footer{padding:2.5rem 0;text-align:center;color:var(--muted);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase}
+footer a{color:var(--bright);text-decoration:none}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+  <script>
+    (function(){var K='spw_wekudata_pilot',P='jacobsecret';
+      if(localStorage.getItem(K)===P)return;
+      var t=prompt('Password required:');
+      if(t===P){localStorage.setItem(K,P);}
+      else{document.documentElement.innerHTML='<body style="margin:0;background:#071512;color:#CFEFE9;font-family:-apple-system,BlinkMacSystemFont,sans-serif;height:100vh;display:grid;place-items:center"><p>Access denied.</p></body>';}
+    })();
+  </script>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Proposal for Wekudata AB</div>
+    <h1>Infrastructure you already trust. An AI operator people will actually use.</h1>
+    <p class="hero-sub">A pilot to combine Wekudata's managed hosting with The Pocket Operator — a private, per-customer AI environment built on infrastructure you guarantee.</p>
+    <p class="opener">Good talking over lunch, Artur. Wanted to put the idea we sketched into something concrete you can react to — not a pitch deck, just the plan.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">The gap</div>
+    <h2>AI tools people don't trust, on infrastructure nobody's accountable for</h2>
+    <p class="lead">Every customer you host for already trusts Wekudata with their infrastructure — 25+ years of cloud, hosting, and managed networks. What most of them don't have is an AI layer on top of that trust: something a whole team can actually use day to day, running on infrastructure someone accountable manages, not a black-box SaaS in someone else's cloud.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">The pairing</div>
+    <h2>Wekudata's infrastructure. The Pocket Operator's product.</h2>
+    <p class="lead">Wekudata guarantees the IT infrastructure and hosting: each customer gets their own private environment — email, tasks, files, calendar — hosted and managed the way you already do it. The Pocket Operator runs on top of that: a personal AI operator per person or team, reachable from Telegram, that reads and writes their notes, todos, calendar, and email.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>🔒 Wekudata brings</h3>
+        <p>The infrastructure guarantee — hosting, backup, access control, data residency — plus the existing customer relationships and support capacity to back it.</p>
+      </div>
+      <div class="card">
+        <h3>⚙️ Pocket Operator brings</h3>
+        <p>The AI-operator product itself, and hands-on coaching so a team actually adopts it — not just a login, a new way of working.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">What it looks like in use</div>
+    <h2>The way I work with it, every day</h2>
+    <p class="lead">This proposal itself is a good example: I dictated the outline for it from the car on the way home, sent it as a task, and it came back done. That's the habit I'd coach a customer's team into — add a task, send an email, capture a note, hands-free, from wherever they are. No app to open, no dashboard to learn. Just a message.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">How we get there</div>
+    <h2>Steps to secure and test this</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="stepnum">1</div>
+        <div><h3>Pick the pilot ground</h3><p>Either internally at Wekudata, or one small, friendly customer you already trust — whichever gives us the fastest honest read.</p></div>
+      </div>
+      <div class="step">
+        <div class="stepnum">2</div>
+        <div><h3>Define the infra guarantee</h3><p>One page: what Wekudata commits to for a private environment — hosting, backup, access control, data residency. Your team owns this spec.</p></div>
+      </div>
+      <div class="step">
+        <div class="stepnum">3</div>
+        <div><h3>Stand up the environment</h3><p>I set up The Pocket Operator on that infrastructure and run a short onboarding session with the pilot team — how to add a task, send an email, ask for a summary.</p></div>
+      </div>
+      <div class="step">
+        <div class="stepnum">4</div>
+        <div><h3>Run it for real, 2–4 weeks</h3><p>Real tasks, real email, real usage — not a demo. I coach along the way as questions come up.</p></div>
+      </div>
+      <div class="step">
+        <div class="stepnum">5</div>
+        <div><h3>Check in together</h3><p>Review what worked, what didn't, and whether it's worth extending to more of your customers.</p></div>
+      </div>
+      <div class="step">
+        <div class="stepnum">6</div>
+        <div><h3>Formalize the terms</h3><p>Once the pilot proves out, we lock the commercial model down properly.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Commercial model</div>
+    <h2>Revenue share — worked out together, once we've proven it</h2>
+    <div class="split">
+      <h3>The honest version</h3>
+      <p>Wekudata keeps the infrastructure and hosting fee. I keep the product and coaching fee. Anything sold as a joint package — a revenue split on that — is worth designing properly, but only after we've both seen the pilot work. Getting a real environment running, with a real team using it, matters more right now than agreeing numbers on a spreadsheet.</p>
+    </div>
+    <div class="tagpills">
+      <span class="pill">No commitment to scale yet</span>
+      <span class="pill">Pilot first, commercial terms after</span>
+      <span class="pill">Internal or one small customer</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta">
+      <h2>Let's pick the pilot</h2>
+      <p>A short call to choose internal vs. a small customer, and get the first environment live.</p>
+      <div class="btnrow">
+        <a class="btn primary" href="mailto:jacob@skogstrom.se?subject=Wekudata%20%C3%97%20Pocket%20Operator%20pilot">Email Jacob</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Jacob Skogström &middot; <a href="https://thepocketoperator.com">thepocketoperator.com</a></footer>
+
+</body>
+</html>
