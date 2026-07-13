@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brig E780N &mdash; Engine Stall Diagnosis</title>
+<style>
+:root{--bg:#071512;--bg2:#0e1817;--primary:#0B7D74;--bright:#5FC7BA;--light:#C6EEE8;--deep:#094843;--mid:#2BA89A;--ink:#CFEFE9;--muted:#7fa79f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.65;min-height:100vh}
+.wrap{max-width:820px;margin:0 auto;padding:0 1.5rem}
+.hero{padding:4rem 0 2.5rem;border-bottom:1px solid var(--deep)}
+.eyebrow{color:var(--mid);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.9rem;display:flex;align-items:center;gap:.6rem}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--mid);display:inline-block}
+h1{color:var(--light);font-size:2rem;line-height:1.25;margin-bottom:.8rem}
+.hero-sub{color:var(--ink);font-size:1.05rem;max-width:640px}
+.status{margin-top:1.6rem;background:var(--bg2);border:1px solid var(--primary);border-left:4px solid var(--bright);border-radius:10px;padding:1.1rem 1.3rem}
+.status b{color:var(--bright)}
+section{padding:2.4rem 0;border-bottom:1px solid var(--deep)}
+section:last-of-type{border-bottom:none}
+h2{color:var(--bright);font-size:1.3rem;margin-bottom:1rem}
+p{margin-bottom:.9rem;color:var(--ink)}
+.muted{color:var(--muted);font-size:.9rem}
+table{width:100%;border-collapse:collapse;margin:1rem 0 1.4rem;font-size:.92rem}
+th,td{text-align:left;padding:.55rem .7rem;border-bottom:1px solid var(--deep)}
+th{color:var(--mid);font-weight:600;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase}
+td{color:var(--ink)}
+.card{background:var(--bg2);border:1px solid var(--deep);border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:1rem}
+ol.checklist{margin-left:1.3rem}
+ol.checklist li{margin-bottom:.8rem;color:var(--ink)}
+ol.checklist b{color:var(--bright)}
+.tag{display:inline-block;background:var(--deep);color:var(--light);border-radius:999px;padding:.2rem .7rem;font-size:.75rem;letter-spacing:.03em;margin-right:.4rem}
+footer{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+footer a{color:var(--bright);text-decoration:none}
+</style>
+</head>
+<body>
+
+<script>
+(function(){
+  var K='spw_brig_engine_c138564102', P='jacobsecret';
+  if(localStorage.getItem(K)===P)return;
+  var t=prompt('Password required:');
+  if(t===P){localStorage.setItem(K,P);}
+  else{document.documentElement.innerHTML='<body style="margin:0;background:#071512;color:#CFEFE9;font-family:-apple-system,BlinkMacSystemFont,sans-serif;height:100vh;display:grid;place-items:center"><p>Access denied.</p></body>';}
+})();
+</script>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Brig Eagle 780 Overnighter &middot; Evinrude E-TEC G2 300 HP</div>
+    <h1>Engine stall diagnosis &mdash; root cause found</h1>
+    <p class="hero-sub">Engine died twice at sea with zero fault display, restarted instantly on a key cycle. EvDiag6 diagnostic pull (2026-07-10) traced it to a battery/ground connection fault, reproduced live at the dock.</p>
+    <div class="status"><b>Status:</b> Root cause confirmed &mdash; battery terminal / ground / connection fault. Not the kill-switch, not the ignition switch, not fuel. Engine internals (temps, knock, oil pressure) read clean across all three EMM pulls.</div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>Why "no fault code shown" was the key clue</h2>
+    <p>The EMM (engine computer) actively monitors oil, fuel pressure, temperature, knock, and water pressure, and throws a visible fault plus a forced "get-home" mode for any of those. A clean stall with zero display message that restarts instantly on a key cycle doesn't match a monitored fault &mdash; it matches something that briefly killed the EMM's own power, which it can't log because it wasn't running.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What the data showed</h2>
+    <div class="card">
+      <p><span class="tag">Engine hour 219:39</span> Four fault codes fired in the same minute, all with battery voltage collapsed near zero &mdash; the engine kept running only because its 55V magneto charge system is independent of the battery.</p>
+      <table>
+        <tr><th>Code</th><th>Description</th><th>Battery volt at fault</th></tr>
+        <tr><td>94</td><td>Excess fuel pump current detected</td><td>13.1V</td></tr>
+        <tr><td>114</td><td>Loss of Public network communication</td><td>0.5V</td></tr>
+        <tr><td>161</td><td>Fused B fault detected</td><td>3.4V</td></tr>
+        <tr><td>79</td><td>Starter solenoid open circuit detected</td><td>1.1V</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <p><span class="tag">Control head report</span> Fault P32 &ldquo;Accessory power disconnected&rdquo; logged at a recent power-on cycle &mdash; the helm lost its battery feed at the same time as the engine side. Same root cause, two symptoms.</p>
+    </div>
+    <div class="card">
+      <p><span class="tag">Dockside live datalog</span> Idling at the dock, battery voltage dropped from ~15V to <b>3.4V</b> in under a second, charge current spiked to 51A recovering it, then settled over ~8 seconds. Reproduced sitting still &mdash; not just triggered by wave shock at sea.</p>
+    </div>
+    <p class="muted">Engine health across all three EMM pulls: max head temp 84.9&deg;C, no knock detected, EMM never exceeded 67&deg;C. This is a power-delivery problem, not an engine problem.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What to check, in order</h2>
+    <div class="card">
+      <ol class="checklist">
+        <li><b>Battery terminals + main cable lugs</b>, both ends &mdash; battery post and engine-end lug. Clean corrosion, retorque. This single fix explains every fault code and the voltage drop.</li>
+        <li><b>Battery switch</b> &mdash; wiggle-test under load (engine idling) while watching live voltage.</li>
+        <li><b>Ground cables</b> &mdash; engine block ground strap, helm ground.</li>
+        <li><b>Load-test the battery</b> &mdash; a healthy battery shouldn't dip to 3.4V under normal idle load.</li>
+        <li><b>"Fused B" fuse holder</b> on the engine fuse block &mdash; corrosion there directly explains code 161.</li>
+        <li><b>Repro test:</b> engine idling at the dock, live voltage on screen, wiggle each cable/connector by hand &mdash; a voltage dip when you touch a specific point is the confirmation, no need to be back at sea.</li>
+        <li>Starter solenoid connector (code 79) &mdash; inspect, likely a downstream artifact rather than its own fault.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Secondary findings &mdash; worth a mention at service, not urgent</h2>
+    <p>ESC shift-position faults (codes 201/202/204/206/207/209) all logged in an earlier engine-hour window, none since &mdash; shifting fine now. Critical Low Oil detected 9 times historically, separate timeframe from the stall &mdash; worth checking the oil tank pickup/level sensor. EMM hours run lower than engine hours, consistent with an EMM swap that happened before purchase. None of these are linked to the stalling.</p>
+  </div>
+</section>
+
+<footer>
+  Jacob Skogstr&ouml;m &middot; <a href="https://bitesize.ai">Bitesize AI</a>
+</footer>
+
+</body>
+</html>
