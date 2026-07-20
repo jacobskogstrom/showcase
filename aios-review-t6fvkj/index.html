@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIOS Rebuild Review — Custom vs Official Claude</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #07071a;
+    --card: #0e0e24;
+    --card2: #12122c;
+    --border: #1a1a35;
+    --text: #e8e8f0;
+    --dim: #888;
+    --dim2: #555;
+    --blue: #4d8dff;
+    --purple: #a56dff;
+    --green: #3ddc97;
+    --amber: #ffb648;
+    --pink: #ff6ba8;
+    --red: #ff6b6b;
+    /* sequential blue ramp (monotonic lightness, dark surface: lighter = more active) */
+    --seq1: #a8c7ff; /* daily */
+    --seq2: #74a7ff; /* weekly */
+    --seq3: #4d8dff; /* occasional */
+    --seq4: #28549c; /* dormant */
+  }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; padding: 32px 16px 64px; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 12px; }
+  h1 { font-size: clamp(1.8em, 6vw, 2.6em); font-weight: 800; letter-spacing: -1px;
+       background: linear-gradient(135deg, #fff 40%, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .subtitle { color: var(--dim); font-size: 0.85em; letter-spacing: 2px; text-transform: uppercase; }
+  .updated { color: var(--dim2); font-size: 0.75em; margin-top: 6px; }
+
+  .toc { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 20px 0 8px; }
+  .toc a { color: var(--dim); font-size: 0.75em; text-decoration: none; border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; background: var(--card); }
+  .toc a:hover { color: var(--text); border-color: var(--blue); }
+
+  h2.section { font-size: 0.72em; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin: 44px 0 16px; display: flex; align-items: center; gap: 12px; }
+  h2.section::after { content: ''; flex: 1; height: 1px; background: currentColor; opacity: 0.25; }
+  h2.section.c-blue { color: var(--blue); }
+  h2.section.c-purple { color: var(--purple); }
+  h2.section.c-green { color: var(--green); }
+  h2.section.c-amber { color: var(--amber); }
+  h2.section.c-pink { color: var(--pink); }
+  h2.section.c-red { color: var(--red); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; position: relative; overflow: hidden; }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent, var(--blue)); }
+  .card h3 { font-size: 0.98em; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .card p { color: #bbb; font-size: 0.85em; line-height: 1.5; }
+  .card.blue { --accent: var(--blue); } .card.purple { --accent: var(--purple); }
+  .card.green { --accent: var(--green); } .card.amber { --accent: var(--amber); }
+  .card.pink { --accent: var(--pink); } .card.red { --accent: var(--red); }
+
+  /* hero stat tiles */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 20px; }
+  .tile { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; text-align: center; }
+  .tile .num { font-size: 2em; font-weight: 800; letter-spacing: -1px; }
+  .tile .lbl { color: var(--dim); font-size: 0.72em; letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; line-height: 1.5; }
+
+  /* horizontal bar chart */
+  .chart { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+  .chart .ctitle { font-size: 0.9em; font-weight: 700; margin-bottom: 4px; }
+  .chart .csub { color: var(--dim); font-size: 0.75em; margin-bottom: 16px; }
+  .bar-row { display: grid; grid-template-columns: 130px 1fr 46px; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .bar-row .blabel { font-size: 0.8em; color: var(--text); text-align: right; }
+  .bar-track { height: 22px; position: relative; }
+  .bar-fill { height: 100%; border-radius: 0 4px 4px 0; transition: filter .15s; }
+  .bar-fill:hover { filter: brightness(1.25); }
+  .bar-row .bval { font-size: 0.8em; color: var(--dim); font-variant-numeric: tabular-nums; }
+  .chart .cnote { color: var(--dim2); font-size: 0.7em; margin-top: 10px; line-height: 1.5; }
+
+  /* badges */
+  .badge { display: inline-block; font-size: 0.62em; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; border: 1px solid; background: var(--card2); }
+  .b-keep    { color: var(--green); border-color: var(--green); }
+  .b-aligned { color: var(--blue);  border-color: var(--blue); }
+  .b-migrate { color: var(--amber); border-color: var(--amber); }
+  .b-kill    { color: var(--red);   border-color: var(--red); }
+  .b-frozen  { color: var(--dim);   border-color: var(--dim2); }
+  .b-daily   { color: var(--seq1);  border-color: var(--seq1); }
+  .b-weekly  { color: var(--seq2);  border-color: var(--seq2); }
+  .b-occ     { color: var(--seq3);  border-color: var(--seq3); }
+  .b-dorm    { color: var(--dim);   border-color: var(--dim2); }
+
+  /* deep dive two-column */
+  .dive { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 14px; }
+  .dive h3 { font-size: 1.05em; font-weight: 700; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+  .dive .story { color: var(--dim); font-size: 0.8em; font-style: italic; margin-bottom: 14px; }
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 720px) { .vs { grid-template-columns: 1fr; } }
+  .vs .col { background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+  .vs .col h4 { font-size: 0.7em; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+  .vs .mine h4 { color: var(--purple); }
+  .vs .official h4 { color: var(--blue); }
+  .vs ol { margin-left: 18px; }
+  .vs li { color: #bbb; font-size: 0.82em; line-height: 1.55; margin-bottom: 5px; }
+  .vs code, .dive code, td code { background: #050512; border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px; font-size: 0.85em; color: #ccd; }
+  .verdict { margin-top: 12px; padding: 12px 14px; border-radius: 10px; font-size: 0.84em; line-height: 1.55; border: 1px solid var(--border); background: var(--card2); }
+  .verdict b:first-child { letter-spacing: 1px; }
+  .v-keep b:first-child { color: var(--green); } .v-migrate b:first-child { color: var(--amber); }
+  .v-aligned b:first-child { color: var(--blue); } .v-kill b:first-child { color: var(--red); }
+
+  /* tables */
+  .tbl-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; background: var(--card); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.8em; min-width: 640px; }
+  th { text-align: left; color: var(--dim); font-size: 0.85em; letter-spacing: 1px; text-transform: uppercase; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: #bbb; line-height: 1.5; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(77,141,255,0.04); }
+  .full { color: var(--green); font-weight: 700; } .partial { color: var(--amber); font-weight: 700; } .no { color: var(--red); font-weight: 700; }
+  .yes { color: var(--green); } .meh { color: var(--amber); } .nope { color: var(--red); }
+
+  /* pipeline dots */
+  .pipe { white-space: nowrap; font-size: 1em; letter-spacing: 2px; }
+
+  /* panel quotes */
+  .panel { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 720px) { .panel { grid-template-columns: 1fr; } }
+  .quote { border-radius: 14px; padding: 18px; border: 1px solid var(--border); background: var(--card); }
+  .quote h4 { font-size: 0.72em; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+  .quote.critic h4 { color: var(--red); } .quote.advocate h4 { color: var(--green); }
+  .quote p { color: #bbb; font-size: 0.84em; line-height: 1.6; margin-bottom: 8px; }
+
+  .note { background: var(--card2); border: 1px dashed var(--border); border-radius: 12px; padding: 14px 16px; font-size: 0.82em; color: #aaa; margin-top: 16px; line-height: 1.6; }
+  .note b { color: #ddd; }
+
+  /* action plan */
+  .plan { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .plan .card ul { margin: 8px 0 0 16px; }
+  .plan .card li { color: #bbb; font-size: 0.83em; line-height: 1.6; margin-bottom: 6px; }
+
+  footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--dim2); font-size: 0.75em; text-align: center; line-height: 1.8; }
+  footer code { color: #778; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>AIOS Rebuild Review</h1>
+    <div class="subtitle">Every use case · what you actually use · custom vs official Claude</div>
+    <div class="updated">2026-07-05 · 6 research agents + critic/advocate panel · scope: AIOS, AI Dashboard, Bitesize AI, PersonalAIAssistant</div>
+  </div>
+
+  <div class="toc">
+    <a href="#numbers">The numbers</a>
+    <a href="#clusters">11 feature clusters</a>
+    <a href="#poreality">PO reality check</a>
+    <a href="#dives">Deep dives: my way vs official</a>
+    <a href="#quickref">Daily-action quick reference</a>
+    <a href="#gaps">Hard-gaps matrix</a>
+    <a href="#panel">Critic vs Advocate</a>
+    <a href="#plan">Action plan</a>
+  </div>
+
+  <!-- ============ NUMBERS ============ -->
+  <h2 class="section c-blue" id="numbers">The numbers</h2>
+  <div class="tiles">
+    <div class="tile"><div class="num" style="color:var(--blue)">≈98</div><div class="lbl">use cases inventoried across 4 projects</div></div>
+    <div class="tile"><div class="num" style="color:var(--red)">≈55%</div><div class="lbl">dormant or frozen — no usage signal in 60 days</div></div>
+    <div class="tile"><div class="num" style="color:var(--seq1)">243</div><div class="lbl">Telegram msgs in 14 days — the real front door</div></div>
+    <div class="tile"><div class="num" style="color:var(--amber)">26</div><div class="lbl">days to the July 31 job deadline</div></div>
+  </div>
+
+  <div style="margin-top:14px" class="chart">
+    <div class="ctitle">Use cases by usage evidence (60-day window)</div>
+    <div class="csub">One series — counts are approximate tallies from git logs, listener logs, runs.md and brief answer-rates</div>
+    <div class="bar-row"><div class="blabel">Daily</div><div class="bar-track"><div class="bar-fill" style="width:33%;background:var(--seq1)" title="Telegram bridge, /todo capture, cron pushes (mail digest, morning brief, architect, scan-jobs), Bitesize auto ask+build, Jobs CRM, KB files"></div></div><div class="bval">18</div></div>
+    <div class="bar-row"><div class="blabel">Weekly</div><div class="bar-track"><div class="bar-fill" style="width:22%;background:var(--seq2)" title="Bitesize brief answering (59%), contact-hub, decisions log, git sync, audit/level-up, dev modes"></div></div><div class="bval">12</div></div>
+    <div class="bar-row"><div class="blabel">Occasional</div><div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--seq3)" title="Media generation (3 dates/60d), voice testing, diagrams, deep research, watch, wherefam, trend demos"></div></div><div class="bval">14</div></div>
+    <div class="bar-row"><div class="blabel">Dormant / frozen</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--seq4)" title="Silo product (23 UCs, frozen 6mo), Media Phases 2-3, LinkedIn poster, Mini App, PromptLens, 9 orphan scripts, 4 missing front doors, trend-to-money"></div></div><div class="bval">54</div></div>
+    <div class="cnote">Hover a bar for what's inside. The bottom bar is the finding: more than half of everything built has no usage signal — and 23 of those 54 are the formally frozen silo product. No feature-level telemetry exists anywhere, so "daily" for cron jobs means <i>fired</i> daily; whether you read them is unmeasured.</div>
+  </div>
+
+  <!-- ============ CLUSTERS ============ -->
+  <h2 class="section c-purple" id="clusters">The 11 feature clusters — verdict at a glance</h2>
+  <div class="grid">
+    <div class="card green"><h3>1 · Mobile command center <span class="badge b-daily">daily</span> <span class="badge b-keep">keep custom</span></h3>
+      <p>Telegram bridge, /todo, /run, /handover, /panic, /mirror. 243 msgs/14d. Sits exactly on the biggest official hard gap: phone → full repo + scripts. Nothing official comes close.</p></div>
+    <div class="card green"><h3>2 · Job-hunt engine <span class="badge b-daily">daily</span> <span class="badge b-keep">keep custom</span></h3>
+      <p>scan-jobs, recruiter-researcher, morning brief, contact-hub, Jobs CRM, email send. Needs Gmail <b>send</b> + Sheets <b>write</b> — both officially impossible. LinkedIn legs → Claude in Chrome.</p></div>
+    <div class="card blue"><h3>3 · Personal KB in git <span class="badge b-daily">daily</span> <span class="badge b-aligned">already official</span></h3>
+      <p>contacts.md, decisions log, todos, data-map + Claude Code. This IS the official pattern (CLAUDE.md + repo memory). Nothing to migrate — you're on it.</p></div>
+    <div class="card green"><h3>4 · Scheduled intelligence <span class="badge b-daily">fires daily</span> <span class="badge b-keep">keep local</span></h3>
+      <p>Architect nightly, mail digests, tokenburner, scan-jobs. Local Task Scheduler beats cloud Routines: subscription-covered, sub-hourly, has gws auth. Gap: zero read-telemetry.</p></div>
+    <div class="card green"><h3>5 · Bitesize content factory <span class="badge b-weekly">weekly human</span> <span class="badge b-keep">keep + adopt Design</span></h3>
+      <p>Backlog → 20:30 brief → answers → 01:00 build → push-live → Cloudflare. Answer-loop has no official twin. Claude Design can raise episode-page quality inside the pipeline.</p></div>
+    <div class="card amber"><h3>6 · AI Dashboard <span class="badge b-dorm">unmeasured</span> <span class="badge b-keep">keep, prune + fix</span></h3>
+      <p>12 tabs + 2 static pages, no telemetry, dead /settings link, risky promote flow. Officials can't serve live private data — but half the tabs may have zero viewers. Instrument, then prune.</p></div>
+    <div class="card amber"><h3>7 · Voice <span class="badge b-occ">testing only</span> <span class="badge b-migrate">migrate to app</span></h3>
+      <p>Custom :8080 + tunnel + nightly context rebuild + ~25 commits/60d — but logs show only test chats. Claude app voice mode does conversational voice for free, zero maintenance.</p></div>
+    <div class="card green"><h3>8 · Media generation <span class="badge b-occ">occasional</span> <span class="badge b-keep">keep, freeze growth</span></h3>
+      <p>kie.ai images/video via /media, /visual2. Officials: no video path, no pipeline API. Keep Phase 1; Phases 2-3 stay frozen (zero use). App image gen for throwaway images.</p></div>
+    <div class="card red"><h3>9 · Silo product <span class="badge b-frozen">frozen</span> <span class="badge b-frozen">stay frozen</span></h3>
+      <p>23 use cases, ~9 lifetime client messages, zero willingness-to-pay. Frozen 6mo by your own 2026-07-04 decision. Officials have no multi-tenant path either — but the market said no.</p></div>
+    <div class="card blue"><h3>10 · Dev &amp; meta tooling <span class="badge b-weekly">weekly</span> <span class="badge b-aligned">already official</span></h3>
+      <p>Skills, git sync, /new-project, /audit, /level-up, dev modes. Skills system IS Claude Code native. Delete the 6 orphan scripts; install the missing /todo front doors.</p></div>
+    <div class="card red"><h3>11 · Growth experiments <span class="badge b-dorm">dormant</span> <span class="badge b-kill">kill / park</span></h3>
+      <p>Mini App (unused), PromptLens (reviewed once), trend-to-money (never deployed), LinkedIn poster (OAuth-blocked). One rescue: LinkedIn posting via Claude in Chrome scheduled browser tasks.</p></div>
+  </div>
+
+  <!-- ============ PO REALITY ============ -->
+  <h2 class="section c-amber" id="poreality">PO reality check — every cluster through the delivery pipeline</h2>
+  <div class="tbl-scroll">
+    <table>
+      <tr><th>Cluster</th><th>Spec'd</th><th>Built</th><th>Operated<br>(real use)</th><th>Measured<br>(telemetry)</th><th>Ladders to a<br>90-day priority</th></tr>
+      <tr><td>1 · Mobile command center</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓ daily</td><td class="meh">~ listener logs only</td><td class="yes">✓ everything routes through it</td></tr>
+      <tr><td>2 · Job-hunt engine</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓ daily/weekly</td><td class="nope">✗</td><td class="yes">✓ priority #1</td></tr>
+      <tr><td>3 · Personal KB in git</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓ daily</td><td class="meh">~ git history</td><td class="yes">✓ feeds both priorities</td></tr>
+      <tr><td>4 · Scheduled intelligence</td><td class="yes">✓</td><td class="yes">✓</td><td class="meh">~ fires daily, reads unproven</td><td class="nope">✗ fired ≠ read</td><td class="meh">~ partially</td></tr>
+      <tr><td>5 · Bitesize factory</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓ 59% answer rate</td><td class="meh">~ brief status only</td><td class="yes">✓ AI Operator brand</td></tr>
+      <tr><td>6 · AI Dashboard</td><td class="meh">~ grew organically</td><td class="yes">✓ 14 surfaces</td><td class="meh">~ unknown</td><td class="nope">✗ none</td><td class="meh">~ Jobs/Dev tabs yes, rest unclear</td></tr>
+      <tr><td>7 · Voice</td><td class="yes">✓</td><td class="yes">✓ heavily</td><td class="nope">✗ test chats only</td><td class="meh">~ logs since 07-03</td><td class="nope">✗ build sink, no priority link</td></tr>
+      <tr><td>8 · Media generation</td><td class="yes">✓</td><td class="yes">✓ 3 phases</td><td class="meh">~ 3 dates in 60d</td><td class="yes">✓ runs.md</td><td class="meh">~ brand, weakly</td></tr>
+      <tr><td>9 · Silo product</td><td class="yes">✓</td><td class="yes">✓ 23 UCs</td><td class="nope">✗ 9 lifetime msgs</td><td class="yes">✓ audit JSONL</td><td class="nope">✗ frozen by decision</td></tr>
+      <tr><td>10 · Dev &amp; meta tooling</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓ weekly</td><td class="nope">✗</td><td class="yes">✓ enables everything</td></tr>
+      <tr><td>11 · Growth experiments</td><td class="meh">~ idea-driven</td><td class="yes">✓ mostly</td><td class="nope">✗</td><td class="nope">✗</td><td class="nope">✗</td></tr>
+    </table>
+  </div>
+  <div class="note"><b>The PO insight:</b> the pipeline never breaks at Built — it breaks at <b>Operated</b> and <b>Measured</b>. Five of eleven clusters were fully built before real usage was proven, and only two have any telemetry. The discipline fix is one rule: <b>nothing new gets built until its predecessor has 2 weeks of measured use.</b> That's the same verification-gate idea your own Development tab already enforces for code — applied to features.</div>
+
+  <!-- ============ DEEP DIVES ============ -->
+  <h2 class="section c-green" id="dives">Deep dives — how to do it my way vs the official way</h2>
+
+  <div class="dive">
+    <h3>1 · Mobile command center <span class="badge b-keep">keep custom</span></h3>
+    <div class="story">As Jacob, away from the desk, I want to command my entire system from my phone so nothing waits for the desktop.</div>
+    <div class="vs">
+      <div class="col mine"><h4>Your solution</h4><ol>
+        <li>Message <code>@Tojacobbot</code> — listener pipes it into <code>claude -p</code> in the AIOS repo with full file, gws and script access</li>
+        <li><code>/new</code> fresh thread · <code>/bg</code> background task · <code>/run</code> whitelisted commands · <code>/panic</code> kill-switch</li>
+        <li>Photos in, files out via SEND_FILE; handover to desktop with <code>/handover</code></li>
+      </ol></div>
+      <div class="col official"><h4>Official tools</h4><ol>
+        <li>Claude app (iOS): chat + Memory + Projects; Gmail/GCal connectors read-only-ish; <b>no repo, no scripts, no gws</b></li>
+        <li>claude.ai/code from phone browser: cloud session on the GitHub repo — can edit files, but can't touch Hbot scripts, local auth, or Telegram</li>
+      </ol></div>
+    </div>
+    <div class="verdict v-keep"><b>KEEP CUSTOM.</b> This is the killer app and it sits on an official hard gap ("mobile capture into full repo context"). Honest note: install the Claude app anyway as the free disaster-recovery channel for when Hbot is down — its Memory makes it a decent degraded mode.</div>
+  </div>
+
+  <div class="dive">
+    <h3>2 · Job-hunt engine <span class="badge b-keep">keep custom</span></h3>
+    <div class="story">As Jacob, I want every job lead scanned, scored, tracked and followed up so the July 31 deadline is hit with volume and quality.</div>
+    <div class="vs">
+      <div class="col mine"><h4>Your solution</h4><ol>
+        <li><code>/scan-jobs</code> — Platsbanken API, 14d window, dedupe vs applied-roles, cross-ref contacts → Telegram</li>
+        <li>Paste a job ad → recruiter-researcher agent returns Go/No-Go vs about-me.md</li>
+        <li><code>/contact-hub</code> "lunch with X" → fans out to contacts.md + Google Contacts + Networking calendar + Jobs sheet in one confirm</li>
+        <li><code>send_email.py</code> sends as jacob@skogstrom.se; <code>/morning-brief</code> at 08:00; Jobs kanban on the dashboard</li>
+      </ol></div>
+      <div class="col official"><h4>Official tools</h4><ol>
+        <li>Claude app + GCal connector: ask "what's today" — decent brief, calendar R/W works</li>
+        <li>Gmail connector: <b>drafts only — you press send yourself</b></li>
+        <li>CRM: no Sheets write — falls back to Project notes (unstructured) or manual sheet edits</li>
+        <li>Claude in Chrome: LinkedIn triage/outreach in-browser on a schedule — <b>this one is a real official win</b></li>
+      </ol></div>
+    </div>
+    <div class="verdict v-keep"><b>KEEP CUSTOM</b> — the engine needs email send + Sheets write, both official hard gaps. But adopt Claude in Chrome for the three LinkedIn pieces (triage, contact enrich, posting): it replaces two orphan scripts and the OAuth-blocked poster with an official, scheduled browser agent.</div>
+  </div>
+
+  <div class="dive">
+    <h3>3 · Personal KB in git <span class="badge b-aligned">already official</span></h3>
+    <div class="story">As Jacob, I want my contacts, decisions and todos versioned, greppable and editable by my agent so context never evaporates.</div>
+    <div class="vs">
+      <div class="col mine"><h4>Your solution</h4><ol>
+        <li>Markdown files in the private AIOS repo: contacts.md, decisions/log.md, inbox/todos.md, data-map</li>
+        <li>Claude Code reads/writes them in every session; git = history + rollback</li>
+      </ol></div>
+      <div class="col official"><h4>Official tools</h4><ol>
+        <li>Identical — this <b>is</b> the official Claude Code pattern (CLAUDE.md + repo files + auto-memory)</li>
+        <li>claude.ai Memory adds an auto-synthesized slice for the app surface, but it's opaque and not diffable</li>
+      </ol></div>
+    </div>
+    <div class="verdict v-aligned"><b>ALREADY ALIGNED.</b> No migration exists because you're standing on the official architecture. The app's cloud Memory is a complement (mobile degraded mode), not a replacement — your git KB stays the source of truth.</div>
+  </div>
+
+  <div class="dive">
+    <h3>4 · Scheduled intelligence <span class="badge b-keep">keep local</span></h3>
+    <div class="story">As Jacob, I want the system to brief me, digest mail and audit itself on schedule so I start each day pre-informed.</div>
+    <div class="vs">
+      <div class="col mine"><h4>Your solution</h4><ol>
+        <li>Windows Task Scheduler: architect 02:00, tokenburner 01:00, mail digest 12:00 + 19:00, scan-jobs 08:17, brief 08:00, Bitesize 20:30 + 01:00</li>
+        <li>Each runs headless <code>claude -p</code> (subscription-covered) with local gws auth, pushes to Telegram</li>
+      </ol></div>
+      <div class="col official"><h4>Official tools</h4><ol>
+        <li>Claude Code Routines: cloud cron ≥1h, GitHub-repo access, fires with the PC off</li>
+        <li>Can't reach gws auth or Telegram delivery without shipping secrets to the cloud; metered API on top of the subscription</li>
+      </ol></div>
+    </div>
+    <div class="verdict v-keep"><b>KEEP LOCAL.</b> Cheaper (subscription vs metered), finer-grained, and holds the local auth. Routines' one real edge is surviving Hbot downtime — worth a pilot for the repo-only architect nightly as disaster recovery, nothing else. The actual gap here isn't infra, it's <b>measurement</b>: instrument whether digests get read, then kill the unread ones.</div>
+  </div>
+
+  <div class="dive">
+    <h3>5 · Bitesize content factory <span class="badge b-keep">keep + adopt Design</span></h3>
+    <div class="story">As Jacob, I want ideas to become reviewed, publishable episodes overnight so the brand grows while I sleep.</div>
+    <div class="vs">
+      <div class="col mine"><h4>Your solution</h4><ol>
+        <li><code>/bitesize idea</code> → backlog; 20:30 brief pings Telegram; you answer in numbered replies</li>
+        <li>01:00 build (opus) makes the episode page + shoot script + renders; morning handoff</li>
+        <li>Vet in staging gallery → <code>push-live.ps1</code> → Cloudflare Pages → n8n cross-posts video</li>
+      </ol></div>
+      <div class="col official"><h4>Official tools</h4><ol>
+        <li>Idea capture: Claude app Project — works but lands outside the pipeline</li>
+        <li>Nightly build: a Routine on the GitHub repo could build pages in the cloud</li>
+        <li>Episode pages: <b>Claude Design</b> with the design system read from your codebase — likely better pages than the template; export HTML back into showcase/</li>
+        <li>The evening ask → verbatim answer loop: no official equivalent (needs Telegram)</li>
+      </ol></div>
+    </div>
+    <div class="verdict v-keep"><b>KEEP THE LOOP</b> — it's used (59% answer rate) and the answer-capture leg is unreplicable officially. One upgrade: pipe episode-page generation through Claude Design and keep publishing via Cloudflare.</div>
+  </div>
+
+  <div class="dive">
+    <h3>6 · AI Dashboard <span class="badge b-keep">keep, prune + fix</span></h3>
+    <div class="story">As Jacob, I want one screen that shows system health, work state and the job pipeline so I don't grep for status.</div>
+    <div class="vs">
+      <div class="col mine"><h4>Your solution</h4><ol>
+        <li>Next.js dashboard on the private network, served to the phone over Tailscale</li>
+        <li>Live tabs over private data: Jobs (Sheet), Development (SQLite + claude CLI), Activity (session hooks), Todo, Map (iCloud), services health</li>
+      </ol></div>
+      <div class="col official"><h4>Official tools</h4><ol>
+        <li>Claude Design / Artifacts: generate + share <b>static</b> pages — no live server, no private-network data, and pushing PII to claude.ai contradicts why the repo is private</li>
+        <li>No official product serves a live dashboard over local data. Period.</li>
+      </ol></div>
+    </div>
+    <div class="verdict v-keep"><b>KEEP</b> — officials genuinely can't do this. But the critic is right that it's an unmeasured 14-surface build: add a 1-line page-view log, wait 2 weeks, prune the tabs with zero views. Fix now: dead /settings link, PromptLens tab (feature is being retired), document the promote flow's all-diffs gotcha.</div>
+  </div>
+
+  <div class="dive">
+    <h3>7 · Voice <span class="badge b-migrate">migrate to app</span></h3>
+    <div class="story">As Jacob, I want to talk to my assistant hands-free from anywhere.</div>
+    <div class="vs">
+      <div class="col mine"><h4>Your solution</h4><ol>
+        <li><code>/voicelink</code> → custom voice server through a Cloudflare tunnel; Claude deep tier + Gemini Flash fast tier</li>
+        <li>06:00 context rebuild, calendar refresh, screen-router — ~25 commits of upkeep in 60 days</li>
+      </ol></div>
+      <div class="col official"><h4>Official tools</h4><ol>
+        <li>Claude app voice mode: push-to-talk conversational voice, reaches GCal/Gmail/Docs connectors, zero maintenance, no tunnel</li>
+        <li>Doesn't drive the repo or scripts — but per your own logs, neither does the custom one (test chats only)</li>
+      </ol></div>
+    </div>
+    <div class="verdict v-migrate"><b>MIGRATE.</b> The evidence is blunt: heavily built, not actually used for work. Claude app voice mode covers the real (conversational) use for free. Park the server, tunnel and 06:00 rebuild; revive only if "drive the PC by voice" becomes a demonstrated need, not a demo. This single move deletes a tunnel, a port, a nightly task and your biggest build sink.</div>
+  </div>
+
+  <div class="dive">
+    <h3>8 · Media generation <span class="badge b-keep">keep, freeze growth</span></h3>
+    <div class="story">As Jacob, I want on-brand images and video clips generated from a one-line ask.</div>
+    <div class="vs">
+      <div class="col mine"><h4>Your solution</h4><ol>
+        <li><code>/media</code> routes NL to kie.ai (video + nano-banana images), logs to runs.md; <code>/visual2</code> house-style PNGs + editable .excalidraw</li>
+      </ol></div>
+      <div class="col official"><h4>Official tools</h4><ol>
+        <li>Claude app image gen: fine for throwaway images, no pipeline API, no house-style consistency</li>
+        <li>Video: <b>no official path at all</b>; Claude Design covers page-level visuals, not media assets</li>
+      </ol></div>
+    </div>
+    <div class="verdict v-keep"><b>KEEP</b> Phase 1 as-is (video has no official substitute; house-style needs the pipeline). Use app image gen for one-offs to save kie.ai spend. Phases 2 (editing) and 3 (posting) stay frozen — zero usage since built.</div>
+  </div>
+
+  <div class="dive">
+    <h3>9 + 11 · Silos &amp; growth experiments <span class="badge b-kill">kill / park</span> <span class="badge b-frozen">frozen</span></h3>
+    <div class="story">One-line treatment — these are dormant; full pipelines would be theater.</div>
+    <div class="vs">
+      <div class="col mine"><h4>What exists</h4><ol>
+        <li>Silo product: 23 UCs, ~9 lifetime messages, frozen 6mo by decision 2026-07-04 — <b>stay frozen</b>, revisit after a job is signed</li>
+        <li>Mini App: built, never configured — <b>kill</b></li>
+        <li>PromptLens: silent rewrites, reviewed once — <b>kill</b> (keep on-demand /improveprompt)</li>
+        <li>trend-to-money / whats-trending: 2 local demos — <b>park</b>; if revived, generate pages with Claude Design instead</li>
+        <li>LinkedIn auto-poster: OAuth-blocked — <b>replace</b> with Claude in Chrome scheduled posting</li>
+        <li>9 orphan scripts — <b>delete</b> (git keeps them forever anyway)</li>
+      </ol></div>
+      <div class="col official"><h4>Official angle</h4><ol>
+        <li>Multi-tenant assistants: no official consumer path exists; Agent SDK = the same DIY you already did. The freeze was a market decision, not a tooling one</li>
+        <li>Claude in Chrome is the one official product that rescues a dead feature here (LinkedIn)</li>
+      </ol></div>
+    </div>
+    <div class="verdict v-kill"><b>PRUNE.</b> This tail is ~40% of everything built. Deleting it costs nothing (git history keeps it), removes two ports and a mental tax, and makes the weekly /audit stop reporting the same orphans forever.</div>
+  </div>
+
+  <!-- ============ QUICK REFERENCE ============ -->
+  <h2 class="section c-blue" id="quickref">Daily-action quick reference — the honest side-by-side</h2>
+  <div class="tbl-scroll">
+    <table>
+      <tr><th>Action</th><th>Your solution</th><th>Official path</th><th>Better today</th></tr>
+      <tr><td>Ask from phone w/ full context</td><td><code>@Tojacobbot</code> any message</td><td>Claude app chat (no repo/scripts)</td><td class="yes">Yours</td></tr>
+      <tr><td>Capture a todo</td><td>Telegram "add todo …" → inbox/todos.md</td><td>Claude app + Memory (not in your files)</td><td class="yes">Yours</td></tr>
+      <tr><td>Log a contact / lunch</td><td><code>/contact-hub</code> → 4 destinations, one confirm</td><td>Manual: app can draft, you update Contacts/Sheet yourself</td><td class="yes">Yours</td></tr>
+      <tr><td>Send an email as you</td><td><code>send_email.py</code> via chat ask</td><td>Gmail connector drafts; <b>you</b> press send</td><td class="yes">Yours</td></tr>
+      <tr><td>Morning brief</td><td>08:00 cron → Telegram</td><td>Ask Claude app + GCal connector each morning</td><td class="yes">Yours (push beats pull)</td></tr>
+      <tr><td>Scan job boards</td><td><code>/scan-jobs</code> cron 08:17</td><td>Routine calling Platsbanken + committing to repo (1h floor, metered)</td><td class="yes">Yours</td></tr>
+      <tr><td>Update job CRM</td><td>Jobs tab / gws values.update</td><td>None (no Sheets write)</td><td class="yes">Yours</td></tr>
+      <tr><td>Answer nightly brief</td><td>Telegram numbered replies → verbatim capture</td><td>None</td><td class="yes">Yours</td></tr>
+      <tr><td>LinkedIn triage / posting</td><td>Orphan scripts + OAuth-blocked poster</td><td><b>Claude in Chrome</b> scheduled browser tasks</td><td class="meh">Official</td></tr>
+      <tr><td>Voice conversation</td><td>Custom server + tunnel + /voicelink</td><td><b>Claude app voice mode</b></td><td class="meh">Official</td></tr>
+      <tr><td>One-off image</td><td>/visual2 (kie.ai, paid)</td><td><b>Claude app image gen</b></td><td class="meh">Official (throwaways)</td></tr>
+      <tr><td>On-brand visuals / video</td><td>/media, /visual2 pipeline</td><td>No video path, no pipeline API</td><td class="yes">Yours</td></tr>
+      <tr><td>Polished page / deck</td><td>/showcase-page, hand-built HTML</td><td><b>Claude Design</b> + design system from your codebase</td><td class="meh">Official (quality), yours (privacy)</td></tr>
+      <tr><td>Where's the family</td><td>/wherefam (iCloud CLI)</td><td>None</td><td class="yes">Yours</td></tr>
+      <tr><td>Repo work at desk</td><td>Claude Code CLI</td><td>Same thing — it IS official</td><td class="yes">Same</td></tr>
+    </table>
+  </div>
+
+  <!-- ============ GAPS ============ -->
+  <h2 class="section c-amber" id="gaps">Hard-gaps matrix — what official tools can and can't do (July 2026)</h2>
+  <div class="tbl-scroll">
+    <table>
+      <tr><th>Capability</th><th>Official status</th><th>Detail</th><th>Consequence</th></tr>
+      <tr><td>Mobile chat → full repo context</td><td class="no">NO</td><td>App has Memory/Projects, zero file access; Code web needs cloud/GitHub</td><td>Telegram bridge stays</td></tr>
+      <tr><td>Send email programmatically</td><td class="no">NO</td><td>Gmail connector = read + draft only</td><td>gws + send_email.py stay</td></tr>
+      <tr><td>Write Google Sheets / Drive</td><td class="no">NO</td><td>Connectors read-only; GCal is the only full R/W</td><td>Jobs CRM stays on gws</td></tr>
+      <tr><td>Scheduled cloud agents</td><td class="partial">PARTIAL</td><td>Routines: cron ≥1h, GitHub/webhook triggers, laptop-off, metered</td><td>DR option, not a replacement</td></tr>
+      <tr><td>Scheduled browser automation</td><td class="full">FULL</td><td>Claude in Chrome: record + schedule browser workflows</td><td>Adopt for LinkedIn</td></tr>
+      <tr><td>Conversational voice</td><td class="full">FULL</td><td>App voice mode, reaches GCal/Gmail/Docs</td><td>Migrate voice cluster</td></tr>
+      <tr><td>Static page generation + sharing</td><td class="full">FULL</td><td>Artifacts share links; Design reads your design system, exports HTML</td><td>Adopt for pages/decks</td></tr>
+      <tr><td>Live dashboard over private data</td><td class="no">NO</td><td>Artifacts/Design are static; no server, no private network</td><td>Dashboard stays custom</td></tr>
+      <tr><td>Video generation</td><td class="no">NO</td><td>Images only, in-UI</td><td>kie.ai stays</td></tr>
+      <tr><td>Multi-tenant client assistants</td><td class="no">NO</td><td>Agent SDK = build it yourself (you did)</td><td>Freeze was market-driven, not tooling</td></tr>
+      <tr><td>Skills / hooks / subagents</td><td class="full">FULL</td><td>Native Claude Code — you're already on it</td><td>Nothing to do</td></tr>
+      <tr><td>Git-versioned personal KB</td><td class="full">FULL</td><td>Repo files + CLAUDE.md = the official pattern</td><td>Nothing to do</td></tr>
+    </table>
+  </div>
+
+  <!-- ============ PANEL ============ -->
+  <h2 class="section c-pink" id="panel">The panel — critic vs advocate, and where they agreed</h2>
+  <div class="panel">
+    <div class="quote critic">
+      <h4>The critic's core charge</h4>
+      <p>"Build-to-use ratio is upside down, 26 days from the deadline. The dormant column holds Media Phases 2-3, the silos, the LinkedIn poster, the Mini App, PromptLens — none of it ladders to 'PO/AI role by July 31'."</p>
+      <p>"The silo product is a sunk-cost monument: ~9 lifetime messages against a 12-slot pool, nonce-binding and SOPS encryption."</p>
+      <p>"Bus factor 1: everything dies with one PC. The dashboard is a 14-surface building nobody's measured."</p>
+    </div>
+    <div class="quote advocate">
+      <h4>The advocate's core defense</h4>
+      <p>"The Telegram bridge is the whole product — 243 messages in 14 days on exactly the hard gap officials can't fill. Migrate to the Claude app and you keep a chatbot, lose your operator."</p>
+      <p>"Email send, Sheets write, the 4-destination contact-hub fan-out, the live dashboard: every daily-use feature sits squarely on an official hard gap. That's a keep on merit, not sentiment."</p>
+      <p>"The honest tax is the dormant tail — prune it so 'keep' doesn't mean 'hoard'."</p>
+    </div>
+  </div>
+  <div class="note"><b>Where both landed (unprompted):</b> keep the Telegram bridge, gws writes, git KB, job-hunt loop, Bitesize answer-loop · kill/park silo expansion, Media 2-3, Mini App, PromptLens, trend-to-money, the orphans · the only real fights were voice (critic won on evidence — test chats only) and how hard to prune the dashboard (split the difference: instrument first, then cut).</div>
+
+  <!-- ============ PLAN ============ -->
+  <h2 class="section c-green" id="plan">Action plan — rebuild by subtraction, not rewrite</h2>
+  <div class="plan">
+    <div class="card green"><h3>NOW · this week (job-hunt critical)</h3><ul>
+      <li>Install the missing <code>/todo</code> front-door commands — the files are in daily use, the commands were never pasted in</li>
+      <li>Pilot <b>Claude in Chrome</b> for LinkedIn triage + posting — replaces 2 orphan scripts and the OAuth-blocked poster</li>
+      <li>Delete the 9 orphan scripts, the Mini App and the PromptLens silent layer (git remembers everything)</li>
+      <li>Freeze all net-new feature surface until July 31</li>
+    </ul></div>
+    <div class="card amber"><h3>NEXT · this month</h3><ul>
+      <li>Add 1-line read/view telemetry to digests + dashboard tabs; after 2 weeks, kill what has zero reads</li>
+      <li>Move conversational voice to <b>Claude app voice mode</b>; park the server, tunnel and 06:00 rebuild</li>
+      <li>Dashboard hygiene: fix /settings dead link, drop the PromptLens tab, document the promote-carries-all-diffs gotcha</li>
+      <li>Adopt <b>Claude Design</b> for Bitesize episode pages via the existing design-brief handoff</li>
+    </ul></div>
+    <div class="card blue"><h3>LATER · after the job is signed</h3><ul>
+      <li>Pilot one <b>Routine</b> (architect nightly, repo-only) as laptop-off disaster recovery</li>
+      <li>Revisit the silo decision per the 2026-07-04 log entry — with the Agent SDK as the build base if the market signal changes</li>
+      <li>Re-evaluate Media Phases 2-3 only if Phase 1 usage becomes weekly</li>
+      <li>Adopt the "2 weeks measured use before the next build" gate as a standing rule</li>
+    </ul></div>
+  </div>
+
+  <div class="note">
+    <b>The senior-architect bottom line:</b> a rebuild on official tools is <b>not possible today</b> — the daily core (phone-to-repo bridge, email send, Sheets write, live dashboard) sits on four documented official hard gaps. The rational rebuild is <b>subtraction</b>: keep the thin custom spine (listener + gws + git KB + dashboard write-tabs), hand every leaf officials now do better to them (voice → app, LinkedIn → Chrome, pages → Design, throwaway images → app), and delete the dormant 55%. Same daily functionality, roughly half the moving parts.
+  </div>
+
+  <footer>
+    Method: 4 inventory agents (AIOS, Dashboard, Bitesize, Silos) + usage-evidence agent (git logs, listener logs, runs, brief answer-rates) + official-capability researcher, then an adversarial critic/advocate panel and PO synthesis.<br>
+    Sources: internal artifact inventory + usage logs · Anthropic product docs (July 2026). Unlisted review copy — please don't share the link onward.
+  </footer>
+
+</div>
+</body>
+</html>
