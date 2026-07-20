@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Trip Hunter &mdash; K&ouml;penhamn &#8646; Boston</title>
+<style>
+  :root {
+    --bg: #0b0e14; --panel: #131722; --panel2: #1a1f2e; --line: #262c3d;
+    --text: #e6e9f0; --mut: #8b93a7; --green: #34d399; --red: #f87171;
+    --amber: #fbbf24; --accent: #7aa2ff;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--text);
+    font: 16px/1.55 -apple-system, "Segoe UI", Roboto, sans-serif; padding: 24px 16px 48px; }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  h1 { font-size: 26px; letter-spacing: -0.02em; }
+  h1 span { color: var(--accent); }
+  .sub { color: var(--mut); font-size: 14px; margin: 6px 0 4px; }
+  .stamp { color: var(--mut); font-size: 13px; margin-bottom: 24px; }
+  .stamp b { color: var(--text); font-weight: 600; }
+  h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--mut); margin: 28px 0 12px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+  .card.best { border-color: var(--green); box-shadow: 0 0 0 1px var(--green),
+    0 8px 30px -12px rgba(52, 211, 153, 0.35); }
+  .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .rank { background: var(--panel2); border-radius: 999px; padding: 2px 10px;
+    font-size: 12px; color: var(--mut); }
+  .card.best .rank { background: rgba(52,211,153,.15); color: var(--green); }
+  .price { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+  .airline { color: var(--accent); font-size: 14px; margin: 2px 0 10px; }
+  .legs { font-size: 13.5px; color: var(--text); display: grid; gap: 4px; }
+  .lbl { display: inline-block; width: 34px; color: var(--mut); font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.05em; }
+  .delta { font-size: 12.5px; font-weight: 600; border-radius: 999px; padding: 2px 8px; }
+  .delta.down { color: var(--green); background: rgba(52,211,153,.12); }
+  .delta.up { color: var(--red); background: rgba(248,113,113,.12); }
+  .delta.same { color: var(--mut); background: var(--panel2); }
+  .delta.new { color: var(--amber); background: rgba(251,191,36,.12); }
+  .reject-block { background: var(--panel); border: 1px dashed var(--line);
+    border-radius: 14px; padding: 14px 16px; margin-top: 14px; }
+  .reject-block h3 { font-size: 13px; color: var(--mut); font-weight: 600; margin-bottom: 8px; }
+  .reject { font-size: 14px; color: var(--mut); padding: 5px 0; }
+  .reject-price { color: var(--text); font-weight: 600; }
+  .reject-why { color: var(--red); font-size: 12.5px; }
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px; }
+  th { text-align: left; color: var(--mut); font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.06em; padding: 10px 14px; background: var(--panel2); }
+  td { padding: 10px 14px; border-top: 1px solid var(--line); background: var(--panel); }
+  tr.dim td { color: var(--mut); }
+  tr.dim td strong { color: var(--mut); font-weight: 500; }
+  td.under strong { color: var(--green); }
+  .badge { font-size: 11.5px; font-weight: 700; border-radius: 6px; padding: 2px 7px; }
+  .badge.ok { color: var(--green); background: rgba(52,211,153,.12); }
+  .badge.no { color: var(--red); background: rgba(248,113,113,.12); }
+  .newtrip { background: linear-gradient(180deg, var(--panel2), var(--panel));
+    border: 1px solid var(--line); border-radius: 14px; padding: 18px; margin-top: 28px; }
+  .newtrip h2 { margin-top: 0; }
+  .newtrip ul { margin: 8px 0 12px 20px; font-size: 14.5px; }
+  .newtrip li { margin: 3px 0; }
+  .newtrip p { font-size: 14px; color: var(--mut); }
+  .newtrip b { color: var(--text); }
+  .foot { color: var(--mut); font-size: 12.5px; margin-top: 24px; }
+  .none { color: var(--mut); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Trip Hunter <span>K&ouml;penhamn &#8646; Boston</span></h1>
+  <p class="sub">Familjen &times; 4 &middot; max 1 stopp per riktning &middot; 2 incheckade v&auml;skor inr&auml;knade i priset &middot; budget 25,000 kr &middot; max 12 h per riktning</p>
+  <p class="stamp">Senaste s&ouml;kning: <b>2026-07-20 21:32</b> &middot; j&auml;mf&ouml;rs mot baslinje 2026-07-20 21:32 &middot; 9/9 datumpar under budget</p>
+
+  <h2>B&auml;st just nu &mdash; OK enligt alla krav</h2>
+  <div class="cards">
+      <div class="card best">
+        <div class="card-top"><span class="rank">#1</span><span class="delta same">±0</span></div>
+        <div class="price">22 026 kr</div>
+        <div class="airline">Icelandair</div>
+        <div class="legs">
+          <div><span class="lbl">Ut</span> 23 okt &middot; 10 h 50 min &middot; 1 stopp</div>
+          <div><span class="lbl">Hem</span> 31 okt &middot; 10 h 10 min &middot; 1 stopp</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="rank">#2</span><span class="delta same">±0</span></div>
+        <div class="price">22 026 kr</div>
+        <div class="airline">Icelandair</div>
+        <div class="legs">
+          <div><span class="lbl">Ut</span> 23 okt &middot; 10 h 50 min &middot; 1 stopp</div>
+          <div><span class="lbl">Hem</span> 1 nov &middot; 9 h 55 min &middot; 1 stopp</div>
+        </div>
+      </div></div>
+  
+    <div class="reject-block">
+      <h3>Billigare &mdash; men &ouml;ver 12 h per riktning (ej OK)</h3>
+      <div class="reject"><span class="reject-price">20 501 kr</span> Tap Air Portugal, 22 okt → 30 okt <span class="reject-why">&ouml;ver 12 h: ut 20 h 15 min</span> <span class="delta same">±0</span></div><div class="reject"><span class="reject-price">20 501 kr</span> Tap Air Portugal, 22 okt → 31 okt <span class="reject-why">&ouml;ver 12 h: ut 20 h 15 min, hem 23 h 50 min</span> <span class="delta same">±0</span></div><div class="reject"><span class="reject-price">20 501 kr</span> Tap Air Portugal, 22 okt → 1 nov <span class="reject-why">&ouml;ver 12 h: ut 20 h 15 min</span> <span class="delta same">±0</span></div>
+    </div>
+
+  <h2>Alla 9 datumpar</h2>
+  <div class="tablewrap">
+    <table>
+      <tr><th>Datum</th><th>Pris (4 pers, t/r)</th><th>&Delta; baslinje</th><th>Flygbolag</th><th>Restid ut / hem</th><th>12 h-krav</th></tr>
+      
+        <tr class="dim">
+          <td>22 okt → 30 okt</td>
+          <td class="under"><strong>20 501 kr</strong></td>
+          <td><span class="delta same">±0</span></td>
+          <td>Tap Air Portugal</td>
+          <td>20 h 15 min / 11 h 50 min</td>
+          <td><span class="badge no">&gt;12 h</span></td>
+        </tr>
+        <tr class="dim">
+          <td>22 okt → 31 okt</td>
+          <td class="under"><strong>20 501 kr</strong></td>
+          <td><span class="delta same">±0</span></td>
+          <td>Tap Air Portugal</td>
+          <td>20 h 15 min / 23 h 50 min</td>
+          <td><span class="badge no">&gt;12 h</span></td>
+        </tr>
+        <tr class="dim">
+          <td>22 okt → 1 nov</td>
+          <td class="under"><strong>20 501 kr</strong></td>
+          <td><span class="delta same">±0</span></td>
+          <td>Tap Air Portugal</td>
+          <td>20 h 15 min / 11 h 50 min</td>
+          <td><span class="badge no">&gt;12 h</span></td>
+        </tr>
+        <tr class="dim">
+          <td>24 okt → 30 okt</td>
+          <td class="under"><strong>21 993 kr</strong></td>
+          <td><span class="delta same">±0</span></td>
+          <td>British Airways</td>
+          <td>20 h 45 min / 10 h 15 min</td>
+          <td><span class="badge no">&gt;12 h</span></td>
+        </tr>
+        <tr class="dim">
+          <td>24 okt → 31 okt</td>
+          <td class="under"><strong>21 993 kr</strong></td>
+          <td><span class="delta same">±0</span></td>
+          <td>British Airways</td>
+          <td>20 h 45 min / 19 h 55 min</td>
+          <td><span class="badge no">&gt;12 h</span></td>
+        </tr>
+        <tr>
+          <td>23 okt → 31 okt</td>
+          <td class="under"><strong>22 026 kr</strong></td>
+          <td><span class="delta same">±0</span></td>
+          <td>Icelandair</td>
+          <td>10 h 50 min / 10 h 10 min</td>
+          <td><span class="badge ok">OK</span></td>
+        </tr>
+        <tr>
+          <td>23 okt → 1 nov</td>
+          <td class="under"><strong>22 026 kr</strong></td>
+          <td><span class="delta same">±0</span></td>
+          <td>Icelandair</td>
+          <td>10 h 50 min / 9 h 55 min</td>
+          <td><span class="badge ok">OK</span></td>
+        </tr>
+        <tr class="dim">
+          <td>24 okt → 1 nov</td>
+          <td class="under"><strong>22 085 kr</strong></td>
+          <td><span class="delta same">±0</span></td>
+          <td>Icelandair</td>
+          <td>29 h 40 min / 9 h 55 min</td>
+          <td><span class="badge no">&gt;12 h</span></td>
+        </tr>
+        <tr class="dim">
+          <td>23 okt → 30 okt</td>
+          <td class="under"><strong>22 416 kr</strong></td>
+          <td><span class="delta same">±0</span></td>
+          <td>Tap Air Portugal</td>
+          <td>13 h 35 min / 11 h 50 min</td>
+          <td><span class="badge no">&gt;12 h</span></td>
+        </tr>
+    </table>
+  </div>
+
+  <div class="newtrip">
+    <h2>Jaga en annan resa?</h2>
+    <p>Mejla <b>jacob@skogstrom.se</b> med &auml;mnesraden <b>Trip Hunter</b> (beh&aring;ll den exakt) och skriv:</p>
+    <ul>
+      <li><b>Fr&aring;n &rarr; till</b> (stad eller flygplats)</li>
+      <li><b>Utresa:</b> datumspann (t.ex. 22&ndash;24 oktober)</li>
+      <li><b>Hemresa:</b> datumspann</li>
+      <li><b>Resen&auml;rer:</b> antal vuxna + barn med &aring;lder</li>
+      <li><b>Maxbudget</b> totalt i kr, tur och retur, alla resen&auml;rer</li>
+    </ul>
+    <p>Valfritt (annars g&auml;ller: max 1 stopp, 2 v&auml;skor, max 12 h per riktning): andra krav p&aring; stopp, v&auml;skor eller restid. Mejlen l&auml;ses av en g&aring;ng per dag &mdash; jakten st&aring;r sedan p&aring; denna sida.</p>
+  </div>
+
+  <p class="foot">Uppdateras automatiskt 6 g&aring;nger per dag (var 4:e timme fr&aring;n kl 06). K&auml;lla: Google Flights. Priserna &auml;r totalpris f&ouml;r 4 personer inklusive 2 incheckade v&auml;skor; Basic Economy &auml;r bortfiltrerat.</p>
+</div>
+</body>
+</html>
