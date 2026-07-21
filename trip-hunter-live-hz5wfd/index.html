@@ -66,38 +66,68 @@
   .newtrip b { color: var(--text); }
   .foot { color: var(--mut); font-size: 12.5px; margin-top: 24px; }
   .none { color: var(--mut); }
+  .book { display: inline-block; margin-top: 12px; font-size: 13.5px; font-weight: 600;
+    color: var(--accent); text-decoration: none; }
+  .book:hover { text-decoration: underline; }
+  .tlink { color: var(--text); text-decoration: underline;
+    text-decoration-color: var(--line); text-underline-offset: 3px; }
+  .tlink:hover { text-decoration-color: var(--accent); }
+  .direct-block { margin-top: 4px; }
+  .card.direct { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent),
+    0 8px 30px -12px rgba(122, 162, 255, 0.35); }
+  .card.direct .rank { background: rgba(122,162,255,.15); color: var(--accent); }
+  .direct-alts { background: var(--panel); border: 1px dashed var(--line);
+    border-radius: 14px; padding: 14px 16px; margin-top: 14px; }
+  .direct-alts h3 { font-size: 13px; color: var(--mut); font-weight: 600; margin-bottom: 8px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Trip Hunter <span>K&ouml;penhamn &#8646; Boston</span></h1>
   <p class="sub">Familjen &times; 4 &middot; max 1 stopp per riktning &middot; 2 incheckade v&auml;skor inr&auml;knade i priset &middot; budget 25,000 kr &middot; max 12 h per riktning</p>
-  <p class="stamp">Senaste s&ouml;kning: <b>2026-07-21 06:00</b> &middot; j&auml;mf&ouml;rs mot baslinje 2026-07-20 21:32 &middot; 9/9 datumpar under budget</p>
+  <p class="stamp">Senaste s&ouml;kning: <b>2026-07-21 09:47</b> &middot; j&auml;mf&ouml;rs mot baslinje 2026-07-20 21:32 &middot; 9/9 datumpar under budget</p>
 
   <h2>B&auml;st just nu &mdash; OK enligt alla krav</h2>
   <div class="cards">
       <div class="card best">
-        <div class="card-top"><span class="rank">#1</span><span class="delta down">−16 kr</span></div>
-        <div class="price">22 010 kr</div>
+        <div class="card-top"><span class="rank">#1</span><span class="delta down">−37 kr</span></div>
+        <div class="price">21 989 kr</div>
         <div class="airline">Icelandair</div>
         <div class="legs">
           <div><span class="lbl">Ut</span> 23 okt &middot; 10 h 50 min &middot; 1 stopp</div>
           <div><span class="lbl">Hem</span> 31 okt &middot; 10 h 10 min &middot; 1 stopp</div>
         </div>
+        <a class="book" href="https://www.google.com/travel/flights?q=flights%20from%20CPH%20to%20BOS%20on%202026-10-23%20through%202026-10-31&curr=SEK&hl=sv" target="_blank" rel="noopener">Se &amp; boka p&aring; Google Flights &rarr;</a>
       </div>
       <div class="card">
-        <div class="card-top"><span class="rank">#2</span><span class="delta down">−16 kr</span></div>
-        <div class="price">22 010 kr</div>
+        <div class="card-top"><span class="rank">#2</span><span class="delta down">−37 kr</span></div>
+        <div class="price">21 989 kr</div>
         <div class="airline">Icelandair</div>
         <div class="legs">
           <div><span class="lbl">Ut</span> 23 okt &middot; 10 h 50 min &middot; 1 stopp</div>
           <div><span class="lbl">Hem</span> 1 nov &middot; 9 h 55 min &middot; 1 stopp</div>
         </div>
+        <a class="book" href="https://www.google.com/travel/flights?q=flights%20from%20CPH%20to%20BOS%20on%202026-10-23%20through%202026-11-01&curr=SEK&hl=sv" target="_blank" rel="noopener">Se &amp; boka p&aring; Google Flights &rarr;</a>
       </div></div>
   
     <div class="reject-block">
       <h3>Billigare &mdash; men &ouml;ver 12 h per riktning (ej OK)</h3>
-      <div class="reject"><span class="reject-price">20 486 kr</span> Tap Air Portugal, 22 okt → 30 okt <span class="reject-why">&ouml;ver 12 h: ut 20 h 15 min</span> <span class="delta down">−15 kr</span></div>
+      <div class="reject"><span class="reject-price">20 466 kr</span> Tap Air Portugal, 22 okt → 30 okt <span class="reject-why">&ouml;ver 12 h: ut 20 h 15 min</span> <span class="delta down">−35 kr</span></div>
+    </div>
+  
+    <div class="direct-block">
+      <h2>Billigaste direktflyget &mdash; j&auml;mf&ouml;relse</h2>
+      <div class="cards"><div class="card direct">
+        <div class="card-top"><span class="rank">Direkt / nonstop</span></div>
+        <div class="price">26 196 kr</div>
+        <div class="airline">Scandinavian Airlines</div>
+        <div class="legs">
+          <div><span class="lbl">Ut</span> 22 okt &middot; 7 h 55 min &middot; 0 stopp</div>
+          <div><span class="lbl">Hem</span> 30 okt &middot; 7 h 20 min &middot; 0 stopp</div>
+        </div>
+        <a class="book" href="https://www.google.com/travel/flights?q=flights%20from%20CPH%20to%20BOS%20on%202026-10-22%20through%202026-10-30&curr=SEK&hl=sv" target="_blank" rel="noopener">Se &amp; boka p&aring; Google Flights &rarr;</a>
+      </div></div>
+      <div class="direct-alts"><h3>Andra direktdatum</h3><div class="reject"><span class="reject-price">26 196 kr</span> Scandinavian Airlines, 23 okt → 30 okt</div><div class="reject"><span class="reject-price">27 304 kr</span> Scandinavian Airlines, 24 okt → 30 okt</div></div>
     </div>
 
   <h2>Alla 9 datumpar</h2>
@@ -106,73 +136,73 @@
       <tr><th>Datum</th><th>Pris (4 pers, t/r)</th><th>&Delta; baslinje</th><th>Flygbolag</th><th>Restid ut / hem</th><th>12 h-krav</th></tr>
       
         <tr class="dim">
-          <td>22 okt → 30 okt</td>
-          <td class="under"><strong>20 486 kr</strong></td>
-          <td><span class="delta down">−15 kr</span></td>
+          <td><a class="tlink" href="https://www.google.com/travel/flights?q=flights%20from%20CPH%20to%20BOS%20on%202026-10-22%20through%202026-10-30&curr=SEK&hl=sv" target="_blank" rel="noopener">22 okt → 30 okt</a></td>
+          <td class="under"><strong>20 466 kr</strong></td>
+          <td><span class="delta down">−35 kr</span></td>
           <td>Tap Air Portugal</td>
           <td>20 h 15 min / 11 h 50 min</td>
           <td><span class="badge no">&gt;12 h</span></td>
         </tr>
         <tr class="dim">
-          <td>22 okt → 31 okt</td>
-          <td class="under"><strong>20 486 kr</strong></td>
-          <td><span class="delta down">−15 kr</span></td>
+          <td><a class="tlink" href="https://www.google.com/travel/flights?q=flights%20from%20CPH%20to%20BOS%20on%202026-10-22%20through%202026-10-31&curr=SEK&hl=sv" target="_blank" rel="noopener">22 okt → 31 okt</a></td>
+          <td class="under"><strong>20 466 kr</strong></td>
+          <td><span class="delta down">−35 kr</span></td>
           <td>Tap Air Portugal</td>
           <td>20 h 15 min / 19 h 40 min</td>
           <td><span class="badge no">&gt;12 h</span></td>
         </tr>
         <tr class="dim">
-          <td>22 okt → 1 nov</td>
-          <td class="under"><strong>20 486 kr</strong></td>
-          <td><span class="delta down">−15 kr</span></td>
+          <td><a class="tlink" href="https://www.google.com/travel/flights?q=flights%20from%20CPH%20to%20BOS%20on%202026-10-22%20through%202026-11-01&curr=SEK&hl=sv" target="_blank" rel="noopener">22 okt → 1 nov</a></td>
+          <td class="under"><strong>20 466 kr</strong></td>
+          <td><span class="delta down">−35 kr</span></td>
           <td>Tap Air Portugal</td>
           <td>20 h 15 min / 11 h 50 min</td>
           <td><span class="badge no">&gt;12 h</span></td>
         </tr>
         <tr>
-          <td>23 okt → 31 okt</td>
-          <td class="under"><strong>22 010 kr</strong></td>
-          <td><span class="delta down">−16 kr</span></td>
+          <td><a class="tlink" href="https://www.google.com/travel/flights?q=flights%20from%20CPH%20to%20BOS%20on%202026-10-23%20through%202026-10-31&curr=SEK&hl=sv" target="_blank" rel="noopener">23 okt → 31 okt</a></td>
+          <td class="under"><strong>21 989 kr</strong></td>
+          <td><span class="delta down">−37 kr</span></td>
           <td>Icelandair</td>
           <td>10 h 50 min / 10 h 10 min</td>
           <td><span class="badge ok">OK</span></td>
         </tr>
         <tr>
-          <td>23 okt → 1 nov</td>
-          <td class="under"><strong>22 010 kr</strong></td>
-          <td><span class="delta down">−16 kr</span></td>
+          <td><a class="tlink" href="https://www.google.com/travel/flights?q=flights%20from%20CPH%20to%20BOS%20on%202026-10-23%20through%202026-11-01&curr=SEK&hl=sv" target="_blank" rel="noopener">23 okt → 1 nov</a></td>
+          <td class="under"><strong>21 989 kr</strong></td>
+          <td><span class="delta down">−37 kr</span></td>
           <td>Icelandair</td>
           <td>10 h 50 min / 9 h 55 min</td>
           <td><span class="badge ok">OK</span></td>
         </tr>
         <tr class="dim">
-          <td>24 okt → 31 okt</td>
-          <td class="under"><strong>22 069 kr</strong></td>
-          <td><span class="delta up">+76 kr</span></td>
+          <td><a class="tlink" href="https://www.google.com/travel/flights?q=flights%20from%20CPH%20to%20BOS%20on%202026-10-24%20through%202026-10-31&curr=SEK&hl=sv" target="_blank" rel="noopener">24 okt → 31 okt</a></td>
+          <td class="under"><strong>22 048 kr</strong></td>
+          <td><span class="delta up">+55 kr</span></td>
           <td>Icelandair</td>
           <td>29 h 40 min / 10 h 10 min</td>
           <td><span class="badge no">&gt;12 h</span></td>
         </tr>
         <tr class="dim">
-          <td>24 okt → 1 nov</td>
-          <td class="under"><strong>22 069 kr</strong></td>
-          <td><span class="delta down">−16 kr</span></td>
+          <td><a class="tlink" href="https://www.google.com/travel/flights?q=flights%20from%20CPH%20to%20BOS%20on%202026-10-24%20through%202026-11-01&curr=SEK&hl=sv" target="_blank" rel="noopener">24 okt → 1 nov</a></td>
+          <td class="under"><strong>22 048 kr</strong></td>
+          <td><span class="delta down">−37 kr</span></td>
           <td>Icelandair</td>
           <td>29 h 40 min / 9 h 55 min</td>
           <td><span class="badge no">&gt;12 h</span></td>
         </tr>
         <tr class="dim">
-          <td>24 okt → 30 okt</td>
-          <td class="under"><strong>22 196 kr</strong></td>
-          <td><span class="delta up">+203 kr</span></td>
+          <td><a class="tlink" href="https://www.google.com/travel/flights?q=flights%20from%20CPH%20to%20BOS%20on%202026-10-24%20through%202026-10-30&curr=SEK&hl=sv" target="_blank" rel="noopener">24 okt → 30 okt</a></td>
+          <td class="under"><strong>22 175 kr</strong></td>
+          <td><span class="delta up">+182 kr</span></td>
           <td>British Airways</td>
           <td>20 h 45 min / 10 h 15 min</td>
           <td><span class="badge no">&gt;12 h</span></td>
         </tr>
         <tr class="dim">
-          <td>23 okt → 30 okt</td>
-          <td class="under"><strong>22 400 kr</strong></td>
-          <td><span class="delta down">−16 kr</span></td>
+          <td><a class="tlink" href="https://www.google.com/travel/flights?q=flights%20from%20CPH%20to%20BOS%20on%202026-10-23%20through%202026-10-30&curr=SEK&hl=sv" target="_blank" rel="noopener">23 okt → 30 okt</a></td>
+          <td class="under"><strong>22 379 kr</strong></td>
+          <td><span class="delta down">−37 kr</span></td>
           <td>Tap Air Portugal</td>
           <td>13 h 35 min / 11 h 50 min</td>
           <td><span class="badge no">&gt;12 h</span></td>
@@ -193,7 +223,7 @@
     <p>Valfritt (annars g&auml;ller: max 1 stopp, 2 v&auml;skor, max 12 h per riktning): andra krav p&aring; stopp, v&auml;skor eller restid. Mejlen l&auml;ses av en g&aring;ng per dag &mdash; jakten st&aring;r sedan p&aring; denna sida.</p>
   </div>
 
-  <p class="foot">Uppdateras automatiskt 6 g&aring;nger per dag (var 4:e timme fr&aring;n kl 06). K&auml;lla: Google Flights. Priserna &auml;r totalpris f&ouml;r 4 personer inklusive 2 incheckade v&auml;skor; Basic Economy &auml;r bortfiltrerat.</p>
+  <p class="foot">Uppdateras automatiskt 6 g&aring;nger per dag (var 4:e timme fr&aring;n kl 06). K&auml;lla: Google Flights. Priserna &auml;r totalpris f&ouml;r 4 personer inklusive 2 incheckade v&auml;skor; Basic Economy &auml;r bortfiltrerat. Bokningsl&auml;nkarna &ouml;ppnar Google Flights med r&auml;tt rutt och datum &mdash; v&auml;lj d&auml;r <b>3 vuxna + 1 barn</b> och <b>2 incheckade v&auml;skor</b> f&ouml;r att se samma totalpris, och boka sedan vidare hos flygbolaget.</p>
 </div>
 </body>
 </html>
