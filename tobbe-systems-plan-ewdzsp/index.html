@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tobbe's Playbook → SC AB — tickets + accounting plan</title>
+<style>
+  /* visualanswer house style — dark glossary cards (same family as aios-components.html) */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #07071a; --card: #0e0e24; --card2: #12122c; --border: #1a1a35;
+    --text: #e8e8f0; --dim: #888; --dim2: #555;
+    --blue: #4d8dff; --purple: #a56dff; --green: #3ddc97; --amber: #ffb648; --pink: #ff6ba8;
+  }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; padding: 32px 16px 64px; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 40px; }
+  h1 { font-size: clamp(1.8em, 6vw, 2.6em); font-weight: 800; letter-spacing: -1px;
+       background: linear-gradient(135deg, #fff 40%, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .subtitle { color: var(--dim); font-size: 0.85em; letter-spacing: 2px; text-transform: uppercase; }
+  .updated { color: var(--dim2); font-size: 0.75em; margin-top: 6px; }
+  h2.section { font-size: 0.72em; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+               margin: 44px 0 16px; display: flex; align-items: center; gap: 12px; }
+  h2.section::after { content: ''; flex: 1; height: 1px; background: currentColor; opacity: 0.25; }
+  h2.section.c-blue { color: var(--blue); } h2.section.c-purple { color: var(--purple); }
+  h2.section.c-green { color: var(--green); } h2.section.c-amber { color: var(--amber); } h2.section.c-pink { color: var(--pink); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; position: relative; overflow: hidden; }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent, var(--blue)); }
+  .card h3 { font-size: 1em; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .card .icon { font-size: 1.15em; }
+  .card p { color: #bbb; font-size: 0.86em; line-height: 1.5; }
+  .card .tag { display: inline-block; margin-top: 10px; font-size: 0.68em; font-weight: 700; letter-spacing: 1px;
+               text-transform: uppercase; padding: 3px 8px; border-radius: 20px; background: var(--card2); color: var(--dim); border: 1px solid var(--border); }
+  .card code, .note code, .flow code, td code, .tree code {
+    background: #050512; border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px; font-size: 0.85em; color: #ccd; }
+  .card.blue { --accent: var(--blue); } .card.purple { --accent: var(--purple); }
+  .card.green { --accent: var(--green); } .card.amber { --accent: var(--amber); } .card.pink { --accent: var(--pink); }
+  .tree { background: #050512; border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px;
+          font-family: ui-monospace, Consolas, monospace; font-size: 0.82em; line-height: 1.75; color: #ccd; overflow-x: auto; white-space: pre; }
+  .tree .c { color: var(--dim2); } .tree .b { color: var(--blue); } .tree .g { color: var(--green); }
+  .tree .a { color: var(--amber); } .tree .p { color: var(--purple); } .tree .k { color: var(--pink); }
+  .flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
+  .flow .step { flex: 1 1 150px; background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+                padding: 12px 14px; font-size: 0.78em; color: #bbb; line-height: 1.5; }
+  .flow .step b { color: var(--text); display: block; margin-bottom: 4px; font-size: 1.05em; }
+  .flow .arrow { align-self: center; color: var(--dim2); font-size: 1.1em; }
+  .note { background: var(--card2); border: 1px dashed var(--border); border-radius: 12px;
+          padding: 14px 16px; font-size: 0.82em; color: #aaa; margin-top: 16px; line-height: 1.65; }
+  .note b { color: #ddd; }
+  .tbl { overflow-x: auto; background: var(--card); border: 1px solid var(--border); border-radius: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82em; }
+  th { text-align: left; color: var(--dim); font-size: 0.85em; letter-spacing: 1px; text-transform: uppercase;
+       padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: #bbb; line-height: 1.5; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td.q { color: #ddd; font-weight: 600; white-space: normal; }
+  footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+           color: var(--dim2); font-size: 0.75em; text-align: center; line-height: 1.8; }
+  footer code { color: #778; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Tobbe's Playbook → SC AB</h1>
+    <div class="subtitle">His naming decoded · mapped to your stack · questions to ask · the plan</div>
+    <div class="updated">Generated 2026-07-21 · source: Tobbe's ticket + prompt dump</div>
+  </div>
+
+  <!-- ============ 1. TOBBE'S SYSTEM DECODED ============ -->
+  <h2 class="section c-blue">Tobbe's system, decoded</h2>
+  <div class="grid">
+    <div class="card blue">
+      <h3><span class="icon">🧠</span> bionicbrain</h3>
+      <p>His ticket management tool. MCP-controlled backend (create/update tickets) + a frontend with a kanban board on top and a <b>Backlog</b> list below. Columns: <code>Specification</code> → <code>In progress</code> → <code>Completed</code>.</p>
+      <span class="tag">ticket system</span>
+    </div>
+    <div class="card blue">
+      <h3><span class="icon">📒</span> BeanStalk</h3>
+      <p>His Swedish AB double-entry accounting system. Live and doing real bookkeeping: BAS kontoplan, K2, öre-safe balanced <b>verifikationer</b> (sequential per FY, immutable), konteringsmallar, resultat- / balansräkning, momsunderlag. Go + Postgres behind nginx + systemd.</p>
+      <span class="tag">accounting</span>
+    </div>
+    <div class="card blue">
+      <h3><span class="icon">🐝</span> BionicBee AB</h3>
+      <p>His company — a one-person consulting AB, K2, kontantmetoden (bokslutsmetoden), broken fiscal year May–April. Same shape as <b>Scandinavian Communication SC AB</b>: that's why his choices transfer almost 1:1.</p>
+      <span class="tag">= your SC AB</span>
+    </div>
+    <div class="card blue">
+      <h3><span class="icon">🔌</span> The MCP trick (the real unlock)</h3>
+      <p>Tickets live behind MCP, so <b>any</b> AI chat — Cursor, Claude, anywhere — can file or fetch them. "Put this in a ticket in bionicbrain" from one chat; weeks later in another repo: "find the ticket and implement it". No copy-paste, no lost context.</p>
+      <span class="tag">core pattern</span>
+    </div>
+    <div class="card blue">
+      <h3><span class="icon">🧾</span> Ticket anatomy</h3>
+      <p>Every ticket has: <b>Goal · Behaviour · UI · API/MCP · Open design questions · Acceptance criteria · Notes/relations</b>. Plus "Out of scope / later" and even "Ops lessons" — the ticket doubles as living documentation after shipping.</p>
+      <span class="tag">template worth stealing</span>
+    </div>
+    <div class="card blue">
+      <h3><span class="icon">🔗</span> #N cross-references</h3>
+      <p>Tickets reference each other by number — approval flow "depends on audit log (#8)", "relates to BeanStalk (#5), SSO (#1)". A tiny dependency graph across the backlog, so agents see context when they pick a ticket up.</p>
+      <span class="tag">dependency links</span>
+    </div>
+  </div>
+
+  <!-- ============ 2. THE WORKFLOW ============ -->
+  <h2 class="section c-purple">His workflow, end to end</h2>
+  <div class="flow">
+    <div class="step"><b>1 · Idea in any chat</b>"Lets create a new ticket for beanstalk — I want to add approval flow…"</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>2 · Agent files ticket</b>Via MCP into bionicbrain: goal, behaviour, acceptance criteria, open design questions.</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>3 · Specification</b>Ticket sits in the Specification column until open questions are answered. Design happens before code.</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>4 · "Find it and implement"</b>Later, in the code repo: one line — the agent fetches the ticket via MCP and builds against acceptance criteria.</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>5 · Completed + lessons</b>Ticket updated with what shipped, ops lessons, and what's deliberately out of scope.</div>
+  </div>
+  <div class="note"><b>Why it works:</b> the ticket is the contract. Specification (open questions) forces decisions before building, and acceptance criteria give the agent a testable "done". That's the professional development approach you're after — not the tool, the discipline.</div>
+
+  <!-- ============ 3. COMPONENT MAP ============ -->
+  <h2 class="section c-amber">Component map — Tobbe ↔ your stack</h2>
+  <div class="tbl">
+    <table>
+      <tr><th>Tobbe's name</th><th>What it is</th><th>Your closest match</th><th>Gap / note</th></tr>
+      <tr>
+        <td><code>bionicbrain</code> backend</td>
+        <td>MCP-controlled ticket store (Postgres)</td>
+        <td>Core rebuild's SQLite <code>Item / Link / Event</code> model — generic items with statuses <code>inbox → open → waiting → scheduled → parked → done → archived</code>, links between items, event history</td>
+        <td>Already ticket-shaped. Missing: an MCP layer on top. Today only Next.js API routes reach it.</td>
+      </tr>
+      <tr>
+        <td><code>bionicbrain</code> kanban</td>
+        <td>Specification / In progress / Completed board</td>
+        <td>AI Dashboard <b>Development</b> tab: real kanban (<code>KanbanBoard.tsx</code>) with <code>TO DO / IN PROGRESS / VERIFICATION / COMPLETE</code>, fed by <code>/addfeature</code></td>
+        <td>You're ahead on execution (see below) but have no <b>Specification</b> stage — ideas jump straight to TO DO.</td>
+      </tr>
+      <tr>
+        <td>Backlog list</td>
+        <td>Single list under the kanban</td>
+        <td>Three parallel stores: <code>inbox/todos.md</code> (HIGH/MED/LOW + tags), a Todos sheet tab, and the Core rebuild's tasks view</td>
+        <td>Fragmented. Tobbe has one backlog; you have three that don't sync.</td>
+      </tr>
+      <tr>
+        <td>Ticket → agent execution</td>
+        <td>"Find the ticket in bionicbrain and implement it"</td>
+        <td>Kanban cards carry <code>worktreePath</code>, <code>runId</code>, <code>agentMode</code>, <code>requireEvidence</code> — a card can spawn a git worktree and run an agent, with a VERIFICATION column</td>
+        <td><b>You're ahead here.</b> Tobbe types the implement prompt manually; your board launches the agent itself.</td>
+      </tr>
+      <tr>
+        <td>MCP servers</td>
+        <td><code>beanstalk-mcp</code> stdio + hosted HTTP endpoint, API-key auth</td>
+        <td><code>tellingtech-mcp</code> — your hand-built MCP server (episode catalog, stdio, 3 tools)</td>
+        <td>You have the working scaffold to copy. Nothing hosted, nothing for tickets yet.</td>
+      </tr>
+      <tr>
+        <td><code>BeanStalk</code></td>
+        <td>Live double-entry bokföring for his AB</td>
+        <td><b>Nothing.</b> <code>projects/family-budget</code> is personal budgeting (CSV import, 50/30/20) — not bokföring</td>
+        <td>Total gap — and now real: SC AB got F-skatt + momsregistrering in June 2026.</td>
+      </tr>
+      <tr>
+        <td>Host <i>bonanza</i></td>
+        <td>Linux box: systemd + nginx + Postgres, services on his own domain</td>
+        <td>Windows box: Task Scheduler + Tailscale serve + SQLite/Sheets; public pages via GitHub Pages</td>
+        <td>Same idea, different OS. His ops lessons (own the tree as service user, never overwrite a running binary, path typos) translate to your scheduled-task world.</td>
+      </tr>
+      <tr>
+        <td>SSO (his ticket #1)</td>
+        <td>Planned shared login for human UIs; MCP stays API-key</td>
+        <td>Dashboards are tailnet-gated, no login; silo product has its own token binding</td>
+        <td>Both unsolved for humans. Same split he chose: humans get auth, agents get API keys.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ============ 4. AHEAD / BEHIND ============ -->
+  <h2 class="section c-green">Honest scorecard</h2>
+  <div class="grid">
+    <div class="card green">
+      <h3><span class="icon">🏆</span> Where you're ahead</h3>
+      <p>Agent execution wiring: your kanban cards spawn worktrees and agent runs with a verification step and evidence requirement. Tobbe still pastes "find it and implement" by hand. You also already run one MCP server and a full silo/provisioning infra.</p>
+      <span class="tag">keep</span>
+    </div>
+    <div class="card green">
+      <h3><span class="icon">🕳️</span> Where he's ahead</h3>
+      <p>One backlog, reachable from any AI chat via MCP, with a Specification discipline and cross-referenced tickets. And a live, legal-ish accounting system doing real verifikationer while you have zero bokföring tooling.</p>
+      <span class="tag">adopt</span>
+    </div>
+    <div class="card green">
+      <h3><span class="icon">🧲</span> Todos into tickets? Yes — one store, two lenses</h3>
+      <p>Merge is right: everything becomes an item in Core. Lightweight todos = item type <code>todo</code>; dev work = type <code>ticket</code> with full anatomy (spec questions, acceptance criteria). One MCP + one board, two views. This finally gives the parked Core migration its "why".</p>
+      <span class="tag">recommendation</span>
+    </div>
+    <div class="card green">
+      <h3><span class="icon">⚠️</span> One caution</h3>
+      <p>Don't clone his stack (Go + Postgres + systemd) — clone his <b>patterns</b> (MCP plane, ticket anatomy, spec-first). Your equivalents (SQLite Core, Node MCP scaffold, Task Scheduler) already exist and fit your machine.</p>
+      <span class="tag">patterns not stack</span>
+    </div>
+  </div>
+
+  <!-- ============ 5. QUESTIONS FOR TOBBE ============ -->
+  <h2 class="section c-pink">Questions for Tobbe — ticket system</h2>
+  <div class="tbl">
+    <table>
+      <tr><th style="width:55%">Question</th><th>Why it matters</th></tr>
+      <tr><td class="q">1. What's the exact ticket schema — fields, statuses, comments, audit trail? Postgres tables or something simpler?</td><td>Decides how much to add to the Core item model vs already covered.</td></tr>
+      <tr><td class="q">2. Which MCP tools does bionicbrain expose (create / update / list / search?), and is it stdio, hosted HTTP, or both? How is auth done?</td><td>Blueprint for the ticket-MCP layer — copy his tool surface instead of inventing one.</td></tr>
+      <tr><td class="q">3. When you say "find the ticket in bionicbrain and implement it" — how does the agent actually find it? Search tool, list-and-match, ticket number?</td><td>The retrieval UX is the whole workflow. Worth copying exactly what works.</td></tr>
+      <tr><td class="q">4. Are #-numbers and cross-references (#1, #5, #8) assigned automatically? Do agents follow the links when implementing?</td><td>Dependency links are what make old tickets useful context for agents.</td></tr>
+      <tr><td class="q">5. What has to be true before a ticket leaves Specification? Who answers the open design questions — you, or an agent proposes answers?</td><td>The spec-first discipline is the biggest process win; want his working definition of "specified".</td></tr>
+      <tr><td class="q">6. Do everyday todos also live in bionicbrain, or only dev tickets? If separate — why?</td><td>Directly answers whether merging todos into the ticket system is a good idea or a regret.</td></tr>
+      <tr><td class="q">7. What did he build the frontend with, and how far did the SSO ticket get?</td><td>Auth-for-humans is unsolved on both sides; no point solving it twice.</td></tr>
+      <tr><td class="q">8. Can I get read access to the bionicbrain repo (or a schema dump) as a starting point?</td><td>30 min of his repo beats a day of reverse-engineering from prompts.</td></tr>
+    </table>
+  </div>
+
+  <h2 class="section c-pink">Questions for Tobbe — BeanStalk / accounting</h2>
+  <div class="tbl">
+    <table>
+      <tr><th style="width:55%">Question</th><th>Why it matters</th></tr>
+      <tr><td class="q">9. Would you share the BeanStalk repo so I can adapt it for SC AB? What's company-specific vs generic (FY dates, moms start, K2 settings)?</td><td>Fork-and-adapt vs build-from-scratch vs buy — the single biggest fork in the plan.</td></tr>
+      <tr><td class="q">10. What sources did COMPLIANCE.md come from (BFN, Skatteverket, an accountant)? Did you write systemdokumentation + behandlingshistorik for the system itself?</td><td>BFN requires system documentation for self-built bookkeeping systems — want to know if he covered it or skipped it.</td></tr>
+      <tr><td class="q">11. Where do underlag (receipts, invoices) live, and how are they linked to verifikationer?</td><td>Bokföringslagen ties every verifikation to its underlag; it wasn't in his shipped list.</td></tr>
+      <tr><td class="q">12. Does BeanStalk create outgoing fakturor, or is it bookkeeping only? What do you invoice clients with?</td><td>SC AB's first real need is sending an invoice — possibly before serious bokföring volume exists.</td></tr>
+      <tr><td class="q">13. Bank import is "later" — so transactions are entered manually? How painful is that in practice per month?</td><td>Manual entry might be fine at consulting volume (a few events/month) — or the thing that kills daily use.</td></tr>
+      <tr><td class="q">14. How do you actually file: momsdeklaration and årsredovisning from BeanStalk reports, manually into Skatteverket/Bolagsverket? Accountant sanity-check for the first bokslut?</td><td>The last mile is where self-built accounting gets risky; want his real process, not the ideal one.</td></tr>
+      <tr><td class="q">15. Why kontantmetoden — and would you recommend it for a new consulting AB under 3 MSEK too?</td><td>Same choice is open for SC AB right now; his reasoning is directly reusable.</td></tr>
+      <tr><td class="q">16. Did the approval-flow ticket ship? Any learnings on pending → approve/dismiss with audit log?</td><td>Approval flow is exactly the pattern for letting agents draft verifikationer safely.</td></tr>
+      <tr><td class="q">17. How long did BeanStalk take idea → live, and how much maintenance since? Knowing what you know — build again, or Fortnox/Bokio?</td><td>The honest build-vs-buy datapoint money can't buy.</td></tr>
+      <tr><td class="q">18. Interested in sharing/co-maintaining? Two one-person ABs with identical needs.</td><td>Halves maintenance, and keeps the compliance knowledge pooled.</td></tr>
+    </table>
+  </div>
+
+  <!-- ============ 6. SWEDISH LAW REALITY CHECK ============ -->
+  <h2 class="section c-blue">Swedish accounting — reality check before building</h2>
+  <div class="grid">
+    <div class="card amber">
+      <h3><span class="icon">⚖️</span> The baseline law</h3>
+      <p>Every AB is bokföringsskyldig under Bokföringslagen: one verifikation per affärshändelse, recorded chronologically + systematically, archived <b>7 years</b>. Corrections happen via new rättelseverifikationer — never edits. Tobbe's "immutable posts" is law, not taste.</p>
+      <span class="tag">bokföringslagen</span>
+    </div>
+    <div class="card amber">
+      <h3><span class="icon">📐</span> K2 + kontantmetoden fit SC AB</h3>
+      <p>K2 is the simplified reporting framework for smaller ABs. Kontantmetoden (bokslutsmetoden) is allowed under ~3 MSEK turnover — book when money moves, settle the rest at bokslut. Tobbe chose both; SC AB likely should too. Verify against SC AB's registered räkenskapsår.</p>
+      <span class="tag">verify with skatteverket</span>
+    </div>
+    <div class="card amber">
+      <h3><span class="icon">📋</span> Self-built system = extra duties</h3>
+      <p>BFN's bookkeeping rules require <b>systemdokumentation</b> and <b>behandlingshistorik</b> for the bookkeeping system itself — how it works and what it did. A self-built system must document itself. This is Q10 to Tobbe, and non-negotiable in any build.</p>
+      <span class="tag">often missed</span>
+    </div>
+    <div class="card amber">
+      <h3><span class="icon">🏛️</span> The last mile is manual anyway</h3>
+      <p>Årsredovisning to Bolagsverket yearly regardless of size (small ABs usually need no revisor below the thresholds), momsdeklaration to Skatteverket on schedule. No self-built system files these for you — plan for an accountant to sanity-check the first bokslut whatever you build.</p>
+      <span class="tag">budget for it</span>
+    </div>
+  </div>
+  <div class="note"><b>Build vs buy, honestly:</b> Fortnox (~a few hundred kr/month) or Bokio outsource law changes, moms rules, and filing formats — the boring risk. Building gives you MCP-native accounting agents can drive (receipt → draft verifikation → human approves), a real dogfooding story for the AI-operator brand, and Tobbe as a proven reference. There's also a middle path worth pricing: <b>Fortnox + a thin MCP wrapper over its public API</b> — compliance outsourced, agent workflow kept. Decide at the Phase 2 gate, after Tobbe's answers to Q9, Q14 and Q17.</div>
+
+  <!-- ============ 7. THE PLAN ============ -->
+  <h2 class="section c-purple">The plan</h2>
+  <div class="flow">
+    <div class="step"><b>0 · Ask Tobbe (this week)</b>Send the 18 questions — or better, book lunch. Ask for both repos (Q8, Q9). Nothing gets built before his answers land.</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>1 · Ticket MCP over Core</b>Reuse the tellingtech-mcp scaffold: <code>create_ticket / find_tickets / get_ticket / update_ticket</code> over the Core SQLite DB. Add a <code>ticket</code> item type with Tobbe's anatomy and a Specification status. Done when a ticket filed from any chat shows on the kanban and an agent can fetch + implement it.</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>2 · Fold todos in</b>Migrate <code>inbox/todos.md</code> + the Todos sheet into Core as type <code>todo</code>. One backlog, two lenses (todo list + ticket board). Retires the three-store fragmentation and unparks the Core migration with a concrete payoff.</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>3 · Accounting gate</b>Decision point, not a build: fork BeanStalk / build fresh / Fortnox+MCP / plain Fortnox — chosen from Tobbe's answers. Whatever wins: invoicing first (SC AB's actual next need), verifikationer + approval flow + underlag links + SIE export in the MVP list.</div>
+  </div>
+  <div class="note"><b>Sequencing logic:</b> the ticket system pays off daily and de-risks everything after it (the accounting build would be specified as tickets in it — exactly how Tobbe bootstrapped BeanStalk from bionicbrain). Accounting is urgent-by-date, not urgent-by-day: SC AB is just starting up, so volume is near zero until the first invoice — but the system must exist before that invoice does.</div>
+
+  <div class="note"><b>Bottom line:</b> steal Tobbe's two patterns — an MCP-reachable single backlog with spec-first tickets, and approval-gated accounting — but implement them on the stack you already have: Core SQLite + your MCP scaffold + your kanban's agent execution, which is already ahead of his. Ask the 18 questions first; the accounting build-vs-buy call waits for his answers.</div>
+
+  <footer>
+    Source: Tobbe's prompt/ticket dump (Temp file) · workspace survey 2026-07-21 · generated by /visualanswer<br>
+    Companion: AIOS Core migration plan · family-budget PLAN-01 (separate, personal scope)
+  </footer>
+
+</div>
+</body>
+</html>
