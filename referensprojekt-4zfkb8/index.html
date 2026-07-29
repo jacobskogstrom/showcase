@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Referensprojekt — Scandinavian Communication SC AB</title>
+<style>
+  :root{
+    --lagoon:#0B7D74; --lagoon-deep:#065B54; --lagoon-mist:#E6F2F1;
+    --ink:#152423; --ink-soft:#4A5F5D; --paper:#FAFCFC; --card:#FFFFFF;
+    --line:#DCE8E7; --amber:#C98A2B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
+  header{background:linear-gradient(160deg,var(--lagoon-deep) 0%,var(--lagoon) 70%);color:#fff;padding:64px 0 56px}
+  .kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.85;margin-bottom:12px}
+  h1{font-size:clamp(28px,4.5vw,40px);font-weight:650;letter-spacing:-.01em;line-height:1.15}
+  .lede{margin-top:16px;max-width:640px;font-size:17px;opacity:.92}
+  .note{margin-top:24px;display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:10px 16px;font-size:14px}
+  main{padding:56px 0 24px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:20px}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+  .case{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:0 1px 2px rgba(11,125,116,.06),0 8px 24px -12px rgba(11,125,116,.14);display:flex;flex-direction:column;gap:12px}
+  .case .tag{align-self:flex-start;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--lagoon);background:var(--lagoon-mist);border-radius:999px;padding:4px 12px}
+  .case h2{font-size:20px;font-weight:650;letter-spacing:-.01em}
+  .case p{font-size:15px;color:var(--ink-soft)}
+  .case .value{margin-top:auto;border-top:1px solid var(--line);padding-top:14px;font-size:14px}
+  .case .value strong{color:var(--lagoon-deep)}
+  .method{margin-top:56px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px}
+  .method h2{font-size:22px;font-weight:650;margin-bottom:8px}
+  .method p{color:var(--ink-soft);font-size:15px;max-width:720px}
+  .steps{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+  .step{background:var(--lagoon-mist);color:var(--lagoon-deep);border-radius:10px;padding:8px 14px;font-size:14px;font-weight:600}
+  .step span{opacity:.6;margin-right:6px}
+  footer{margin-top:56px;border-top:1px solid var(--line);padding:32px 0 48px;font-size:14px;color:var(--ink-soft)}
+  footer .co{font-weight:650;color:var(--ink)}
+  a{color:var(--lagoon-deep)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="kicker">Scandinavian Communication SC AB</div>
+    <h1>Referensprojekt</h1>
+    <p class="lede">Fyra körbara demonstrationer från tidigare leveranser — produktledning och AI-drivna arbetsflöden i praktiken: från organisationsbred AI-adoption till automatiserad rapportering och dokumentproduktion.</p>
+    <div class="note">Samtliga projekt visas i anonymiserad form, byggda kring ett fiktivt bolag ("Nordpump", en nordisk värmepumpstillverkare). Alla namn, personer och data är fiktiva. Körbara demos visas gärna vid möte — personliga referenser lämnas på begäran.</div>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <div class="grid">
+      <div class="case">
+        <div class="tag">AI-adoption</div>
+        <h2>Internt AI-adoptionsnav</h2>
+        <p>En flersidig intern plattform som tar en hel organisation från nyfikenhet till dagligt AI-användande: steg-för-steg-guider, verkliga användningsfall per roll, ambassadörsprogram, licensvägledning, pågående initiativ och en särskild chefsbrief.</p>
+        <div class="value"><strong>Relevans:</strong> kompetens, arbetssätt och organisatoriska förutsättningar för ett framgångsrikt AI-införande — inte bara verktygen, utan vägen till att de används.</div>
+      </div>
+      <div class="case">
+        <div class="tag">Beslutsstöd</div>
+        <h2>Produktstatus-dashboard (NPI/CPI)</h2>
+        <p>Ledningens överblick över hela produktutvecklingsportföljen som statuskort — nyintroduktioner och löpande förbättringar — kompletterad med guider, kunskapswiki och en generator som producerar färdiga PowerPoint-underlag.</p>
+        <div class="value"><strong>Relevans:</strong> bättre beslutsstöd ur data som redan finns — sammanställningen som tidigare krävde manuellt arbete sker automatiskt.</div>
+      </div>
+      <div class="case">
+        <div class="tag">Automation</div>
+        <h2>Automatiserad renderingspipeline</h2>
+        <p>Tekniken bakom dashboarden: enkla textfiler per projekt plus skrivskyddad releasedata renderas till hela dashboarden av en ren Python-pipeline — utan externa beroenden, med komplett automatisk testsvit (40 tester).</p>
+        <div class="value"><strong>Relevans:</strong> automatiserad rapportgenerering med ingenjörsmässig robusthet — bygg en gång, generera på minuter istället för timmar.</div>
+      </div>
+      <div class="case">
+        <div class="tag">Dokumentproduktion</div>
+        <h2>Compliance-dokumentbyggare</h2>
+        <p>Ett webbverktyg där handläggaren väljer vilka avsnitt som ska ingå och får ett färdigt, varumärkesanpassat efterlevnadsdokument — exporterbart till både PDF och Word — med ett komplett exempelärende medskickat.</p>
+        <div class="value"><strong>Relevans:</strong> minskad administration — standardiserade dokument med full kvalitet, producerade på en bråkdel av tiden.</div>
+      </div>
+    </div>
+    <div class="method">
+      <h2>Arbetssättet bakom leveranserna</h2>
+      <p>Tjugo års produktägarskap i teknisk industri, kombinerat med dagligt praktiskt AI-byggande. Metoden är densamma oavsett domän: förstå verksamheten genom dess människor, identifiera nyckeltalen som gör ont, och bygg bort det repetitiva — med medarbetarna med på resan.</p>
+      <div class="steps">
+        <div class="step"><span>1</span>Intervjuer &amp; verksamhetsförståelse</div>
+        <div class="step"><span>2</span>Strukturerad kunskapsbas</div>
+        <div class="step"><span>3</span>Nulägesanalys</div>
+        <div class="step"><span>4</span>Prioritering på nytta &amp; genomförbarhet</div>
+        <div class="step"><span>5</span>Rapport, roadmap &amp; införande</div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>
+  <div class="wrap">
+    <span class="co">Scandinavian Communication SC AB</span> · Org.nr 556338-0228 · Malmö<br>
+    Jacob Skogström · <a href="mailto:jacob@skogstrom.se">jacob@skogstrom.se</a> · +46 76 106 00 60
+  </div>
+</footer>
+</body>
+</html>
