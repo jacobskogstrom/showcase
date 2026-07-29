@@ -26,8 +26,18 @@
   .case .tag{align-self:flex-start;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--lagoon);background:var(--lagoon-mist);border-radius:999px;padding:4px 12px}
   .case h2{font-size:20px;font-weight:650;letter-spacing:-.01em}
   .case p{font-size:15px;color:var(--ink-soft)}
-  .case .value{margin-top:auto;border-top:1px solid var(--line);padding-top:14px;font-size:14px}
+  .case .value{border-top:1px solid var(--line);padding-top:14px;font-size:14px}
   .case .value strong{color:var(--lagoon-deep)}
+  .case .shot-btn{margin-top:auto;align-self:flex-start;background:var(--lagoon);color:#fff;border:none;border-radius:10px;padding:9px 18px;font-size:13.5px;font-weight:650;cursor:pointer;font-family:inherit}
+  .case .shot-btn:hover{background:var(--lagoon-deep)}
+  .lightbox{position:fixed;inset:0;background:rgba(13,32,30,.82);display:none;align-items:center;justify-content:center;z-index:50;padding:24px}
+  .lightbox.open{display:flex}
+  .lb-inner{background:#fff;border-radius:16px;max-width:1080px;width:100%;max-height:92vh;overflow:auto;box-shadow:0 30px 80px -20px rgba(0,0,0,.5)}
+  .lb-head{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 20px;border-bottom:1px solid var(--line)}
+  .lb-head b{font-size:15.5px}
+  .lb-head button{background:var(--lagoon-mist);color:var(--lagoon-deep);border:none;border-radius:8px;padding:7px 14px;font-size:13.5px;font-weight:650;cursor:pointer;font-family:inherit}
+  .lb-inner img{display:block;width:100%;height:auto}
+  .lb-cap{padding:12px 20px 16px;font-size:13.5px;color:var(--ink-soft)}
   .method{margin-top:56px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px}
   .method h2{font-size:22px;font-weight:650;margin-bottom:8px}
   .method p{color:var(--ink-soft);font-size:15px;max-width:720px}
@@ -56,24 +66,28 @@
         <h2>Internt AI-adoptionsnav</h2>
         <p>En flersidig intern plattform som tar en hel organisation från nyfikenhet till dagligt AI-användande: steg-för-steg-guider, verkliga användningsfall per roll, ambassadörsprogram, licensvägledning, pågående initiativ och en särskild chefsbrief.</p>
         <div class="value"><strong>Relevans:</strong> kompetens, arbetssätt och organisatoriska förutsättningar för ett framgångsrikt AI-införande — inte bara verktygen, utan vägen till att de används.</div>
+        <button class="shot-btn" data-img="case-ai-hub.png" data-title="Internt AI-adoptionsnav" data-cap="Startsidan: quick start-kort, användningsfall per målgrupp och tydlig väg in för nybörjare.">Visa skärmbild</button>
       </div>
       <div class="case">
         <div class="tag">Beslutsstöd</div>
         <h2>Produktstatus-dashboard (NPI/CPI)</h2>
         <p>Ledningens överblick över hela produktutvecklingsportföljen som statuskort — nyintroduktioner och löpande förbättringar — kompletterad med guider, kunskapswiki och en generator som producerar färdiga PowerPoint-underlag.</p>
         <div class="value"><strong>Relevans:</strong> bättre beslutsstöd ur data som redan finns — sammanställningen som tidigare krävde manuellt arbete sker automatiskt.</div>
+        <button class="shot-btn" data-img="case-dashboard.png" data-title="Produktstatus-dashboard (NPI/CPI)" data-cap="Veckans projektstatus som filtrerbara statuskort: fas, status, BOM-mognad, ansvarig och risknivå per projekt.">Visa skärmbild</button>
       </div>
       <div class="case">
         <div class="tag">Automation</div>
         <h2>Automatiserad renderingspipeline</h2>
         <p>Tekniken bakom dashboarden: enkla textfiler per projekt plus skrivskyddad releasedata renderas till hela dashboarden av en ren Python-pipeline — utan externa beroenden, med komplett automatisk testsvit (40 tester).</p>
         <div class="value"><strong>Relevans:</strong> automatiserad rapportgenerering med ingenjörsmässig robusthet — bygg en gång, generera på minuter istället för timmar.</div>
+        <button class="shot-btn" data-img="case-pipeline.png" data-title="Automatiserad renderingspipeline" data-cap="Från enkel textfil per projekt till färdigt statuskort — hela dashboarden genereras automatiskt ur filerna teamet redan äger.">Visa skärmbild</button>
       </div>
       <div class="case">
         <div class="tag">Dokumentproduktion</div>
         <h2>Compliance-dokumentbyggare</h2>
         <p>Ett webbverktyg där handläggaren väljer vilka avsnitt som ska ingå och får ett färdigt, varumärkesanpassat efterlevnadsdokument — exporterbart till både PDF och Word — med ett komplett exempelärende medskickat.</p>
         <div class="value"><strong>Relevans:</strong> minskad administration — standardiserade dokument med full kvalitet, producerade på en bråkdel av tiden.</div>
+        <button class="shot-btn" data-img="case-docbuilder.png" data-title="Compliance-dokumentbyggare" data-cap="Handläggaren väljer avsnitt till vänster, dokumentet byggs live till höger — export till PDF och Word med ett klick.">Visa skärmbild</button>
       </div>
     </div>
     <div class="method">
@@ -95,5 +109,29 @@
     Jacob Skogström · <a href="mailto:jacob@skogstrom.se">jacob@skogstrom.se</a> · +46 76 106 00 60
   </div>
 </footer>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <div class="lb-inner">
+    <div class="lb-head"><b id="lbTitle"></b><button id="lbClose">Stäng ✕</button></div>
+    <img id="lbImg" src="" alt="">
+    <div class="lb-cap" id="lbCap"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var lb=document.getElementById('lightbox'),img=document.getElementById('lbImg'),
+      title=document.getElementById('lbTitle'),cap=document.getElementById('lbCap');
+  document.querySelectorAll('.shot-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      img.src=btn.dataset.img;img.alt=btn.dataset.title;
+      title.textContent=btn.dataset.title;cap.textContent=btn.dataset.cap;
+      lb.classList.add('open');
+    });
+  });
+  function close(){lb.classList.remove('open');img.src='';}
+  document.getElementById('lbClose').addEventListener('click',close);
+  lb.addEventListener('click',function(e){if(e.target===lb)close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
 </body>
 </html>
