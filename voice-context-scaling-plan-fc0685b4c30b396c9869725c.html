@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice Fast-Tier Context Scaling — Plan</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #07071a; --card: #0e0e24; --card2: #12122c; --border: #1a1a35;
+    --text: #e8e8f0; --dim: #888; --dim2: #555;
+    --blue: #4d8dff; --purple: #a56dff; --green: #3ddc97; --amber: #ffb648; --pink: #ff6ba8;
+  }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; padding: 32px 16px 64px; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 40px; }
+  h1 { font-size: clamp(1.8em, 6vw, 2.6em); font-weight: 800; letter-spacing: -1px;
+       background: linear-gradient(135deg, #fff 40%, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .subtitle { color: var(--dim); font-size: 0.85em; letter-spacing: 2px; text-transform: uppercase; }
+  .updated { color: var(--dim2); font-size: 0.75em; margin-top: 6px; }
+  h2.section { font-size: 0.72em; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+               margin: 44px 0 16px; display: flex; align-items: center; gap: 12px; }
+  h2.section::after { content: ''; flex: 1; height: 1px; background: currentColor; opacity: 0.25; }
+  h2.section.c-blue { color: var(--blue); } h2.section.c-purple { color: var(--purple); }
+  h2.section.c-green { color: var(--green); } h2.section.c-amber { color: var(--amber); } h2.section.c-pink { color: var(--pink); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; position: relative; overflow: hidden; }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent, var(--blue)); }
+  .card h3 { font-size: 1em; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .card .icon { font-size: 1.15em; }
+  .card p { color: #bbb; font-size: 0.86em; line-height: 1.5; }
+  .card .tag { display: inline-block; margin-top: 10px; font-size: 0.68em; font-weight: 700; letter-spacing: 1px;
+               text-transform: uppercase; padding: 3px 8px; border-radius: 20px; background: var(--card2); color: var(--dim); border: 1px solid var(--border); }
+  .card code, .note code, .flow code, td code, .tree code {
+    background: #050512; border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px; font-size: 0.85em; color: #ccd; }
+  .card.blue { --accent: var(--blue); } .card.purple { --accent: var(--purple); }
+  .card.green { --accent: var(--green); } .card.amber { --accent: var(--amber); } .card.pink { --accent: var(--pink); }
+  .tree { background: #050512; border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px;
+          font-family: ui-monospace, Consolas, monospace; font-size: 0.82em; line-height: 1.75; color: #ccd; overflow-x: auto; white-space: pre; }
+  .tree .c { color: var(--dim2); } .tree .b { color: var(--blue); } .tree .g { color: var(--green); }
+  .tree .a { color: var(--amber); } .tree .p { color: var(--purple); } .tree .k { color: var(--pink); }
+  .flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
+  .flow .step { flex: 1 1 150px; background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+                padding: 12px 14px; font-size: 0.78em; color: #bbb; line-height: 1.5; }
+  .flow .step b { color: var(--text); display: block; margin-bottom: 4px; font-size: 1.05em; }
+  .flow .arrow { align-self: center; color: var(--dim2); font-size: 1.1em; }
+  .note { background: var(--card2); border: 1px dashed var(--border); border-radius: 12px;
+          padding: 14px 16px; font-size: 0.82em; color: #aaa; margin-top: 16px; line-height: 1.65; }
+  .note b { color: #ddd; }
+  .tbl { overflow-x: auto; background: var(--card); border: 1px solid var(--border); border-radius: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82em; }
+  th { text-align: left; color: var(--dim); font-size: 0.85em; letter-spacing: 1px; text-transform: uppercase;
+       padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: #bbb; line-height: 1.5; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+           color: var(--dim2); font-size: 0.75em; text-align: center; line-height: 1.8; }
+  footer code { color: #778; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Voice Context Scaling</h1>
+    <div class="subtitle">How big can the fast tier's brief get before it stops feeling instant</div>
+    <div class="updated">Generated 2026-08-02 · plan v01 + v02</div>
+  </div>
+
+  <h2 class="section c-blue">The question</h2>
+  <div class="grid">
+    <div class="card blue">
+      <h3><span class="icon">📄</span> Today</h3>
+      <p><code>voice-context.md</code> runs about <b>1,170 tokens</b>. Everything the fast tier (Gemini Flash-Lite) knows about Jacob comes from this one daily-generated file.</p>
+      <span class="tag">baseline</span>
+    </div>
+    <div class="card green">
+      <h3><span class="icon">🎯</span> Target</h3>
+      <p>Grow the static block to <b>~6,000-7,000 tokens</b> by folding in identity + business + network files verbatim. Prefill cost stays negligible on a Flash-Lite tier model.</p>
+      <span class="tag">sweet spot</span>
+    </div>
+    <div class="card amber">
+      <h3><span class="icon">⚠️</span> Ceiling</h3>
+      <p>Don't push a single static blob past <b>~15,000-20,000 tokens</b> even with caching — recall degrades ("lost in the middle"), and a lite model degrades faster than a full-size one.</p>
+      <span class="tag">don't cross</span>
+    </div>
+  </div>
+
+  <h2 class="section c-purple">What the research found</h2>
+  <div class="grid">
+    <div class="card purple">
+      <h3><span class="icon">⚡</span> Prefill isn't the bottleneck</h3>
+      <p>Flash-Lite: ~0.29s to first token, sub-second overall. Prefill is parallel — 1k vs 10k input tokens costs tens of ms, not seconds. The real cap on turn time is the 300-token spoken-answer output limit, unrelated to context size.</p>
+    </div>
+    <div class="card green">
+      <h3><span class="icon">💾</span> Caching is already on, unused</h3>
+      <p>OpenRouter + Gemini 2.5+ implicit caching is on by default: cached tokens read at 90% off, 80-300ms. Requires a byte-identical prefix across calls — <code>server.py</code> already structures requests that way. A static daily block rides this for free.</p>
+    </div>
+    <div class="card blue">
+      <h3><span class="icon">🔍</span> Keyword search beats a vector DB here</h3>
+      <p>Corpus is small, personal, mostly factual (names, dates, decisions). BM25-style lexical retrieval is sub-ms and needs no embeddings pipeline — the right tool for what's actually being looked up.</p>
+    </div>
+  </div>
+
+  <h2 class="section c-green">Why the deep tier felt so much better</h2>
+  <div class="grid">
+    <div class="card green">
+      <h3><span class="icon">📅</span> Live tool access</h3>
+      <p>Jacob noticed the deep tier (<code>claude -p</code>) checked email and calendar live via <code>gws</code> and gave sharp, current answers. The fast tier only ever sees a snapshot up to 18h stale, and has no email view at all — that's the real gap, not raw context size.</p>
+    </div>
+    <div class="card pink">
+      <h3><span class="icon">🔁</span> Fix: refresh once per session, not per turn</h3>
+      <p>A live <code>gws</code> call per voice turn would be too slow. Firing it once when the WebSocket connects — then reusing it for the rest of that session — gets deep-tier freshness at fast-tier speed.</p>
+    </div>
+  </div>
+
+  <h2 class="section c-amber">Three-layer architecture (v02)</h2>
+  <div class="tree">
+<span class="b">A. Static, cached</span>      <span class="c">~6-7k tok · refreshed daily 06:00</span>
+   SYSTEM_PROMPT + about-me + about-business + priorities
+   + connections + learned-facts
+<span class="p">B. Session-fresh</span>       <span class="c">~300-500 tok · refreshed once per WebSocket connect</span>
+   live calendar (gws) + email digest (unread count, subject/sender/time only)
+<span class="g">C. Per-turn retrieval</span>   <span class="c">~500-800 tok · refreshed every turn</span>
+   BM25 top-3 hits vs full decisions log + full contacts
+   <span class="c">└─</span> <span class="k">history</span> <span class="c">(last N turns, appended after)</span>
+  </div>
+  <div class="note">Only layer A needs to stay byte-identical to earn the caching discount. B and C are cheap in absolute terms, so paying full price on a few hundred tokens each turn barely matters.</div>
+
+  <h2 class="section c-pink">File sizes measured tonight</h2>
+  <div class="tbl">
+    <table>
+      <tr><th>Source</th><th>~Tokens</th><th>Today</th><th>Plan</th></tr>
+      <tr><td>voice-context.md (generated)</td><td>1,170</td><td>included</td><td>stays, grows via layer A</td></tr>
+      <tr><td>about-me.md</td><td>540</td><td>not included</td><td>fold in verbatim (A)</td></tr>
+      <tr><td>about-business.md</td><td>3,230</td><td>not included</td><td>fold in verbatim (A)</td></tr>
+      <tr><td>connections.md</td><td>1,570</td><td>not included</td><td>fold in verbatim (A)</td></tr>
+      <tr><td>contacts.md (full)</td><td>4,830</td><td>LLM-guessed 6-8 line summary</td><td>drop summary, retrieve instead (C)</td></tr>
+      <tr><td>decisions/log.md (full)</td><td>19,700</td><td>30-day LLM summary only</td><td>keep summary, add full-log retrieval (C)</td></tr>
+    </table>
+  </div>
+
+  <h2 class="section c-blue">Task order</h2>
+  <div class="flow">
+    <div class="step"><b>1 · Verify caching</b>Confirm OpenRouter shows a cache hit on turn 2 before building on the assumption.</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>2 · Grow layer A</b>Fold about-me / about-business / connections into the generator verbatim.</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>3-4 · Layer B</b>Auto-fire calendar refresh + new email digest fetcher on WebSocket connect.</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>5-6 · Layer C</b>Build BM25 retrieval over decisions log + contacts; retire the daily contacts summarizer.</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>7 · Re-test</b>Cold-cache turn still under 1s, connect-refresh doesn't delay the greeting, previously-ESCALATE questions now answer live.</div>
+  </div>
+
+  <div class="note"><b>Bottom line:</b> don't just make the file bigger — split it. A cacheable static identity block (~6-7k tok), a session-fresh live overlay for calendar/email, and per-turn keyword retrieval over the big volatile files together give the fast tier near-total knowledge of Jacob without ever ballooning a single prompt past the point where recall degrades.</div>
+
+  <footer>
+    Plan v01 + v02 · generated by /visualanswer
+  </footer>
+
+</div>
+</body>
+</html>
