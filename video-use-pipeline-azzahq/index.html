@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="../favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="../favicon.ico?v=2" sizes="any">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png?v=2">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YouTube stand-out ideas + video-use pipeline integration</title>
+<style>
+  :root { color-scheme: light; }
+  body { font-family: Georgia, 'Times New Roman', serif; max-width: 760px; margin: 3rem auto; padding: 0 1.25rem; color: #1a1a1a; line-height: 1.65; }
+  h1 { font-size: 1.6rem; line-height: 1.3; margin-bottom: 0.3rem; }
+  .sub { font-size: 0.9rem; color: #555; margin-bottom: 2rem; font-family: -apple-system, "Segoe UI", Arial, sans-serif; }
+  .sub a { color: #0b5394; }
+  h2 { font-size: 1.2rem; margin-top: 2.4rem; border-bottom: 2px solid #111; padding-bottom: 0.3rem; }
+  ol, ul { padding-left: 1.4rem; }
+  li { margin: 0.6rem 0; }
+  code { font-family: "SFMono-Regular", Consolas, monospace; font-size: 0.88em; background: #f2f2ee; border: 1px solid #ddd; border-radius: 3px; padding: 0.05em 0.35em; }
+  blockquote { border-left: 3px solid #1f4f8f; margin: 1rem 0; padding: 0.5rem 1rem; color: #222; background: #eef4fb; font-style: italic; font-family: -apple-system, "Segoe UI", Arial, sans-serif; font-size: 0.95rem; }
+  .step-list { counter-reset: step; list-style: none; padding-left: 0; }
+  .step-list li { counter-increment: step; padding-left: 2.2rem; position: relative; }
+  .step-list li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: #111; color: #fff; font-family: -apple-system, "Segoe UI", Arial, sans-serif; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .meta { font-size: 0.85rem; color: #666; margin-top: 2.5rem; border-top: 1px solid #ddd; padding-top: 0.75rem; font-family: -apple-system, "Segoe UI", Arial, sans-serif; }
+  a { color: #0b5394; }
+</style>
+</head>
+<body>
+
+<h1>YouTube stand-out ideas + video-use pipeline integration</h1>
+<div class="sub">
+  Source: Nate Herk — <a href="https://youtu.be/Aw3BkmhYu4I">"Claude Video Editing Just Became Unrecognizable"</a> (watched via <code>/watch</code>), cross-checked against the current <code>home/AIOS/projects/media-agent-army</code> setup. Notes from 2026-07-27.
+</div>
+
+<h2>What makes his output stand out (steal these)</h2>
+<ol>
+  <li><strong>Liquid-glass card overlays, iOS-26 style.</strong> Translucent chrome-gradient cards over a dimmed talking-head background, not flat lower-thirds. Immediately reads "premium."</li>
+  <li><strong>Karaoke-style word-pop captions</strong>, not a static subtitle bar — words appear synced to speech, feels alive.</li>
+  <li><strong>Stat/chart callout cards</strong> ("+247%", bar chart) to punctuate a claim visually instead of just saying it.</li>
+  <li><strong>Literal visual metaphors for abstract claims</strong> — he said "show me an animation of editing out mistakes" with zero more detail, and got cards flashing red + a scissor wipe cutting them out. Prompting for the <em>feeling</em>, not exact specs, works when the style is already anchored (see #5).</li>
+  <li><strong>A written motion-philosophy / aesthetic-direction doc per video type</strong> — fixed 5-color palette, card grammar, timing rules. This is what lets one-line prompts ("do the usual intro") produce consistent, on-brand results instead of re-deciding style every time.</li>
+  <li><strong>Branded end-card pattern</strong> — last 5s: face-cam crops to vertical with rounded corners + drop shadow, shifts to one side, dark background reveals, "Thanks for watching / [tagline]" on the other side. Reusable sign-off template, not a random fade-to-black.</li>
+  <li><strong>Plan-mode before render.</strong> Claude proposes the full beat timeline (word-anchor, timing, card copy) and gets approved <em>before</em> spending tokens generating HTML/animations. Nate's 30s clip still cost ~238k tokens — planning first is what keeps that from ballooning further.</li>
+  <li><strong>Self-verifying renders.</strong> Told to screenshot its own output and check it against the ask — caught a face-occlusion bug and a stray grid-texture bug itself before Nate had to.</li>
+  <li><strong>Treats every finished video as training data</strong> — future prompts reference past compositions ("build a lesson like the last 5"), so the style compounds instead of resetting each time.</li>
+</ol>
+
+<h2>The actual pipeline gap vs. what we have</h2>
+<p>Our <code>/make-a-video</code> (Phase 2 of Media Agent Army) already does word-level transcription (<code>transcribe_clip.py</code>, Groq/OpenAI) + HyperFrames motion graphics — that part matches Nate's HyperFrames half exactly.</p>
+<p>What's missing is his <strong>first step</strong>: automatic filler-word/retake/dead-air trimming straight off a raw take, before HyperFrames ever sees it. Today that trim is presumably still manual (Premiere or none). His tool for it is a real, separate open-source project:</p>
+<ul>
+  <li><strong><a href="https://github.com/browser-use/video-use">github.com/browser-use/video-use</a></strong> — drop in raw footage, it finds and cuts filler words/false starts/retakes, hands back a trimmed clip + word-timed transcript. Built by the browser-use team, plugs into Claude Code (or Codex/OpenClaw) as a skill with shell access.</li>
+</ul>
+
+<h2>Proposed integration (do at desktop — multi-file, needs testing)</h2>
+<ol class="step-list">
+  <li>Pull <code>browser-use/video-use</code> into the project (same pattern as HyperFrames: clone repo, let Claude Code read its skill/README, wire it in) as a <strong>Phase 1.5</strong>: raw clip in → trimmed clip + word-timed transcript out → feeds straight into existing <code>/make-a-video</code>.</li>
+  <li>Add a <code>motion-philosophy.md</code> per recurring show (Bitesize episode format, Telling Technology short format) next to the existing HyperFrames creative docs — palette, card style, timing grammar — so future <code>/make-a-video</code> calls default to an established look instead of reinventing it.</li>
+  <li>Check whether <code>hyperframes-cli</code>'s <code>check</code>/<code>snapshot</code>/<code>compare</code> commands already give us the "screenshot and self-verify" loop Nate manually prompted for; if not, add it explicitly to the <code>/make-a-video</code> skill instructions.</li>
+  <li>Bake "plan first, approve, then render" into the <code>/make-a-video</code> skill flow if it doesn't already gate on that — token cost control.</li>
+</ol>
+
+<h2>Suggested desktop prompt to kick this off</h2>
+<blockquote>Read <code>inbox/youtube-standout-ideas-video-use-pipeline-2026-07-27-01.md</code>. Evaluate github.com/browser-use/video-use as a Phase 1.5 (raw-footage trim) step ahead of our existing <code>/make-a-video</code> HyperFrames pipeline in <code>projects/media-agent-army</code>. Propose how to wire it in, then implement.</blockquote>
+
+<p class="meta">Source note: <code>inbox/youtube-standout-ideas-video-use-pipeline-2026-07-27-01.md</code>. Deferred to next desktop Claude Code session — multi-file build, needs testing.</p>
+
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="../favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="../favicon.ico?v=2" sizes="any">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png?v=2">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brig E780N — Stall Investigation: Final Verdict</title>
+<style>
+:root { --bg:#071512;--bg2:#0e1817;--primary:#0B7D74;--bright:#5FC7BA;--light:#C6EEE8;--deep:#094843;--mid:#2BA89A;--ink:#CFEFE9;--muted:#7fa79f;
+        --ok:#3dd68c;--warn:#e8c468; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6;min-height:100vh}
+.wrap{max-width:960px;margin:0 auto;padding:0 1.5rem}
+header{padding:4rem 0 2.5rem;text-align:center;border-bottom:1px solid var(--deep)}
+.kicker{color:var(--muted);text-transform:uppercase;letter-spacing:.2em;font-size:.75rem;margin-bottom:1rem}
+h1{color:var(--light);font-size:clamp(1.6rem,4vw,2.6rem);line-height:1.2;margin-bottom:1rem}
+.verdict-badge{display:inline-block;background:rgba(61,214,140,.12);border:1px solid var(--ok);color:var(--ok);
+  border-radius:999px;padding:.5rem 1.4rem;font-weight:600;letter-spacing:.05em;margin:.8rem 0}
+.sub{color:var(--muted);max-width:640px;margin:0 auto;font-size:.95rem}
+section{padding:2.5rem 0;border-bottom:1px solid var(--deep)}
+h2{color:var(--bright);font-size:1.3rem;margin-bottom:1.4rem;letter-spacing:.02em}
+h3{color:var(--light);font-size:1rem;margin-bottom:.4rem}
+p{margin-bottom:.8rem}
+.small{font-size:.85rem;color:var(--muted)}
+/* timeline */
+.tl{position:relative;padding-left:1.6rem}
+.tl::before{content:"";position:absolute;left:.35rem;top:.3rem;bottom:.3rem;width:2px;background:var(--deep)}
+.tl-item{position:relative;margin-bottom:1.4rem;background:var(--bg2);border:1px solid var(--deep);border-radius:12px;padding:1.1rem 1.3rem}
+.tl-item::before{content:"";position:absolute;left:-1.6rem;top:1.35rem;transform:translateX(.35rem);width:10px;height:10px;border-radius:50%;background:var(--mid);margin-left:-4px}
+.tl-item.fix::before{background:var(--ok)}
+.tl-item.bad::before{background:#e46a6a}
+.tl-date{color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.25rem}
+/* evidence grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.card{background:var(--bg2);border:1px solid var(--deep);border-radius:12px;padding:1.1rem 1.3rem}
+.stat{font-size:1.5rem;color:var(--bright);font-weight:700}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{text-align:left;padding:.55rem .7rem;border-bottom:1px solid var(--deep);vertical-align:top}
+th{color:var(--muted);font-weight:600;text-transform:uppercase;font-size:.72rem;letter-spacing:.1em}
+td b{color:var(--light)}
+/* verdict box */
+.verdict-box{background:linear-gradient(160deg,rgba(11,125,116,.25),rgba(14,24,23,.9));border:1px solid var(--primary);border-radius:14px;padding:1.6rem 1.8rem;margin-top:.5rem}
+.verdict-box ul{margin:.6rem 0 0 1.2rem}
+.verdict-box li{margin-bottom:.45rem}
+.warn{color:var(--warn)}
+.ok{color:var(--ok)}
+pre{background:#04100d;border:1px solid var(--deep);border-radius:10px;padding:1rem 1.2rem;overflow-x:auto;font-size:.85rem;line-height:1.5;color:var(--light);white-space:pre-wrap}
+footer{text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
+footer a{color:var(--bright);text-decoration:none}
+.tag{display:inline-block;background:rgba(95,199,186,.1);border:1px solid var(--deep);border-radius:6px;padding:.05rem .5rem;font-size:.75rem;color:var(--bright);margin-right:.3rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="kicker">Brig Eagle 780 · Evinrude E-TEC G2 300 · s/n 05467723 · 223,7 h</div>
+    <h1>Engine-Stall Investigation<br>July 2026 — Final Verdict</h1>
+    <div class="verdict-badge">✔ CLEARED TO KEEP BOATING THIS SEASON</div>
+    <p class="sub">Root cause found physically, fixed, and verified by three independent EvDiag6
+    diagnostic sessions. Preventive service handed to the Lomma technician. Full sources in the
+    Brig E780N wiki (<code>raw/</code> + <code>wiki/</code>).</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>What happened — the whole journey</h2>
+    <div class="tl">
+      <div class="tl-item bad">
+        <div class="tl-date">2026-07-06 · the problem</div>
+        <h3>Engine died twice at sea — zero warning</h3>
+        <p>No fault on the ICON display either time; instant clean restart on a key cycle. That
+        silence was the key clue: a monitored fault would have displayed. Something was cutting
+        the EMM's 12V power itself.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-07-10 → 07-13 · the diagnosis</div>
+        <h3>EvDiag6 pull nails it: battery-side power loss</h3>
+        <p>Fault cluster at engine hour 219:39 — codes <b>94</b> (fuel pump current), <b>114</b>
+        (network loss, battery at <b>0,5V</b> while running), <b>161</b> (Fused B), <b>79</b>
+        (starter solenoid) — all with battery voltage collapsed while the engine ran on its own
+        55V magneto rail. Helm logged matching <b>P32 "Accessory power disconnected"</b>.
+        Dockside datalog then caught it live: <b>15V → 3,4V collapse, 51A recovery spike</b>,
+        at idle, at the dock. Battery/ground path confirmed; kill-switch and ignition ruled out.</p>
+      </div>
+      <div class="tl-item fix">
+        <div class="tl-date">2026-07-16 · fix #1</div>
+        <h3>New batteries + new pole connectors</h3>
+        <p>2× <b>Biltema AGM 92 Ah / 800 A(EN)</b> (spec minimum 675 CCA — comfortable margin),
+        CTEK-charged before install. Old pole connectors had <b>water-ingress corrosion</b>.
+        Same-day EvDiag6 session: zero new fault codes, textbook charging (12,6→14,2V, 8–19A
+        taper), plus a ~1h14m hard run to 5 500 RPM logged clean. A filmed "voltage drift"
+        (12,3–12,8V, key on) was analyzed and closed as <b>benign key-on load cycling</b>.</p>
+      </div>
+      <div class="tl-item fix">
+        <div class="tl-date">2026-07-18 · fix #2 — the smoking gun</div>
+        <h3>Two loose cables found behind the battery switch</h3>
+        <p>On the backside of the <b>Blue Sea 6007</b> selector: two loose cables on the
+        <b>OUTPUT/COM stud</b> — the single point feeding the whole boat-side 12V. Retightened
+        to the 120 in·lb spec; cracked insulation boots on studs 1/2 flagged for re-shrink.
+        Pre/post photos archived. This one part explains the stalls, all four fault codes, the
+        helm P32, and the steering-whine voltage sag.</p>
+      </div>
+      <div class="tl-item fix">
+        <div class="tl-date">2026-07-18 evening · verification #2</div>
+        <h3>Full instrumented re-test — clean</h3>
+        <p>EMM report at 223:40 h: <b>still zero new codes</b> since 219:39. Two live datalogs:
+        battery 12,8–13,5V, charge 10–21A, system 52–57V, no dropout. Filmed multimeter vs ICON
+        gauge: they agree (13,0V key-off → 12,3–12,9V key-on band). DPS steering test on the
+        EvDiag6 Power Steering screen: lock-to-lock ±31,8°, pressures alternating correctly,
+        pump current spiking normally under load — <b>no visible 12V sag during steering
+        anymore</b>.</p>
+      </div>
+      <div class="tl-item fix">
+        <div class="tl-date">2026-07-19 · wrap-up</div>
+        <h3>Batteries charged overnight, all data ingested</h3>
+        <p>Everything — 3 EMM reports, 6 datalogs, 61 Telegram thread sections, 5 videos,
+        7 photos — is now in the wiki with sources. Service plan written for the Lomma
+        technician.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The evidence, in numbers</h2>
+    <div class="grid">
+      <div class="card"><div class="stat">0</div><p>new fault codes across <b>three</b> EvDiag6 sessions after the fix (hours 219:51 → 223:40, ~4 h of running incl. a 100%-throttle run to 5 500 RPM)</p></div>
+      <div class="card"><div class="stat">15V → 3,4V</div><p>the failure signature on 07-10 (with 51A recovery spike) — <b>never seen again</b> in any post-fix log</p></div>
+      <div class="card"><div class="stat">12,8–13,6V</div><p>battery voltage band across all post-fix idle tests, charging tapering normally, system rail steady 52–57V</p></div>
+      <div class="card"><div class="stat">2</div><p>loose cables on the battery-switch COM stud — the physical fault, now torqued to spec and photographed</p></div>
+    </div>
+    <p class="small" style="margin-top:1rem">Honest caveat: each individual post-fix idle log is shorter than the 14 min it took the fault
+    to appear on 07-10. The strength of the verdict comes from the <i>combination</i> — repeated sessions, a long hard-RPM sea run,
+    zero codes, and a physically identified + repaired culprit — not from any single test.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Verdict</h2>
+    <div class="verdict-box">
+      <p><b class="ok">Yes — the findings are good enough to keep boating this season.</b>
+      The failure was electrical power delivery, not engine internals (temps, knock, compression
+      indicators all clean). The root cause was found <i>physically</i>, matches the data
+      signature exactly, and the repair has been verified by instrumented re-testing. Even the
+      worst-case recurrence mode is a momentary power blip with instant restart — annoying, not
+      dangerous — and the engine's magneto keeps it running independently of the battery.</p>
+      <p style="margin-top:.6rem"><b>Conditions attached:</b></p>
+      <ul>
+        <li><span class="warn">Book the Lomma service promptly</span> — the impeller/water pump is a real seaworthiness item (engine built 2016; 500 h / <b>5 yr</b> interval applies) — don't let it slide to winter.</li>
+        <li><b>Hard rule stays:</b> never turn the battery selector while the engine runs (taped reminder recommended — kids aboard).</li>
+        <li>Two 5-minute checks at the next calm dock visit: <b>mA parasitic test</b> at the helm socket (the 0,5V ghost), and the <b>engine-idling wiggle test</b> on cables/switch while watching live voltage.</li>
+        <li>Keep the multimeter + a quart of XD100 aboard; watch the ICON battery gauge on the first few longer trips.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Service order — technician in Lomma</h2>
+    <table>
+      <tr><th>#</th><th>Job</th><th>Spec / parts</th></tr>
+      <tr><td>1</td><td><b>Impeller / water pump</b></td><td>Water pump kit, 500 h/5 yr schedule item</td></tr>
+      <tr><td>2</td><td><b>Hydraulic steering: change fluid + de-air</b></td><td>Fluid P/N <b>770891</b> only (~300 ml); bleed valves 9,5–13,5 N·m; whine/jumpy feel = suspected residual air</td></tr>
+      <tr><td>3</td><td><b>Spark plugs</b></td><td>Champion <b>QC8WEPI</b>, gap 0,71 mm, +180° new, dielectric grease</td></tr>
+      <tr><td>4</td><td><b>Gearcase oil</b></td><td><b>HPF Pro</b>, 1 180 ml (1 350 ml incl. hose/reservoir); inspect drained oil for metal/water</td></tr>
+      <tr><td>5</td><td>Rest of 500 h/5 yr bundle</td><td>Fuel filters (357797 + 502906), oil filter, back-pressure probe, transom bolts 40 ft·lbs, grease points, thermostats, anodes</td></tr>
+      <tr><td>6</td><td>Re-heat-shrink battery-switch studs 1+2</td><td>Cracked boots found 07-18; COM already redone</td></tr>
+    </table>
+    <p class="small" style="margin-top:.8rem">Copy-ready Swedish booking message lives in the wiki: <span class="tag">wiki/service-plan-2026-07.md</span></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Still on the watch list</h2>
+    <div class="grid">
+      <div class="card"><h3>Open checks</h3><p class="small">mA parasitic test (0,5V ghost at helm socket) · idle wiggle/repro test · Critical-Low-Oil history (×9 at hour 199) — ask tech to check oil pickup/level sensor</p></div>
+      <div class="card"><h3>Housekeeping</h3><p class="small">Copy the 5 verification .MOVs from Drive to the NAS boat folder (~1,4 GB, too big for git) · copy <code>C:\ProgramData\BRP\EvDiag6\ServiceChart</code> from the diag laptop into raw/ · add a GROQ_API_KEY so future videos get audio transcription</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Jacob Skogström &middot; <a href="https://bitesize.ai">Bitesize AI</a> &middot; generated 2026-07-19 from the Brig E780N wiki
+</footer>
+</body>
+</html>
