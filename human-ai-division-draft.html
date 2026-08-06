@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Man vs Machine — Who Does What</title>
+<style>
+:root{--bg:#071512;--bg2:#0e1817;--primary:#0B7D74;--bright:#5FC7BA;--light:#C6EEE8;--deep:#094843;--mid:#2BA89A;--ink:#CFEFE9;--muted:#7fa79f;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
+.wrap{max-width:920px;margin:0 auto;padding:4rem 1.5rem 2rem}
+.eyebrow{color:var(--bright);text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;font-weight:600}
+h1{font-size:2.4rem;color:var(--light);margin:.6rem 0 1rem;line-height:1.15}
+.lede{color:var(--muted);font-size:1.1rem;max-width:640px;margin-bottom:.5rem}
+.draft-tag{display:inline-block;background:var(--deep);color:var(--bright);border-radius:999px;padding:.3rem .9rem;font-size:.75rem;letter-spacing:.05em;text-transform:uppercase;margin-bottom:1.5rem}
+.intro{border-left:3px solid var(--primary);padding-left:1.2rem;color:var(--ink);margin:2rem 0 3rem;font-size:1.05rem}
+.card{background:var(--bg2);border:1px solid var(--deep);border-radius:14px;padding:1.8rem;margin-bottom:1.4rem}
+.card .num{color:var(--muted);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
+.card h2{color:var(--bright);font-size:1.4rem;margin:.3rem 0 1rem}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+@media(max-width:640px){.split{grid-template-columns:1fr}}
+.col{background:var(--bg);border:1px solid var(--deep);border-radius:10px;padding:1rem}
+.col .who{font-weight:700;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.4rem}
+.col.human .who{color:var(--light)}
+.col.ai .who{color:var(--mid)}
+.col p{color:var(--ink);font-size:.95rem}
+.example{background:var(--deep);border-radius:8px;padding:.9rem 1.1rem;font-size:.9rem;color:var(--light)}
+.example b{color:var(--bright)}
+.takeaway{background:var(--bg2);border:1px solid var(--primary);border-radius:14px;padding:2rem;margin-top:2.5rem}
+.takeaway h2{color:var(--bright);margin-bottom:.8rem}
+.takeaway p{margin-bottom:.6rem}
+.notes{color:var(--muted);font-size:.85rem;margin-top:2.5rem;border-top:1px solid var(--deep);padding-top:1.2rem}
+footer{text-align:center;padding:2.5rem;color:var(--muted);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
+footer a{color:var(--bright);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Draft — for review</div>
+  <h1>Man vs Machine: Who Does What</h1>
+  <p class="lede">Not a theory. A pattern pulled from real work — every project Jacob has run with Claude over the past months. Same seven splits keep showing up. This is the raw material for a Bitesize / Telling Technology episode.</p>
+  <span class="draft-tag">Working draft · not final</span>
+
+  <div class="intro">
+    The question isn't "what can AI do." It's "what should stay with the human even when the AI could technically do it." Every project below drew that line somewhere. The line is always in the same seven places.
+  </div>
+
+  <div class="card">
+    <div class="num">01</div>
+    <h2>Decide vs. Build</h2>
+    <div class="split">
+      <div class="col human"><div class="who">Human</div><p>Makes the irreversible call. Build vs. buy. Sign vs. walk.</p></div>
+      <div class="col ai"><div class="who">AI</div><p>Turns the call into a working system, same day.</p></div>
+    </div>
+    <div class="example"><b>Example:</b> Family budget project — Jacob decided "build, not buy." Claude shipped the private Sheet, the CSV normalizer, and the Dashboard budget tab.</div>
+  </div>
+
+  <div class="card">
+    <div class="num">02</div>
+    <h2>Relationship vs. Record</h2>
+    <div class="split">
+      <div class="col human"><div class="who">Human</div><p>Has the lunch. Makes the call. Shakes the hand.</p></div>
+      <div class="col ai"><div class="who">AI</div><p>Turns the moment into structured, searchable memory.</p></div>
+    </div>
+    <div class="example"><b>Example:</b> Contact-hub — Jacob says "lunch with X." Claude parses it, drafts updates across contacts.md, Google Contacts, the Networking calendar, and the Jobs sheet — applies only after Jacob confirms.</div>
+  </div>
+
+  <div class="card">
+    <div class="num">03</div>
+    <h2>Taste vs. Iteration</h2>
+    <div class="split">
+      <div class="col human"><div class="who">Human</div><p>Says what's wrong the moment it's wrong. No negotiation.</p></div>
+      <div class="col ai"><div class="who">AI</div><p>Iterates until it clears the bar — however many passes that takes.</p></div>
+    </div>
+    <div class="example"><b>Example:</b> Jacob rejects clean-but-flat UI, wants Linear/Vercel/Apple-grade craft — Claude re-renders until it lands. Same reflex killed a whole episode topic outright: one veto, gone for good.</div>
+  </div>
+
+  <div class="card">
+    <div class="num">04</div>
+    <h2>Strategy vs. Surveillance</h2>
+    <div class="split">
+      <div class="col human"><div class="who">Human</div><p>Sets the filter — what counts as a fit, what's worth watching.</p></div>
+      <div class="col ai"><div class="who">AI</div><p>Watches continuously so the human doesn't have to.</p></div>
+    </div>
+    <div class="example"><b>Example:</b> Job-hunt fit rules (skip commercial/agreements-PM, skip hardware-heavy EM) feed an always-on job board scan. Same shape runs the price monitor and the flight-deal hunter.</div>
+  </div>
+
+  <div class="card">
+    <div class="num">05</div>
+    <h2>Authorization vs. Execution</h2>
+    <div class="split">
+      <div class="col human"><div class="who">Human</div><p>Owns risk. Anything irreversible or public needs a yes.</p></div>
+      <div class="col ai"><div class="who">AI</div><p>Does everything up to that line, then stops and asks.</p></div>
+    </div>
+    <div class="example"><b>Example:</b> CI pipeline gate — Claude diagnoses and prepares any fix, but never pushes to the main branch, even from a phone message, without Jacob's explicit go-ahead first.</div>
+  </div>
+
+  <div class="card">
+    <div class="num">06</div>
+    <h2>Voice vs. Voice-matching</h2>
+    <div class="split">
+      <div class="col human"><div class="who">Human</div><p>Is the voice on anything that leaves the building.</p></div>
+      <div class="col ai"><div class="who">AI</div><p>Drafts in that voice, never publishes it unseen.</p></div>
+    </div>
+    <div class="example"><b>Example:</b> Standing rule — no recruiter email, LinkedIn post, or client message goes out in "Jacob's voice" without Jacob reading the draft first.</div>
+  </div>
+
+  <div class="card">
+    <div class="num">07</div>
+    <h2>Correction vs. Institution</h2>
+    <div class="split">
+      <div class="col human"><div class="who">Human</div><p>Catches the miss. "You should've checked that file."</p></div>
+      <div class="col ai"><div class="who">AI</div><p>Turns the one-time correction into a rule that never breaks again.</p></div>
+    </div>
+    <div class="example"><b>Example:</b> A missed git worktree, a wrong contact-lookup order, a sheet write that broke mid-file — each became a standing rule after exactly one correction, not two.</div>
+  </div>
+
+  <div class="takeaway">
+    <h2>The pattern</h2>
+    <p>Human owns: judgment, relationships, taste, risk, and voice. Things that can't be undone, or that represent someone to another human.</p>
+    <p>AI owns: memory, drafting, monitoring, and mechanical follow-through. Things that are reversible, and that scale by being done more often, not more carefully.</p>
+    <p>The AIOS itself — this whole setup — is the case study. Every project in it drew this same line somewhere.</p>
+  </div>
+
+  <div class="notes">
+    Draft notes: this is v1 of the framework — the 7 splits are a first pass, not final. Next step is picking which 2-3 examples per split are strong enough to carry an episode, and deciding format (short explainer video vs. written piece vs. both). Not yet linked to any Bitesize backlog slot.
+  </div>
+</div>
+<footer>Jacob Skogström &middot; <a href="https://bitesize.ai">Bitesize AI</a></footer>
+</body>
+</html>
