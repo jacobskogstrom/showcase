@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Claude Code Status Line</title>
+<meta name="description" content="A one-line Claude Code status bar: model, effort, context fill and plan usage at a glance. Free script, two-minute install.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%232ee6d6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<script>(function(){var t=null;try{t=localStorage.getItem('theme');}catch(e){}if(!t){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.dataset.theme=t;})();</script>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#0a1110; --bg-2:#0e1817; --term:#070d0c;
+  --ink:#eaf3f1; --muted:#8aa19c; --faint:#5d716d;
+  --teal:#0EA5A6; --teal-bright:#2ee6d6;
+  --amber:#F8E29B; --green:#74D99B; --coral:#F5A8A2;
+  --card:rgba(255,255,255,.035); --card-brd:rgba(255,255,255,.09); --line:#1f2e2c;
+  --on-primary:#0a1110;
+  --t-yellow:#e5c07b; --t-cyan:#56d4dd; --t-dim:#5d716d; --t-ink:#d6e2df;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"JetBrains Mono","SF Mono",Menlo,Consolas,monospace;
+}
+html[data-theme="light"]{
+  color-scheme:light;
+  --bg:#F4EFE7; --bg-2:#FFFFFF; --term:#1b2422;
+  --ink:#211E19; --muted:#736B5E; --faint:#9A9284;
+  --teal:#0B7D7E; --teal-bright:#0A6E6F;
+  --amber:#8A6D1F; --green:#2E7D4F; --coral:#C8613D;
+  --card:rgba(33,30,25,.05); --card-brd:rgba(33,30,25,.18); --line:rgba(33,30,25,.18);
+  --on-primary:#FFFFFF;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px}
+@media (min-width:720px){.wrap{padding-inline:32px}}
+h1,h2,h3{margin:0;letter-spacing:-.015em;text-wrap:balance}
+h2{font-size:clamp(22px,3vw,28px);font-weight:700}
+p{margin:0}
+a{color:var(--teal-bright)}
+code{font:500 .88em var(--mono);background:var(--card);border:1px solid var(--card-brd);border-radius:5px;padding:1px 5px}
+.eyebrow{font:600 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--teal-bright)}
+:focus-visible{outline:2px solid var(--teal-bright);outline-offset:2px;border-radius:6px}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;height:56px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;white-space:nowrap;color:var(--ink);text-decoration:none}
+.brand i{width:12px;height:12px;border-radius:50%;background:var(--teal-bright);box-shadow:0 0 0 4px color-mix(in srgb,var(--teal-bright) 20%,transparent)}
+.top nav{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{display:block;padding:7px 10px;border-radius:8px;color:var(--muted);text-decoration:none;font-size:13.5px;white-space:nowrap}
+.top nav a:hover{background:var(--card);color:var(--ink)}
+.btn{font:600 13px/1 var(--sans);padding:9px 12px;border-radius:9px;border:1px solid var(--card-brd);background:var(--card);color:var(--ink);cursor:pointer;flex:none}
+.btn:hover{border-color:var(--teal-bright)}
+.btn.primary{background:var(--teal-bright);border-color:var(--teal-bright);color:var(--on-primary)}
+@media (max-width:560px){.brand span{display:none}}
+.hero{padding:48px 0 36px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(30px,5vw,48px);line-height:1.08;font-weight:700;letter-spacing:-.03em;margin-top:12px;max-width:18ch}
+.hero h1 em{font-style:normal;color:var(--teal-bright)}
+.hero .lead{color:var(--muted);max-width:62ch;margin-top:16px;font-size:clamp(15px,1.5vw,18px)}
+.term{margin-top:28px;background:var(--term);border:1px solid var(--card-brd);border-radius:14px;overflow:hidden}
+.term .chrome{display:flex;gap:6px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.term .chrome i{width:10px;height:10px;border-radius:50%;background:#2a3634}
+.term .body{padding:16px 16px 18px;font:500 clamp(11.5px,1.5vw,12.5px)/1.7 var(--mono);color:var(--t-ink);overflow-x:auto;white-space:pre}
+.term .prompt{color:var(--t-dim)}
+.y{color:var(--t-yellow)} .c{color:var(--t-cyan)} .d{color:var(--t-dim)}
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+.sec-head{display:grid;gap:8px;margin-bottom:20px}
+.sec-head p{color:var(--muted);max-width:64ch}
+.seg{display:grid;gap:10px;list-style:none;margin:0;padding:0}
+.seg li{display:grid;grid-template-columns:150px 1fr;gap:14px;padding:14px 16px;background:var(--card);border:1px solid var(--card-brd);border-radius:12px}
+@media (max-width:600px){.seg li{grid-template-columns:1fr;gap:6px}}
+.seg .k{font:600 13px/1.4 var(--mono);color:var(--teal-bright)}
+.seg b{color:var(--ink)}
+.seg span{color:var(--muted);font-size:15px}
+.point{margin-top:18px;padding:14px 16px;border-left:3px solid var(--amber);background:var(--card);border-radius:0 12px 12px 0;color:var(--muted)}
+.point b{color:var(--ink)}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:12px;counter-reset:s}
+.steps>li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:start}
+.steps>li::before{counter-increment:s;content:counter(s);font:700 20px/1.3 var(--sans);color:var(--teal-bright)}
+.steps p{color:var(--muted)}
+.code{position:relative;margin-top:10px;background:var(--term);border:1px solid var(--card-brd);border-radius:12px}
+.code pre{margin:0;padding:14px 16px;font:500 12.5px/1.6 var(--mono);color:var(--t-ink);overflow:auto;max-height:520px}
+.code .bar{display:flex;gap:8px;justify-content:flex-end;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.06)}
+.code .bar span{margin-right:auto;font:600 11px/26px var(--mono);color:var(--t-dim);letter-spacing:.08em;text-transform:uppercase}
+.code .btn{padding:6px 10px;font-size:12px;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:#d6e2df}
+.tips{margin:0;padding-left:20px;color:var(--muted);display:grid;gap:6px}
+footer{padding:28px 0 60px;color:var(--faint);font-size:13px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="https://tellingtechnology.skogstrom.se"><i aria-hidden="true"></i><span>Telling Technology</span></a>
+    <nav aria-label="Sections">
+      <a href="#what">What it shows</a>
+      <a href="#install">Install</a>
+      <a href="#script">Script</a>
+    </nav>
+    <button class="btn" id="theme" title="Toggle dark/light" aria-label="Toggle dark/light">☾</button>
+  </div>
+</header>
+
+<div class="hero wrap">
+  <div class="eyebrow">Claude Code · free script · 2-minute install</div>
+  <h1>The one line I keep under my <em>Claude Code</em> prompt.</h1>
+  <p class="lead">Model, effort, how full the context is, and how much of your plan window you have burned. All four are invisible by default. This puts them one glance away.</p>
+  <div class="term" aria-label="Example status line">
+    <div class="chrome"><i></i><i></i><i></i></div>
+    <div class="body"><span class="prompt">&gt; </span><span class="d">_</span>
+<span class="y">Opus 5.5</span> [high] [<span class="c">████</span><span class="d">░░░░░░</span>]37% contxt [<span class="d">░░░░░░░░░░</span>]3% sess.token, <span class="d">"save this drop skills mindset: Staer sta..."</span></div>
+  </div>
+</div>
+
+<section id="what">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Left to right</div>
+      <h2>What each part tells you</h2>
+    </div>
+    <ul class="seg">
+      <li><div class="k">Opus 5.5 [high]</div><span><b>Model and effort.</b> I switch models during the day. This stops me running a big planning job on the small model, or burning the big one on a rename.</span></li>
+      <li><div class="k">37% contxt</div><span><b>Context bar.</b> How full the model's working memory is right now. When it climbs high, answers get vaguer and older instructions start to slip. That is my cue to compact, or write a handover and start fresh.</span></li>
+      <li><div class="k">3% sess.token</div><span><b>Plan bar.</b> How much of your subscription's 5-hour window you have used. Same number claude.ai shows under Settings &gt; Usage, now without leaving the terminal. On API billing, or before the first reply, it falls back to tokens used vs the context window.</span></li>
+      <li><div class="k">"save this..."</div><span><b>Last prompt.</b> The first 40 characters of what you last typed. With five terminals open, this is how you know which tab is which.</span></li>
+    </ul>
+    <p class="point"><b>The two bars are the point.</b> Context is what silently degrades your results. Plan usage is what silently stops you mid-task.</p>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Two minutes</div>
+      <h2>Install it</h2>
+      <p>You need Node.js 18 or newer. No packages, nothing leaves your machine. The script reads the JSON Claude Code pipes into every status line command, plus your own session transcript for the last prompt.</p>
+    </div>
+    <ol class="steps">
+      <li><div><p>Save the script below as <code>~/.claude/statusline.js</code>. On Windows that is <code>C:\Users\&lt;you&gt;\.claude\statusline.js</code>.</p>
+        <div class="code"><div class="bar"><span>statusline.js</span><button class="btn" data-dl>Download</button><button class="btn" data-copy="script">Copy</button></div></div></div></li>
+      <li><div><p>Add this to <code>~/.claude/settings.json</code>, then restart Claude Code. On Windows use the full path with forward slashes: <code>node C:/Users/&lt;you&gt;/.claude/statusline.js</code>.</p>
+        <div class="code"><div class="bar"><span>settings.json</span><button class="btn" data-copy="settings">Copy</button></div><pre id="settings">"statusLine": {
+  "type": "command",
+  "command": "node ~/.claude/statusline.js",
+  "padding": 0
+}</pre></div></div></li>
+    </ol>
+    <h3 style="margin:30px 0 8px">Or let Claude Code install it</h3>
+    <p class="muted" style="color:var(--muted)">Paste this, then paste the script under it.</p>
+    <div class="code"><div class="bar"><span>prompt</span><button class="btn" data-copy="prompt">Copy</button></div><pre id="prompt" style="white-space:pre-wrap">Set up a custom status line for me. Save the script I paste below as ~/.claude/statusline.js
+(on Windows use my real home folder and forward slashes in settings). Then add a "statusLine"
+entry of type "command" running "node &lt;that path&gt;" with padding 0 to my user-level
+~/.claude/settings.json, keeping every other setting as it is. Test it by piping
+{"model":{"display_name":"Claude Opus 5.5"},"context_window":{"used_percentage":37}} into it
+and show me the output. Here is the script:</pre></div>
+  </div>
+</section>
+
+<section id="script">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">About 90 lines</div>
+      <h2>The script</h2>
+    </div>
+    <div class="code"><div class="bar"><span>statusline.js</span><button class="btn" data-dl>Download</button><button class="btn primary" data-copy="script">Copy script</button></div><pre id="script-src">// statusline.js - a Claude Code status line that answers three questions at a glance:
+//   which model and effort am I on, how full is my context, how much of my plan window is used.
+//
+// Renders:  Opus 5.5 [high] [████░░░░░░]37% contxt [░░░░░░░░░░]3% sess.token, "your last prompt..."
+//
+// Install: save this file as ~/.claude/statusline.js, then add to ~/.claude/settings.json:
+//   "statusLine": { "type": "command", "command": "node ~/.claude/statusline.js", "padding": 0 }
+// (Windows: use the full path with forward slashes, e.g. "node C:/Users/&lt;you&gt;/.claude/statusline.js")
+// Needs Node.js 18+. No dependencies. Reads only what Claude Code pipes in plus your own transcript.
+//
+// Free to share. From Telling Technology: https://tellingtechnology.skogstrom.se
+
+'use strict';
+const fs = require('fs');
+
+const ESC = '\x1b[';
+const paint = (code) =&gt; (s) =&gt; ESC + code + 'm' + s + ESC + '0m';
+const dim = paint('90'), cyan = paint('36'), yellow = paint('33');
+
+function bar(pct) {
+  const width = 10;
+  const fill = Math.round((pct / 100) * width);
+  return '[' + cyan('█'.repeat(fill)) + dim('░'.repeat(width - fill)) + ']';
+}
+
+function clampPct(n) {
+  return Math.max(0, Math.min(100, Math.round(Number(n) || 0)));
+}
+
+function readStdin() {
+  const chunks = [];
+  const buf = Buffer.alloc(65536);
+  for (;;) {
+    let n = 0;
+    try { n = fs.readSync(0, buf, 0, buf.length, null); } catch { break; }
+    if (n &lt;= 0) break;
+    chunks.push(buf.slice(0, n).toString('utf8'));
+  }
+  const raw = chunks.join('').replace(/^\uFEFF/, '').trim();
+  return raw ? JSON.parse(raw) : {};
+}
+
+function lastUserPrompt(transcriptPath) {
+  if (!transcriptPath || !fs.existsSync(transcriptPath)) return '';
+  const lines = fs.readFileSync(transcriptPath, 'utf8').split('\n').filter(Boolean).slice(-200);
+  for (let i = lines.length - 1; i &gt;= 0; i--) {
+    let entry;
+    try { entry = JSON.parse(lines[i]); } catch { continue; }
+    if (entry.type !== 'user' &amp;&amp; entry.role !== 'user') continue;
+    const content = (entry.message || entry).content;
+    let text = '';
+    if (typeof content === 'string') text = content;
+    else if (Array.isArray(content)) {
+      const block = content.find((b) =&gt; b &amp;&amp; b.type === 'text' &amp;&amp; b.text &amp;&amp; !b.text.trim().startsWith('&lt;'));
+      text = block ? block.text : '';
+    }
+    text = text.replace(/\s+/g, ' ').trim();
+    if (text &amp;&amp; !text.startsWith('&lt;')) return text;
+  }
+  return '';
+}
+
+let data = {};
+try { data = readStdin(); } catch { /* render the fallback */ }
+
+const model = String((data.model &amp;&amp; (data.model.display_name || data.model.id)) || 'Claude')
+  .replace(/^Claude\s+/i, '').replace(/\s*\(.*\)\s*$/, '').trim() || 'Claude';
+const effort = data.effort &amp;&amp; data.effort.level;
+
+const cw = data.context_window || {};
+const size = Number(cw.context_window_size) || 200000;
+const inTok = Number(cw.total_input_tokens) || 0;
+const outTok = Number(cw.total_output_tokens) || 0;
+const contextPct = clampPct(cw.used_percentage != null ? cw.used_percentage : (inTok / size) * 100);
+
+// Plan usage: the same "Current session X% used" number claude.ai shows under Settings &gt; Usage
+// (Pro/Max, rolling 5-hour window). Before the first reply, or on API billing, fall back to tokens used vs window.
+const fiveHour = data.rate_limits &amp;&amp; data.rate_limits.five_hour &amp;&amp; data.rate_limits.five_hour.used_percentage;
+const sessionPct = clampPct(fiveHour != null ? fiveHour : ((inTok + outTok) / size) * 100);
+
+let prompt = '';
+try { prompt = lastUserPrompt(data.transcript_path); } catch { /* omit */ }
+if (prompt.length &gt; 40) prompt = prompt.slice(0, 40) + '...';
+
+const parts = [yellow(model)];
+if (effort) parts.push('[' + effort + ']');
+parts.push(bar(contextPct) + contextPct + '% contxt');
+parts.push(bar(sessionPct) + sessionPct + '% sess.token');
+process.stdout.write(parts.join(' ') + (prompt ? ', ' + dim('"' + prompt + '"') : '') + '\n');
+</pre></div>
+    <h3 style="margin:30px 0 10px">Make it yours</h3>
+    <ul class="tips">
+      <li>Change <code>40</code> to show more of the last prompt.</li>
+      <li>Change <code>width = 10</code> for longer bars.</li>
+      <li>Colors are plain ANSI codes at the top: <code>33</code> yellow, <code>36</code> cyan, <code>90</code> grey.</li>
+      <li>Want cost, git branch or folder name? The same JSON carries <code>cost</code>, <code>workspace.current_dir</code> and more. Ask Claude Code to add a segment; it can read the payload itself.</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="wrap">From <a href="https://tellingtechnology.skogstrom.se">Telling Technology</a>, 2026-09-23. Free to use and share. Questions or a better version: post it in the community.</footer>
+
+<script>
+(function(){
+  var tb=document.getElementById('theme'),h=document.documentElement;
+  function syncT(){tb.textContent=h.dataset.theme==='light'?'☀':'☾';}
+  tb.onclick=function(){h.dataset.theme=h.dataset.theme==='light'?'dark':'light';try{localStorage.setItem('theme',h.dataset.theme);}catch(e){}syncT();};
+  syncT();
+  var src=function(k){return k==='script'?document.getElementById('script-src').textContent:document.getElementById(k).textContent;};
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var label=b.textContent,txt=src(b.dataset.copy);
+      var done=function(ok){b.textContent=ok?'Copied':'Select and copy';setTimeout(function(){b.textContent=label;},1600);};
+      try{navigator.clipboard.writeText(txt).then(function(){done(true);},function(){done(false);});}catch(e){done(false);}
+    });
+  });
+  document.querySelectorAll('[data-dl]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var blob=new Blob([src('script')],{type:'text/javascript'});
+      var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='statusline.js';
+      document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
+    });
+  });
+})();
+</script>
+</body>
+</html>
