@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Thunderdome for Dummies</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%232ee6d6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script>(function(){var t=null;try{t=localStorage.getItem('theme');}catch(e){}if(!t){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.dataset.theme=t;})();</script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0a1110; --bg-2: #0e1817; --card: #0e1817; --card2: #122120; --border: #1f2e2c; --term: #0c1413;
+    --text: #eaf3f1; --dim: #8aa19c; --dim2: #5d716d; --td: #b9c9c5;
+    --teal: #2ee6d6; --teal-mid: #0EA5A6; --amber: #F8E29B; --green: #74D99B; --coral: #F5A8A2;
+    --on-accent: #0a1110; --progress-bg: rgba(10,17,16,0.94);
+    --teal-brd: rgba(46,230,214,0.35); --amber-brd: rgba(248,226,155,0.4); --green-brd: rgba(116,217,155,0.4); --coral-brd: rgba(245,168,162,0.4);
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  }
+  html[data-theme="light"] {
+    --bg: #F4EFE7; --bg-2: #ECE5D8; --card: #FFFFFF; --card2: #ECE5D8; --border: rgba(33,30,25,.18); --term: #ECE5D8;
+    --text: #211E19; --dim: #736B5E; --dim2: #9A9284; --td: #3E3730;
+    --teal: #0B7D7E; --teal-mid: #0A6E6F; --amber: #8A6D1F; --green: #2E7D4F; --coral: #C8613D;
+    --on-accent: #FFFFFF; --progress-bg: rgba(244,239,231,0.94);
+    --teal-brd: rgba(11,125,126,0.45); --amber-brd: rgba(138,109,31,0.45); --green-brd: rgba(46,125,79,0.45); --coral-brd: rgba(200,97,61,0.45);
+  }
+  html { color-scheme: dark; scroll-behavior: smooth; } html[data-theme="light"] { color-scheme: light; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); padding: 0 16px 80px; line-height: 1.55; }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  .top { position: sticky; top: 0; z-index: 10; background: var(--progress-bg); backdrop-filter: blur(8px);
+         border-bottom: 1px solid var(--border); padding: 10px 0; margin: 0 -16px 28px; }
+  .top .in { max-width: 900px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .top .brand { font-weight: 700; font-size: 0.85em; letter-spacing: 1px; text-transform: uppercase; color: var(--teal); }
+  .top .spacer { flex: 1; }
+  .top nav { display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.78em; }
+  .top nav a { color: var(--dim); text-decoration: none; }
+  .top nav a:hover { color: var(--teal); }
+  .btn { background: var(--card2); color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 6px 12px;
+         font-size: 0.8em; font-weight: 600; cursor: pointer; min-width: 38px; }
+  .btn:hover { border-color: var(--teal); }
+  .header { margin: 36px 0 28px; }
+  .kicker { color: var(--teal); font-size: 0.75em; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; }
+  h1 { font-size: clamp(1.9em, 6vw, 3em); font-weight: 800; letter-spacing: -1.5px; line-height: 1.08; margin: 8px 0 12px; }
+  .sub { color: var(--dim); font-size: 1.05em; max-width: 720px; }
+  .meta { color: var(--dim2); font-size: 0.78em; margin-top: 12px; }
+  .meta a { color: var(--teal); text-decoration: none; }
+  h2 { font-size: 0.72em; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--teal);
+       margin: 48px 0 14px; display: flex; align-items: center; gap: 12px; }
+  h2::after { content: ''; flex: 1; height: 1px; background: currentColor; opacity: 0.25; }
+  h2.amber { color: var(--amber); } h2.green { color: var(--green); } h2.coral { color: var(--coral); }
+  p { color: var(--td); margin-bottom: 12px; max-width: 760px; }
+  p b, li b { color: var(--text); }
+  ul { margin: 0 0 14px 20px; color: var(--td); max-width: 740px; }
+  li { margin-bottom: 6px; }
+  code { background: var(--term); border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px; font-size: 0.85em; font-family: var(--mono); }
+  .tldr { background: var(--card); border: 1px solid var(--teal-brd); border-left: 5px solid var(--teal); border-radius: 16px; padding: 20px 22px; margin: 0 0 8px; }
+  .tldr .l { color: var(--teal); font-size: 0.7em; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; margin-bottom: 6px; }
+  .tldr p { font-size: 1.1em; color: var(--text); margin: 0; max-width: none; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin: 10px 0 6px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; position: relative; overflow: hidden; }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent, var(--teal)); }
+  .card.amber { --accent: var(--amber); } .card.green { --accent: var(--green); } .card.coral { --accent: var(--coral); }
+  .card h3 { font-size: 0.95em; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+  .card p { font-size: 0.88em; margin: 0; }
+  .stat .n { font-size: 1.9em; font-weight: 800; letter-spacing: -1px; color: var(--accent, var(--teal)); font-family: var(--mono); }
+  .stat .l { font-size: 0.8em; color: var(--dim); margin-top: 2px; line-height: 1.4; }
+  .vs { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 10px; }
+  .vs .card ol { margin: 6px 0 0 20px; color: var(--td); font-size: 0.9em; }
+  .vs .card ol li { margin-bottom: 5px; }
+  .flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; margin: 12px 0 6px; }
+  .flow .step { flex: 1 1 150px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 0.85em; }
+  .flow .step .k { font-family: var(--mono); font-size: 0.75em; color: var(--teal); font-weight: 700; margin-bottom: 4px; }
+  .tbl { overflow-x: auto; background: var(--card); border: 1px solid var(--border); border-radius: 14px; margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
+  th { text-align: left; color: var(--dim); font-size: 0.85em; letter-spacing: 1px; text-transform: uppercase; padding: 12px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--td); vertical-align: top; }
+  td b { color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  .quote { border-left: 3px solid var(--amber); padding: 6px 16px; color: var(--text); font-style: italic; margin: 14px 0; max-width: 720px; }
+  .quote small { display: block; font-style: normal; color: var(--dim2); font-size: 0.8em; margin-top: 4px; }
+  .note { font-size: 0.8em; color: var(--dim2); margin-top: 24px; border-top: 1px solid var(--border); padding-top: 14px; }
+  .note a { color: var(--teal); }
+  @media (max-width: 480px) { .top nav { display: none; } }
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+  <span class="brand">Explainer</span>
+  <nav>
+    <a href="#old">Old way</a><a href="#break">Why it breaks</a><a href="#new">Thunderdome</a><a href="#needs">What it needs</a><a href="#devs">For developers</a><a href="#glossary">Glossary</a><a href="#take">Should you?</a>
+  </nav>
+  <span class="spacer"></span>
+  <button class="btn" id="theme" title="Toggle dark/light" aria-label="Toggle dark/light">☾</button>
+</div></div>
+
+<div class="wrap">
+  <div class="header">
+    <div class="kicker">Steve Yegge, "The Shape of Things to Come, Part 1"</div>
+    <h1>Thunderdome for Dummies</h1>
+    <p class="sub">What it means when a company says "we run Thunderdome" for its code, why anyone would do something that sounds that reckless, and what it takes to make it work.</p>
+    <div class="meta">Source: <a href="https://yegge.ai/essays/the-shape-of-things-to-come/">yegge.ai/essays/the-shape-of-things-to-come</a>. Written 2026-09-27 for Jacob Skogström (Scandinavian Communication). Claims are Yegge's unless marked as our take.</div>
+  </div>
+
+  <div class="tldr">
+    <div class="l">In one breath</div>
+    <p>Thunderdome means: <b>stop queueing code changes and testing them one by one before they land.</b> Let every change land on the main branch at once, accept that main goes red, and have a swarm of AI agents find and fix the breakage in parallel. It is faster than the careful way once machines, not humans, write most of the code.</p>
+  </div>
+
+  <h2 id="old">The old way, in kitchen terms</h2>
+  <p>Picture a restaurant with one pass-through window to the dining room. Every plate stops there. A checker inspects it, and only then does it go out. That window is the <b>merge queue</b>. Every code change (a "commit" or "merge request") waits in line. The build system tests each one, or a small batch, before it is allowed onto <b>main</b>, the shared copy of the code everybody works from.</p>
+  <p>When a batch fails, the system plays detective. It splits the batch in half, tests each half, splits again, and so on until it finds the one plate that was bad. That search is called <b>bisection</b>. It is clever and slow, and it holds up every plate behind it.</p>
+  <p>This works fine when a team of humans produces a few dozen changes a day. Main stays green almost always. Everyone trusts it.</p>
+
+  <h2 id="break" class="amber">Why it breaks when AI writes the code</h2>
+  <p>Yegge runs his 30-year-old game <b>Wyvern</b> with a crew of AI agents instead of a human team. The numbers change the whole picture:</p>
+  <div class="grid">
+    <div class="card stat"><div class="n">175</div><div class="l">commits per day on average, peaks around 250</div></div>
+    <div class="card stat amber"><div class="n">100+</div><div class="l">merge requests stuck in the queue while bisection hunted for one failure</div></div>
+    <div class="card stat green"><div class="n">~700</div><div class="l">designed pieces of work waiting to be built</div></div>
+    <div class="card stat coral"><div class="n">18</div><div class="l">"crew" agents designing work, plus a fleet of worker agents building it</div></div>
+  </div>
+  <p style="margin-top:14px">At that rate the pass-through window is the bottleneck. The kitchen cooks faster than the checker can check. Agents sit idle waiting for the queue. The safety mechanism costs more than the failures it prevents.</p>
+
+  <h2 id="new">Thunderdome: everyone into the arena</h2>
+  <p>The name comes from Mad Max. Everyone enters the same arena at once and it gets sorted out inside. Yegge also calls it the <b>Land Rush</b>. The idea:</p>
+  <div class="flow">
+    <div class="step"><div class="k">1. Land it all</div>When the queue backs up, every waiting change lands on main at the same time. No gate, no batching, no bisection.</div>
+    <div class="step"><div class="k">2. Main goes red</div>Tests fail. That is expected and accepted. Main is no longer sacred.</div>
+    <div class="step"><div class="k">3. Swarm</div>Several agents diagnose the breakage in parallel, each on a different failure, instead of one process hunting serially.</div>
+    <div class="step"><div class="k">4. Fix forward</div>Agents push fixes. Main turns green again, faster than bisection would have found the first culprit.</div>
+    <div class="step"><div class="k">5. Release elsewhere</div>Customers never see red main. Shipping happens from separate, stable release branches.</div>
+  </div>
+  <div class="quote">"Agents can diagnose red-main problems way faster than the bisection process handles it."<small>Steve Yegge, the essay</small></div>
+  <p>The shift in one sentence: <b>stop spending effort preventing breakage, spend it recovering from breakage fast.</b> Prevention is a queue. Recovery is parallel.</p>
+
+  <h2 class="green">This is not new, game studios did it first</h2>
+  <p>Big video game studios have worked this way for years. They call it <b>Game DevOps</b>. Dozens of builds land on main every day, main is often broken, and the studio ships from release branches it keeps stable on the side. Perforce, the version-control vendor most AAA studios use, documents it as standard practice. Thunderdome takes that model and hands the clean-up job to AI agents.</p>
+
+  <h2 id="needs" class="amber">What a company needs before it can run Thunderdome</h2>
+  <div class="vs">
+    <div class="card"><h3>Lots of agent capacity</h3><p>The whole model rests on many agents working at once. Yegge rotates 12 Max subscriptions to get what he calls "infinite tokens". Wyvern burns roughly 87 000 dollars a month in list-price token value, which the rotation trick brings down to about 2 800 dollars.</p></div>
+    <div class="card amber"><h3>A work tracker agents can read</h3><p>Yegge's is called <b>Beads</b>: an issue tracker that doubles as a knowledge graph, versioned in git. Every task is a small atomic unit with dependencies and gates, so agents can pick work up without a human handing it over.</p></div>
+    <div class="card green"><h3>Standing role agents</h3><p>Not just task workers. Agents with permanent jobs, running unattended: an SRE agent watching production, an abuse-monitoring agent, a fleet manager ("the Marshal"). About 45 cron jobs wake them up.</p></div>
+    <div class="card coral"><h3>Release branches and fast tests</h3><p>Red main only works if customers never touch main. You need stable release branches, and tests fast enough that "red" is a signal you see in minutes, not hours.</p></div>
+  </div>
+
+  <h2 id="devs">What changes for the developers</h2>
+  <ul>
+    <li><b>Human code review mostly disappears.</b> Yegge keeps it only where an auditor demands it (SOC 2). Agents review agents.</li>
+    <li><b>Nobody waits for the merge queue.</b> There is no queue.</li>
+    <li><b>The job shifts from writing code to designing work and running the fleet.</b> Yegge's crew agents write designs. Worker agents implement them. Humans steer.</li>
+    <li><b>Mindset shift: tolerate productive chaos.</b> A red main is no longer an emergency. It is Tuesday.</li>
+    <li><b>Stakeholders ask, agents deliver.</b> His "Wish Factory" lets users file a wish as a GitHub issue or an in-game command, and agents build and deploy it.</li>
+  </ul>
+
+  <h2 id="glossary" class="green">Glossary</h2>
+  <div class="tbl"><table>
+    <tr><th>Term</th><th>Plain meaning</th></tr>
+    <tr><td><b>Main</b></td><td>The shared master copy of the code. Traditionally kept "green" (all tests passing) at all costs.</td></tr>
+    <tr><td><b>Merge queue</b></td><td>The waiting line where changes are tested before they are allowed onto main.</td></tr>
+    <tr><td><b>Bisection</b></td><td>Finding the one bad change in a failed batch by repeatedly splitting the batch in half. Slow at scale.</td></tr>
+    <tr><td><b>Thunderdome / Land Rush</b></td><td>Landing every change on main at once, then swarming the failures with agents.</td></tr>
+    <tr><td><b>Release branch</b></td><td>A separate, stable copy of the code you actually ship from, so red main never reaches customers.</td></tr>
+    <tr><td><b>Beads</b></td><td>Yegge's agent-readable issue tracker and knowledge graph, versioned in git.</td></tr>
+    <tr><td><b>Crew / Fleet</b></td><td>Crew agents design work (Fable-class models). Fleet workers build it (Opus-class models).</td></tr>
+    <tr><td><b>Role agents</b></td><td>Standing agents with a permanent operational job, such as SRE or abuse monitoring.</td></tr>
+    <tr><td><b>Wheelhouse</b></td><td>Yegge's orchestration system that runs all of the above, controlled from Emacs.</td></tr>
+    <tr><td><b>Game DevOps</b></td><td>The game-studio precedent: many builds on main daily, ship from release branches.</td></tr>
+  </table></div>
+
+  <h2 id="take" class="coral">Should a normal company do it? Our take</h2>
+  <p><b>This section is not from the essay.</b> It is the honest reading of it for a normal company.</p>
+  <ul>
+    <li><b>Thunderdome is a symptom of scale, not a best practice to adopt.</b> It only pays off once the commit rate is far beyond what humans produce. Below roughly a hundred commits a day, a merge queue is not the bottleneck and red main is pure cost.</li>
+    <li><b>The prerequisites are the hard part.</b> Agent capacity, an agent-readable tracker, standing role agents, release branches, fast tests. Without all five, "Thunderdome" is just a broken main with a cool name.</li>
+    <li><b>If a company says it runs Thunderdome, ask three questions.</b> How many commits a day? Where do customers ship from? Who or what fixes red main, and how fast? Good answers: hundreds, release branches, agents within minutes.</li>
+    <li><b>Yegge's bigger claim is worth taking seriously anyway.</b> He argues every software company will converge on a bespoke "city" of agents with its own roles and rules, and that gatekeeping practices like human review and classic CI/CD become relics within about a year. Agree or not, that is the direction any company running Thunderdome is betting on.</li>
+  </ul>
+  <div class="quote">"I am not special. I'm just ahead of you."<small>Steve Yegge, the essay</small></div>
+
+  <div class="note">Made from a read of the essay on 2026-09-27. Numbers are Yegge's own from that text. Source: <a href="https://yegge.ai/essays/the-shape-of-things-to-come/">the essay</a>.</div>
+</div>
+
+<script>(function(){var tb=document.getElementById('theme'),h=document.documentElement;function syncT(){tb.textContent=h.dataset.theme==='light'?'☀':'☾';}tb.onclick=function(){h.dataset.theme=h.dataset.theme==='light'?'dark':'light';try{localStorage.setItem('theme',h.dataset.theme);}catch(e){}syncT();};syncT();})();</script>
+</body>
+</html>
