@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Elpris">
+<meta name="theme-color" content="#0a1110">
+<title>Elpris Lomma</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%232ee6d6'/%3E%3C/svg%3E">
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t)t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.setAttribute('data-theme',t)}catch(e){document.documentElement.setAttribute('data-theme','dark')}})();</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a1110;--card:#121e1d;--card2:#172524;--line:#22302e;--ink:#eaf3f1;--mute:#8fa5a1;--teal:#2ee6d6;--green:#74D99B;--amber:#F8E29B;--red:#F5A8A2;--gS:#1d3b2b;--aS:#3b3622;--rS:#3d2523}
+html[data-theme="light"]{--bg:#f4f8f7;--card:#fff;--card2:#f3f8f7;--line:#dbe5e3;--ink:#0d1a19;--mute:#5a6f6b;--teal:#0b8f90;--green:#1f8a4c;--amber:#b07d10;--red:#c0392b;--gS:#e3f4ea;--aS:#fbf1d6;--rS:#fbe4e1}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:560px;margin:0 auto;padding:max(18px,env(safe-area-inset-top)) 16px 40px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.top h1{font-size:18px;margin:0;font-weight:700}
+.top .sub{font-size:13px;color:var(--mute)}
+.toggle{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:999px;width:38px;height:38px;cursor:pointer}
+.hero{margin-top:16px;border-radius:26px;padding:26px 22px;text-align:center;border:1px solid var(--line);background:var(--card)}
+.hero.green{background:var(--gS);border-color:var(--green)}.hero.amber{background:var(--aS);border-color:var(--amber)}.hero.red{background:var(--rS);border-color:var(--red)}
+.light{width:120px;height:120px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;font-size:52px;box-shadow:0 0 0 10px rgba(255,255,255,.04)}
+.green .light{background:var(--green)}.amber .light{background:var(--amber)}.red .light{background:var(--red)}
+.word{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.05}
+.green .word{color:var(--green)}.amber .word{color:var(--amber)}.red .word{color:var(--red)}
+.price{font-size:17px;margin-top:6px;color:var(--ink)}
+.advice{margin-top:14px;font-size:17px;font-weight:600}
+.card{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px}
+.card h2{margin:0 0 10px;font-size:14px;color:var(--mute);font-weight:600}
+.hours{display:flex;gap:3px;align-items:flex-end;height:120px}
+.h{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0}
+.h i{display:block;width:100%;border-radius:5px 5px 2px 2px}
+.h span{font-size:10px;color:var(--mute);margin-top:4px}
+.h.now span{color:var(--ink);font-weight:700}
+.h.now i{outline:2px solid var(--ink);outline-offset:1px}
+.best{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px;background:var(--card2);border:1px solid var(--line);margin-top:8px}
+.best b{font-size:20px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--mute);margin-top:10px}
+.foot{margin-top:18px;font-size:12px;color:var(--mute);text-align:center}
+.err{color:var(--red);text-align:center;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div><h1>Elpriset just nu</h1><div class="sub" id="when">Lomma · elområde SE4</div></div><button class="toggle" id="tt" aria-label="Byt tema">☾</button></div>
+  <div class="hero" id="hero"><div class="light" id="icon">…</div><div class="word" id="word">Hämtar…</div><div class="price" id="price"></div><div class="advice" id="advice"></div></div>
+  <div class="card"><h2>Kommande timmar</h2><div class="hours" id="hours"></div>
+    <div class="legend"><span><span class="dot" style="background:var(--green)"></span>billigt</span><span><span class="dot" style="background:var(--amber)"></span>mellan</span><span><span class="dot" style="background:var(--red)"></span>dyrt</span></div></div>
+  <div class="card"><h2>Bästa tid för disk, tvätt och torktumlare (2 timmar)</h2><div id="best"></div></div>
+  <div class="foot">Spotpris utan nätavgift och skatt. Grönt = dygnets billigaste tredjedel, rött = dyraste tredjedel.<br>Källa: elprisetjustnu.se · uppdateras var 5:e minut</div>
+</div>
+<script>
+(function(){
+var root=document.documentElement,tt=document.getElementById('tt');
+function sync(){tt.textContent=root.getAttribute('data-theme')==='light'?'☀':'☾'}sync();
+tt.onclick=function(){var n=root.getAttribute('data-theme')==='light'?'dark':'light';root.setAttribute('data-theme',n);try{localStorage.setItem('theme',n)}catch(e){}sync()};
+var AREA='SE4',$=function(i){return document.getElementById(i)};
+function ymd(d){var p=function(n){return(n<10?'0':'')+n};return{y:d.getFullYear(),md:p(d.getMonth()+1)+'-'+p(d.getDate())}}
+function get(d){var k=ymd(d);return fetch('https://www.elprisetjustnu.se/api/v1/prices/'+k.y+'/'+k.md+'_'+AREA+'.json').then(function(r){return r.ok?r.json():[]}).catch(function(){return[]})}
+function hourly(rows){var m={};rows.forEach(function(r){var t=new Date(r.time_start);t.setMinutes(0,0,0);var k=t.getTime();(m[k]=m[k]||[]).push(r.SEK_per_kWh)});
+  return Object.keys(m).map(Number).sort().map(function(k){var a=m[k];return{t:new Date(k),p:a.reduce(function(s,x){return s+x},0)/a.length}})}
+function bands(list){var s=list.map(function(x){return x.p}).sort(function(a,b){return a-b});return[s[Math.floor(s.length/3)],s[Math.floor(2*s.length/3)]]}
+function cls(p,b){return p<=b[0]?'green':p>=b[1]?'red':'amber'}
+var col={green:'var(--green)',amber:'var(--amber)',red:'var(--red)'};
+function hh(d){return d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'})}
+function run(){
+  var today=new Date(),tom=new Date(Date.now()+864e5);
+  Promise.all([get(today),get(tom)]).then(function(r){
+    var t=hourly(r[0]),m=hourly(r[1]);if(!t.length){$('word').textContent='Inga priser just nu';return}
+    var bT=bands(t),bM=m.length?bands(m):bT,now=new Date(),cur=null;
+    t.forEach(function(x){if(x.t<=now)cur=x});
+    var q=r[0].filter(function(x){return new Date(x.time_start)<=now}).pop(),pNow=q?q.SEK_per_kWh:cur.p,c=cls(pNow,bT);
+    $('hero').className='hero '+c;$('icon').textContent={green:'👍',amber:'👌',red:'✋'}[c];
+    $('word').textContent={green:'Billigt nu',amber:'Mellanpris',red:'Dyrt nu'}[c];
+    $('price').textContent=pNow.toFixed(2).replace('.',',')+' kr/kWh just nu';
+    var all=t.concat(m).map(function(x){var d=x.t.toDateString()===today.toDateString();return{t:x.t,p:x.p,c:cls(x.p,d?bT:bM)}});
+    var ahead=all.filter(function(x){return x.t.getTime()+36e5>now.getTime()}).slice(0,16);
+    var nextGreen=ahead.filter(function(x){return x.c==='green'&&x.t>now})[0];
+    $('advice').textContent=c==='green'?'Bra läge att köra disk, tvätt och torktumlare.':c==='red'?(nextGreen?'Vänta om det går. Billigt igen kl '+hh(nextGreen.t)+'.':'Vänta om det går.'):(nextGreen?'Okej. Billigast nästa gång kl '+hh(nextGreen.t)+'.':'Okej att köra.');
+    var mx=Math.max.apply(null,ahead.map(function(x){return x.p}));
+    $('hours').innerHTML=ahead.map(function(x,i){return'<div class="h'+(i===0?' now':'')+'" title="'+x.p.toFixed(2)+' kr"><i style="height:'+Math.max(4,x.p/mx*100)+'%;background:'+col[x.c]+'"></i><span>'+(i===0?'nu':x.t.getHours())+'</span></div>'}).join('');
+    function bestWin(list){var best=null;for(var i=0;i+1<list.length;i++){var a=(list[i].p+list[i+1].p)/2;if(!best||a<best.a)best={t:list[i].t,a:a}}return best}
+    var restToday=t.filter(function(x){return x.t.getTime()+36e5>now.getTime()}),out='';
+    var b1=bestWin(restToday);if(b1)out+='<div class="best"><span>Idag</span><b>'+hh(b1.t)+'–'+hh(new Date(b1.t.getTime()+72e5))+'</b><span>'+b1.a.toFixed(2).replace('.',',')+' kr</span></div>';
+    var b2=bestWin(m);out+=b2?'<div class="best"><span>Imorgon</span><b>'+hh(b2.t)+'–'+hh(new Date(b2.t.getTime()+72e5))+'</b><span>'+b2.a.toFixed(2).replace('.',',')+' kr</span></div>':'<div class="best"><span>Imorgon</span><span style="color:var(--mute)">priser kommer ca 13:00</span></div>';
+    $('best').innerHTML=out;$('when').textContent='Lomma · SE4 · uppdaterad '+hh(now);
+  }).catch(function(e){$('word').textContent='Kunde inte hämta priset';});
+}
+run();setInterval(run,300000);
+})();
+</script>
+</body>
+</html>
